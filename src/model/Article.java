@@ -3,12 +3,14 @@ package model;
 import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 
 public class Article {
-    private int articleCode, quantity;
+    private final int articleCode;
+    private int quantity;
     private String articleName, group;
     private double price;
 
     public Article(int articleCode, String name, String group, double price, int quantity) {
-        setArticleCode(articleCode);
+        checkArticleCode(articleCode);
+        this.articleCode = articleCode;
         setArticleName(name);
         setGroup(group);
         setPrice(price);
@@ -19,11 +21,10 @@ public class Article {
         return articleCode;
     }
 
-    public void setArticleCode(int articleCode) {
+    public void checkArticleCode(int articleCode) {
         if (articleCode <= 0) {
             throw new IllegalArgumentException("Article code cannot be zero or less");
         }
-        this.articleCode = articleCode;
     }
 
     public int getQuantity() {
