@@ -74,4 +74,10 @@ public class Article {
         }
         this.price = price;
     }
+
+    public String toString() {
+        String out = "";
+        out += getArticleCode() + " " + getArticleName() + " " + getQuantity() + " " + getPrice() + " " + getGroup();
+        return out;
+    }
 }

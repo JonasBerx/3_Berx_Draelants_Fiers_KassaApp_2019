@@ -16,6 +16,15 @@ public class Reader extends ReaderStrategy {
         this.toRead = new File(filePath);
         this.scanner = new Scanner(toRead);
         readFile();
+        for (Article article : articles) {
+            System.out.println(article.toString());
+        }
+
+
+    }
+
+    public List<Article> getArticles() {
+        return articles;
     }
 
     @Override
@@ -23,7 +32,13 @@ public class Reader extends ReaderStrategy {
 
         this.toSave = new File(filePath);
         this.fileWriter = new FileWriter(toSave);
-        fileWriter.write("test");
+
+        String data = "";
+        for (Article article : articles) {
+            data += article.toString() + "\n";
+        }
+
+        fileWriter.write(data);
         fileWriter.close();
     }
 
