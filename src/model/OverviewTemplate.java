@@ -1,13 +1,48 @@
 package model;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
 public abstract class OverviewTemplate {
+    List<Article> articles = new ArrayList<>();
+    private File toRead;
+    private Scanner scanner;
+
+    public void read(String filePath) throws FileNotFoundException {
+        this.toRead = new File(filePath);
+        this.scanner = new Scanner(toRead);
+        readFile();
+
+    }
+    public void save(String filepath) throws IOException {
+        File toSave = toRead;
+        FileWriter fileWriter = null;
+        BufferedWriter bufferedWriter = null;
+        writer.write();
+        writer.newLine();
+
+    }
+
+    private void readFile() {
+        while (scanner.hasNextLine()) {
+            Scanner lineScanner = new Scanner(scanner.nextLine());
+            lineScanner.useDelimiter(",");
+            int articleId = Integer.parseInt(lineScanner.next());
+            String articleName = lineScanner.next();
+            String group = lineScanner.next();
+            double price = Double.parseDouble(lineScanner.next());
+            int stock = Integer.parseInt(lineScanner.next());
+            articles.add(new Article(articleId, articleName, group, price, stock));
+
+        }
+    }
+
+
+
+
     private List<Opdracht> opdrachten = new ArrayList<>();
     private File inTeLezen;
     private Scanner scanFile;
