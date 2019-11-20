@@ -2,3 +2,4 @@
 .directory
 out
 !/.idea/libraries/
+.~lock.*
