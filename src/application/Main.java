@@ -2,14 +2,14 @@ package application;
 	
 import javafx.application.Application;
 import javafx.stage.Stage;
-import view.KassaView;
-import view.KlantView;
+import view.CashRegisterView;
+import view.CustomerView;
 
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
-		KassaView kassaView = new KassaView();
-		KlantView klantView = new KlantView();
+		CashRegisterView cashRegisterView = new CashRegisterView();
+		CustomerView customerView = new CustomerView();
 	}
 	
 	public static void main(String[] args) {
