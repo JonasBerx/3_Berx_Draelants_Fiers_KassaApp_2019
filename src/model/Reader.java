@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Reader extends ReaderStrategy {
-    List<Article> articles = new ArrayList<>();
+    private List<Article> articles = new ArrayList<>();
     private File toRead;
     private File toSave;
     private Scanner scanner;
+    private FileWriter fileWriter;
     @Override
     public void read(String filePath) throws FileNotFoundException {
         this.toRead = new File(filePath);
@@ -18,24 +19,12 @@ public class Reader extends ReaderStrategy {
     }
 
     @Override
-    public void write(String filePath) {
+    public void write(String filePath) throws IOException {
 
-        File toSave = new File(filePath);
-        FileWriter fileWriter = null;
-        try{
-            fileWriter = new FileWriter(toSave);
-            fileWriter.write("test");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            try {
-                fileWriter.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-
+        this.toSave = new File(filePath);
+        this.fileWriter = new FileWriter(toSave);
+        fileWriter.write("test");
+        fileWriter.close();
     }
 
 
