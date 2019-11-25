@@ -6,6 +6,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
+/*
+* @Author Jonas Berx
+* Implemented Template Design pattern
+* */
+
 public abstract class OverviewTemplate {
     List<Article> articles = new ArrayList<>();
     private File toRead;

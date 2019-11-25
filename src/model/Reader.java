@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/*
+ * @Author Jonas Berx
+ * Created Reader Class that implements Strategy
+ *
+ * */
+
 public class Reader extends ReaderStrategy {
     private List<Article> articles = new ArrayList<>();
     private File toRead;
