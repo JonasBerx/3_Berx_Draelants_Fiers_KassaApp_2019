@@ -7,6 +7,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+/*
+* @Author Jonas Berx
+* Created LoadSave Class from template Design pattern
+*
+* */
+
 
 public class ArtikelLoadSave extends TekstLoadSaveTemplate {
     List<Article> articles = new ArrayList<>();
