@@ -15,9 +15,13 @@ import java.util.Scanner;
 public class writetest {
     public static void main(String[] args) throws IOException {
 
-        ReaderStrategy readerStrategy = new Reader();
+        ReaderStrategy readerStrategy = new TextReader();
         ReaderStrategy dbReader = new ArticleDbInMemory();
 
+        TekstLoadSaveTemplate tekstreader = new ArtikelLoadSave("C:\\Users\\JojoS\\Desktop\\2TI-BS\\OO - Ontwerpen\\KassaApplication\\src\\bestanden\\articles.txt");
+
+        tekstreader.load();
+        tekstreader.save();
         /*
         * Test for the FileReader
         * */

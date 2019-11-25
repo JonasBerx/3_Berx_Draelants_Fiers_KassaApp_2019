@@ -11,7 +11,7 @@ import java.util.Scanner;
  *
  * */
 
-public class Reader extends ReaderStrategy {
+public class TextReader extends ReaderStrategy {
     private List<Article> articles = new ArrayList<>();
     private File toRead;
     private File toSave;

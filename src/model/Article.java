@@ -77,7 +77,7 @@ public class Article {
 
     public String toString() {
         String out = "";
-        out += getArticleCode() + " " + getArticleName() + " " + getQuantity() + " " + getPrice() + " " + getGroup();
+        out += getArticleCode() + " " + getArticleName() + " " + getGroup() + " " + getPrice() + " " + getQuantity();
         return out;
     }
 }
