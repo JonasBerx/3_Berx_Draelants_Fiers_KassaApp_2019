@@ -1,6 +1,8 @@
 package view.panels;
 
 import database.ArticleDbInMemory;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -13,11 +15,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import model.Article;
-import model.CsvLoadSave;
-import model.LoadSaveStrategy;
 import sun.util.locale.provider.JRELocaleProviderAdapter;
 
-import java.io.File;
+import java.awt.geom.AffineTransform;
 import java.io.FileNotFoundException;
 /**
  * @Author Dieter Draelants
@@ -27,21 +27,17 @@ import java.io.FileNotFoundException;
 //TODO Change to TableVIEW!
 
 public class CashierProductOverviewPane extends GridPane {
-	//private TableView<Product> table;
-	CsvLoadSave strategy = new CsvLoadSave();
-	File file = new File("src/bestanden/articles.csv");
+	private TableView<Article> articleTable = new TableView<>();
+	private ArticleDbInMemory db = new ArticleDbInMemory();
+	private ObservableList<Article> articles = FXCollections.observableArrayList();
 
-
-
-	public CashierProductOverviewPane() throws FileNotFoundException {
-
-
-		strategy.read(file);
-
+	public CashierProductOverviewPane() {
 		this.setPadding(new Insets(5, 5, 5, 5));
         this.setVgap(5);
         this.setHgap(5);
-        
+
+
+//        COlumn headers
 		this.add(new Label("Products:"), 0, 0, 1, 1);
 		this.add(new Label("Code"), 0, 1, 1, 1);
 		this.add(new Label("Name"), 1, 1, 1, 1);
@@ -50,19 +46,14 @@ public class CashierProductOverviewPane extends GridPane {
 		this.add(new Label("Stock"), 4, 1, 1, 1);
 
 
+		articleTable.setItems(articles);
 
+		TableColumn<Article,Integer> firstNameCol = new TableColumn<Article, Integer>("Code");
+		firstNameCol.setCellValueFactory(new PropertyValueFactory("firstName"));
+		TableColumn<Person,String> lastNameCol = new TableColumn<Person,String>("Last Name");
+		lastNameCol.setCellValueFactory(new PropertyValueFactory("lastName"));
 
-		int i = 0;
-		for (Article a : strategy.getArticles() ) {
-			this.add(new Label(String.valueOf(a.getArticleCode())), 0, i + 2, 1, 1);
-			this.add(new Label(a.getArticleName()), 1, i + 2, 1, 1);
-			this.add(new Label(a.getGroup()), 2, i + 2, 1, 1);
-			this.add(new Label(String.valueOf(a.getPrice())), 3, i + 2, 1, 1);
-			this.add(new Label(String.valueOf(a.getQuantity())), 4, i + 2, 1, 1);
-
-			i++;
-		}
-
+		table.getColumns().setAll(firstNameCol, lastNameCol);
 
 	}
 	
