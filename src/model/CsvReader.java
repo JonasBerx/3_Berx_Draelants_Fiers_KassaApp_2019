@@ -1,25 +1,29 @@
 package model;
 
+import database.ArticleDbInMemory;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-/*
+/**
  * @Author Jonas Berx
+ * @Version 1.0
  * Created Reader Class that implements Strategy
  *
  * */
 
-public class TextReader extends ReaderStrategy {
+public class CsvReader implements ReaderStrategy {
     private List<Article> articles = new ArrayList<>();
+    ArticleDbInMemory dbInMemory = new ArticleDbInMemory();
     private File toRead;
     private File toSave;
     private Scanner scanner;
     private FileWriter fileWriter;
     @Override
-    public void read(String filePath) throws FileNotFoundException {
-        this.toRead = new File(filePath);
+    public void read(File file) throws FileNotFoundException {
+        this.toRead = file;
         this.scanner = new Scanner(toRead);
         readFile();
         for (Article article : articles) {
@@ -34,12 +38,14 @@ public class TextReader extends ReaderStrategy {
     }
 
     @Override
-    public void write(String filePath) throws IOException {
+    public void write(File file) throws IOException {
 
-        this.toSave = new File(filePath);
+        this.toSave = file;
         this.fileWriter = new FileWriter(toSave);
 
         String data = "";
+
+        //TODO written for arraylist, change to hashmap later
         for (Article article : articles) {
             data += article.toString() + "\n";
         }
@@ -59,6 +65,7 @@ public class TextReader extends ReaderStrategy {
             double price = Double.parseDouble(lineScanner.next());
             int stock = Integer.parseInt(lineScanner.next());
             articles.add(new Article(articleId, articleName, group, price, stock));
+            dbInMemory.addToMap(new Article(articleId, articleName, group, price, stock));
 
         }
     }

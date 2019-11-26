@@ -78,9 +78,14 @@ public class Article {
         this.price = price;
     }
 
+    /*
+    * Leave toString like this - Has to cope with the reader input and output order!
+    *
+    * */
+
     public String toString() {
         String out = "";
-        out += getArticleCode() + " " + getArticleName() + " " + getGroup() + " " + getPrice() + " " + getQuantity();
+        out += getArticleCode() + "," + getArticleName() + "," + getGroup() + "," + getPrice() + "," + getQuantity();
         return out;
     }
 }

@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class ArticleDbInMemory extends ReaderStrategy {
+public class ArticleDbInMemory {
 
     private HashMap<Integer, Article> db;
 
@@ -27,51 +27,23 @@ public class ArticleDbInMemory extends ReaderStrategy {
         return db;
     }
 
-    /*
-    * @Author Jonas Berx
-    * Implemented Strategy into Database
-    *
-    * */
-    @Override
-    public void read(String filePath) throws FileNotFoundException {
-        File toRead = new File(filePath);
-        Scanner scanner = new Scanner(toRead);
-        while (scanner.hasNextLine()) {
-            Scanner lineScanner = new Scanner(scanner.nextLine());
-            lineScanner.useDelimiter(",");
-            int articleId = Integer.parseInt(lineScanner.next());
-            String articleName = lineScanner.next();
-            String group = lineScanner.next();
-            double price = Double.parseDouble(lineScanner.next());
-            int stock = Integer.parseInt(lineScanner.next());
-            db.put(articleId, new Article(articleId, articleName, group, price, stock));
+    /**
+     * @Author Jonas Berx
+     * Implemented Strategy into Database
+     *
+     * */
 
-
-
+    public void addToMap(Article article) {
+        if (article != null) {
+            db.put(article.getArticleCode(), article);
         }
-        /*
-        * For testing purpose only
-        * for (Article article : db.values()) {
-        *   System.out.println(article.toString());
-        * }
-        * */
-
-
     }
 
-    /*
-    * Should change this, probably bad implent
-    * */
-    @Override
-    public void write(String filePath) throws IOException {
-        String data = "";
-        FileWriter writer = new FileWriter(filePath);
-        for (Article article : db.values()) {
-            data += article.toString() + "\n";
-        }
-        writer.write(data);
-        writer.close();
-
+    public Article getArticle(int key) {
+        return db.get(key);
     }
+
+
+
 
 }
