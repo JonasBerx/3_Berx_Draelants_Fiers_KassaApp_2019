@@ -10,11 +10,11 @@ public class ArticleDbInMemory {
     private HashMap<Integer, Article> db;
 
     public ArticleDbInMemory() {
-        db = new HashMap<Integer, Article>();
+        db = new HashMap<>();
     }
 
     public ArticleDbInMemory(Collection<Article> article) {
-        db = new HashMap<Integer, Article>();
+        db = new HashMap<>();
     }
 
     public HashMap<Integer, Article> returnDb() {
@@ -38,13 +38,20 @@ public class ArticleDbInMemory {
     }
 
 
+    public void addArticles(Collection<Article> articles) {
+        int i;
+        for (Article a : articles) {
+            i = a.getArticleCode();
+            db.put(i, a);
+        }
 
+    }
 
     public String toString() {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for (Article a : db.values())
-            s += a.toString() + "\n";
-        return s;
+            s.append(a.toString()).append("\n");
+        return s.toString();
     }
 
 }
