@@ -74,4 +74,11 @@ public class ArticleDbInMemory extends ReaderStrategy {
 
     }
 
+    public String toString() {
+        String s = "";
+        for (Article a : db.values())
+            s += a.toString() + "\n";
+        return s;
+    }
+
 }

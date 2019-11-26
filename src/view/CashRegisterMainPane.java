@@ -6,8 +6,10 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import view.panels.ProductOverviewPane;
 
+import java.io.FileNotFoundException;
+
 public class CashRegisterMainPane extends BorderPane {
-	public CashRegisterMainPane(){
+    public CashRegisterMainPane() throws FileNotFoundException {
 		
 	    TabPane tabPane = new TabPane(); 	    
         Tab kassaTab = new Tab("Kassa");
