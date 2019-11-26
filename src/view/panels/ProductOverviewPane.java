@@ -29,9 +29,10 @@ public class ProductOverviewPane extends GridPane {
         
 		this.add(new Label("Products:"), 0, 0, 1, 1);
 		this.add(new Label("Code"), 0, 1, 1, 1);
-		this.add(new Label("Omschrijving"), 1, 1, 1, 1);
-		this.add(new Label("Groep"), 2, 1, 1, 1);
-		this.add(new Label("Prijs"), 3, 1, 1, 1);
+		this.add(new Label("Name"), 1, 1, 1, 1);
+		this.add(new Label("Group"), 2, 1, 1, 1);
+		this.add(new Label("Price"), 3, 1, 1, 1);
+		this.add(new Label("Stock"), 4, 1, 1, 1);
 
 		/*
 		@Author Dieter Draelants
@@ -48,6 +49,8 @@ public class ProductOverviewPane extends GridPane {
 			this.add(new Label(a.getArticleName()), 1, i + 2, 1, 1);
 			this.add(new Label(a.getGroup()), 2, i + 2, 1, 1);
 			this.add(new Label(String.valueOf(a.getPrice())), 3, i + 2, 1, 1);
+			this.add(new Label(String.valueOf(a.getQuantity())), 4, i + 2, 1, 1);
+			;
 			i++;
 		}
 
