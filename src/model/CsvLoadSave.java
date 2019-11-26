@@ -14,9 +14,9 @@ import java.util.Scanner;
  *
  * */
 
-public class CsvReader implements ReaderStrategy {
+public class CsvLoadSave implements LoadSaveStrategy {
     private List<Article> articles = new ArrayList<>();
-    ArticleDbInMemory dbInMemory = new ArticleDbInMemory();
+    public ArticleDbInMemory dbInMemory = new ArticleDbInMemory();
     private File toRead;
     private File toSave;
     private Scanner scanner;
@@ -75,5 +75,9 @@ public class CsvReader implements ReaderStrategy {
 
     public String toString() {
         return dbInMemory.toString();
+    }
+
+    public ArticleDbInMemory getDbInMemory() {
+        return dbInMemory;
     }
 }

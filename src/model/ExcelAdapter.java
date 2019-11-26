@@ -5,7 +5,6 @@ import excel.ExcelPlugin;
 import jxl.read.biff.BiffException;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -14,13 +13,14 @@ import java.util.ArrayList;
 * @Author Jonas Berx
 * @Version 1.0
 * */
-public class ExcelAdapter implements ReaderStrategy {
+public class ExcelAdapter implements LoadSaveStrategy {
     ArticleDbInMemory dbInMemory;
     ExcelPlugin plugin;
 
 
-    public ExcelAdapter(ExcelPlugin newPlugin) {
-        plugin = newPlugin;
+
+    public ExcelAdapter() {
+        plugin = new ExcelPlugin();
         dbInMemory = new ArticleDbInMemory();
 
     }

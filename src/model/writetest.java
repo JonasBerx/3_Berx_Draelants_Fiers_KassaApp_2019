@@ -1,6 +1,5 @@
 package model;
 
-import database.ArticleDbInMemory;
 import excel.ExcelPlugin;
 import jxl.read.biff.BiffException;
 
@@ -16,9 +15,9 @@ import java.io.IOException;
 public class writetest {
     public static void main(String[] args) throws IOException, BiffException {
 
-        ReaderStrategy readerStrategy = new CsvReader();
-        ExcelPlugin plugin = new ExcelPlugin();
-        ExcelAdapter adapter = new ExcelAdapter(plugin);
+        LoadSaveStrategy loadSaveStrategy = new CsvLoadSave();
+
+        ExcelAdapter adapter = new ExcelAdapter();
         String path = "src/bestanden/articles.csv";
         String pathTest = "src/bestanden/articlesTest.csv";
         String txtpath = "src/bestanden/articles.txt";
@@ -42,9 +41,9 @@ public class writetest {
         /*
          * Tests For csv reader
          * */
-        readerStrategy.read(csvRead);
-        System.out.println(readerStrategy.toString());
-        readerStrategy.write(csvWrite);
+        loadSaveStrategy.read(csvRead);
+        System.out.println(loadSaveStrategy.toString());
+        loadSaveStrategy.write(csvWrite);
 
         /*
         * Tests for the excel reader
