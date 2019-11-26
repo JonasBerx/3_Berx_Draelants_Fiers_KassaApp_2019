@@ -3,6 +3,7 @@ package model;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 /*
@@ -14,7 +15,8 @@ public interface LoadSaveStrategy {
 
     void load() throws FileNotFoundException;
 
-    void save() throws IOException;
+    void save(ArrayList<Article> articles) throws IOException;
+
 
 
 

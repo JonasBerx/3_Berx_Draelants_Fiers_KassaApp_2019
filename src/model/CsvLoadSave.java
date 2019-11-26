@@ -49,14 +49,14 @@ public class CsvLoadSave implements LoadSaveStrategy {
     }
 
     @Override
-    public void save() throws IOException {
+    public void save(ArrayList<Article> articles) throws IOException {
 
         this.fileWriter = new FileWriter(toSave);
 
         String data = "";
 
 
-        for (Article article : getMemory().values()) {
+        for (Article article : articles) {
             data += article.toString() + "\n";
         }
 

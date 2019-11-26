@@ -18,14 +18,16 @@ import java.util.Scanner;
 
 
 public class ArtikelLoadSave extends TekstLoadSaveTemplate implements LoadSaveStrategy {
-
-    ArticleDbInMemory dbInMemory = new ArticleDbInMemory();
-    public ArtikelLoadSave() {
+    private File file;
+    private ArticleDbInMemory dbInMemory = new ArticleDbInMemory();
+    ArtikelLoadSave() {
         this.path = "src/bestanden/articles.txt";
+        file = new File(path);
     }
 
     public ArtikelLoadSave(String path) {
         this.path = path;
+        file = new File(path);
     }
 
     @Override
@@ -51,18 +53,18 @@ public class ArtikelLoadSave extends TekstLoadSaveTemplate implements LoadSaveSt
     }
 
     @Override
-    public void save() {
-        File toSave = new File(path);
+    public void save(ArrayList<Article> articles) {
+
         try {
-            FileWriter writer = new FileWriter(toSave);
-            String data = "";
+            FileWriter writer = new FileWriter(file);
+            StringBuilder data = new StringBuilder();
             //For testing purposes
 
-            for (Article article : dbInMemory.returnDb().values()) {
-                data += article.toString()+"\n";
+            for (Article article : articles) {
+                data.append(article.toString()).append("\n");
                 System.out.println(article.toString());
             }
-            writer.write(data);
+            writer.write(data.toString());
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();

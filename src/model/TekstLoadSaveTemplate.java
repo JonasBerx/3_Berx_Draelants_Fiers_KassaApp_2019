@@ -11,12 +11,12 @@ import java.util.Scanner;
 * Implemented Template Design pattern
 * */
 
-public abstract class TekstLoadSaveTemplate {
+abstract class TekstLoadSaveTemplate {
     String path;
     TekstLoadSaveTemplate() {}
 
     abstract void load();
 
-    abstract void save();
+    abstract void save(ArrayList<Article> articles);
 
 }
