@@ -16,40 +16,39 @@ public class writetest {
     public static void main(String[] args) throws IOException, BiffException {
 
         LoadSaveStrategy loadSaveStrategy = new CsvLoadSave();
-
+        TekstLoadSaveTemplate tekstreader = new ArtikelLoadSave();
         ExcelAdapter adapter = new ExcelAdapter();
+
         String path = "src/bestanden/articles.csv";
         String pathTest = "src/bestanden/articlesTest.csv";
         String txtpath = "src/bestanden/articles.txt";
         File excel = new File("src/bestanden/articles.xls");
 
 
-        TekstLoadSaveTemplate tekstreader = new ArtikelLoadSave("C:\\Users\\JojoS\\Desktop\\2TI-BS\\OO - Ontwerpen\\KassaApplication\\src\\bestanden\\articles.txt");
-
-        File csvRead = new File(path);
-        File csvWrite = new File(pathTest);
 
 
         /*
         * Tests for txt reader
         * */
+        System.out.println("°°°°°°°°°°°°°°°°°°°°°°°°°°°\nTests for TXT Reader\n--------------------");
 
-        tekstreader.path = txtpath;
         tekstreader.load();
         tekstreader.save();
 
         /*
          * Tests For csv reader
          * */
-        loadSaveStrategy.read(csvRead);
+        System.out.println("°°°°°°°°°°°°°°°°°°°°°°°°°°\nTests for CSV Reader\n---------------------------------");
+        loadSaveStrategy.load();
         System.out.println(loadSaveStrategy.toString());
-        loadSaveStrategy.write(csvWrite);
+        loadSaveStrategy.save();
 
         /*
         * Tests for the excel reader
         * !! Changed extension for compatibility
         * */
-        adapter.read(excel);
+        System.out.println("°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\nTests for Excel Adapter\n---------------------------");
+        adapter.load();
 
     }
 }

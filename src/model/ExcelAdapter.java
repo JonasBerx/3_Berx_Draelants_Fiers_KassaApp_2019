@@ -16,20 +16,23 @@ import java.util.ArrayList;
 public class ExcelAdapter implements LoadSaveStrategy {
     ArticleDbInMemory dbInMemory;
     ExcelPlugin plugin;
+    File articles;
 
 
 
     public ExcelAdapter() {
         plugin = new ExcelPlugin();
         dbInMemory = new ArticleDbInMemory();
+        articles = new File("src/bestanden/articles.xls");
+
 
     }
 
     @Override
-    public void read(File file) {
+    public void load() {
         try {
-            plugin.read(file);
-            for (ArrayList<String> a : plugin.read(file)) {
+
+            for (ArrayList<String> a : plugin.read(articles)) {
                 System.out.println(a);
             }
         } catch (BiffException | IOException e) {
@@ -38,8 +41,8 @@ public class ExcelAdapter implements LoadSaveStrategy {
     }
 
     @Override
-    public void write(File file) throws IOException {
-//        plugin.write(file);
+    public void save() throws IOException {
+
     }
 
 

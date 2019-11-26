@@ -17,7 +17,7 @@ import java.util.Scanner;
 * */
 
 
-public class ArtikelLoadSave extends TekstLoadSaveTemplate {
+public class ArtikelLoadSave extends TekstLoadSaveTemplate implements LoadSaveStrategy {
 
     ArticleDbInMemory dbInMemory = new ArticleDbInMemory();
     public ArtikelLoadSave() {
@@ -29,7 +29,7 @@ public class ArtikelLoadSave extends TekstLoadSaveTemplate {
     }
 
     @Override
-    void load() {
+    public void load() {
         File toRead = new File(path);
         try {
             Scanner sc = new Scanner(toRead);
@@ -51,7 +51,7 @@ public class ArtikelLoadSave extends TekstLoadSaveTemplate {
     }
 
     @Override
-    void save() {
+    public void save() {
         File toSave = new File(path);
         try {
             FileWriter writer = new FileWriter(toSave);

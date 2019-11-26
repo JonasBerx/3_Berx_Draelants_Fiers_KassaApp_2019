@@ -3,21 +3,17 @@ package model;
 public class LoadSaveFactory {
     public LoadSaveStrategy create(String type) {
         LoadSaveStrategy strategy = null;
+        LoadSaveStrategyEnum strategyEnum = LoadSaveStrategyEnum.valueOf(type.toUpperCase());
+        String path = strategyEnum.getThePath();
+        Class theClass = strategyEnum.getTheClass();
 
-        switch (type) {
-            case "TEXT":
-                strategy = (LoadSaveStrategy) new ArtikelLoadSave();
-                break;
-            case "EXCEL":
-                strategy = new ExcelAdapter();
-                break;
-            case "CSV":
-                strategy = new CsvLoadSave();
-                break;
-            default:
-                strategy = (LoadSaveStrategy) new ArtikelLoadSave();
-                break;
+        try {
+            Object loadSaveObject = theClass.newInstance();
+            strategy = (LoadSaveStrategy) loadSaveObject;
+        } catch (IllegalAccessException | InstantiationException e) {
+            e.printStackTrace();
         }
+
         return strategy;
 
     }

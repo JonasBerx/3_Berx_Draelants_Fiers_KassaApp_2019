@@ -12,9 +12,9 @@ import java.io.IOException;
 * */
 public interface LoadSaveStrategy {
 
-    public abstract void read(File file) throws FileNotFoundException;
+    void load() throws FileNotFoundException;
 
-    public abstract void write(File file) throws IOException;
+    void save() throws IOException;
 
 
 

@@ -36,7 +36,7 @@ public class CashierProductOverviewPane extends GridPane {
 	public CashierProductOverviewPane() throws FileNotFoundException {
 
 
-		strategy.read(file);
+		strategy.load();
 
 		this.setPadding(new Insets(5, 5, 5, 5));
         this.setVgap(5);
@@ -53,7 +53,7 @@ public class CashierProductOverviewPane extends GridPane {
 
 
 		int i = 0;
-		for (Article a : strategy.getArticles() ) {
+		for (Article a : strategy.getMemory().values() ) {
 			this.add(new Label(String.valueOf(a.getArticleCode())), 0, i + 2, 1, 1);
 			this.add(new Label(a.getArticleName()), 1, i + 2, 1, 1);
 			this.add(new Label(a.getGroup()), 2, i + 2, 1, 1);

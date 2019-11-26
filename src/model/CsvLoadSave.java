@@ -4,6 +4,7 @@ import database.ArticleDbInMemory;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,15 +16,22 @@ import java.util.Scanner;
  * */
 
 public class CsvLoadSave implements LoadSaveStrategy {
-    private List<Article> articles = new ArrayList<>();
-    public ArticleDbInMemory dbInMemory = new ArticleDbInMemory();
+
+    private ArticleDbInMemory dbInMemory;
     private File toRead;
     private File toSave;
     private Scanner scanner;
     private FileWriter fileWriter;
+
+    public CsvLoadSave() {
+        toRead = new File("src/bestanden/articles.csv");
+        toSave = new File("src/bestanden/articlesTest.csv");
+        dbInMemory = new ArticleDbInMemory();
+    }
+
     @Override
-    public void read(File file) throws FileNotFoundException {
-        this.toRead = file;
+    public void load() throws FileNotFoundException {
+
         this.scanner = new Scanner(toRead);
         readFile();
 
@@ -36,20 +44,19 @@ public class CsvLoadSave implements LoadSaveStrategy {
 
     }
 
-    public List<Article> getArticles() {
-        return articles;
+    public HashMap<Integer, Article> getMemory() {
+        return dbInMemory.returnDb();
     }
 
     @Override
-    public void write(File file) throws IOException {
+    public void save() throws IOException {
 
-        this.toSave = file;
         this.fileWriter = new FileWriter(toSave);
 
         String data = "";
 
-        //TODO written for arraylist, change to hashmap later
-        for (Article article : articles) {
+
+        for (Article article : getMemory().values()) {
             data += article.toString() + "\n";
         }
 
@@ -67,7 +74,6 @@ public class CsvLoadSave implements LoadSaveStrategy {
             String group = lineScanner.next();
             double price = Double.parseDouble(lineScanner.next());
             int stock = Integer.parseInt(lineScanner.next());
-            articles.add(new Article(articleId, articleName, group, price, stock));
             dbInMemory.addToMap(new Article(articleId, articleName, group, price, stock));
 
         }
@@ -77,7 +83,4 @@ public class CsvLoadSave implements LoadSaveStrategy {
         return dbInMemory.toString();
     }
 
-    public ArticleDbInMemory getDbInMemory() {
-        return dbInMemory;
-    }
 }
