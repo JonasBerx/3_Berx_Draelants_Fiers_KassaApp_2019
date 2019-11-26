@@ -3,12 +3,14 @@ package view;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;	
+import javafx.stage.Stage;
+
+import java.io.FileNotFoundException;
 
 public class CashRegisterView {
-	private Stage stage = new Stage();		
-		
-	public CashRegisterView(){
+	private Stage stage = new Stage();
+
+	public CashRegisterView() throws FileNotFoundException {
 		stage.setTitle("KASSA VIEW");
 		stage.setResizable(false);		
 		stage.setX(20);
