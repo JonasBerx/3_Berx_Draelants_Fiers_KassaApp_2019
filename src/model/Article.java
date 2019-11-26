@@ -1,9 +1,14 @@
 package model;
 
-import jdk.nashorn.internal.runtime.regexp.joni.Regex;
+/**
+ * @Author Jonas Berx
+ * @Version 1.1
+ * changed Dieters author sign to correct javadoc
+ * */
 
-//@Author Dieter Draelants
-//Article class
+/**@Author Dieter Draelants
+ * Article class
+ */
 
 public class Article {
     private final int articleCode;
