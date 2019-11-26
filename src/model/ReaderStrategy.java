@@ -1,5 +1,6 @@
 package model;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -9,15 +10,11 @@ import java.io.IOException;
 * Created StrategyPattern
 *
 * */
-public abstract class ReaderStrategy {
-    String path;
+public interface ReaderStrategy {
 
-    public ReaderStrategy() {
-    }
+    public abstract void read(File file) throws FileNotFoundException;
 
-    public abstract void read(String filePath) throws FileNotFoundException;
-
-    public abstract void write(String filePath) throws IOException;
+    public abstract void write(File file) throws IOException;
 
 
 

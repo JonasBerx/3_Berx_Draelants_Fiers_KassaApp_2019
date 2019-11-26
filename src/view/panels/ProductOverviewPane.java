@@ -17,10 +17,11 @@ import sun.util.locale.provider.JRELocaleProviderAdapter;
 
 import java.io.FileNotFoundException;
 
+//TODO DIETER - Tableview moet gebruikt worden alle code die ge geschreven hebt hier is praktisch voor de vuilnisbak
 
 public class ProductOverviewPane extends GridPane {
 	//private TableView<Product> table;
-
+	ArticleDbInMemory db = new ArticleDbInMemory();
 
 	public ProductOverviewPane() throws FileNotFoundException {
 		this.setPadding(new Insets(5, 5, 5, 5));
@@ -34,15 +35,14 @@ public class ProductOverviewPane extends GridPane {
 		this.add(new Label("Price"), 3, 1, 1, 1);
 		this.add(new Label("Stock"), 4, 1, 1, 1);
 
-		/*
-		@Author Dieter Draelants
-		Uitlezen van hashmap naar de artikelen pagina
-
-		!Moet nog geoptimaliseert worden!
+		/**
+		 * @Author Dieter Draelants
+		 * Uitlezen van hashmap naar de artikelen pagina
+		 *
 		 */
+		//TODO Optimalise
 
-		ArticleDbInMemory db = new ArticleDbInMemory();
-		db.read("src/bestanden/articles.csv");
+
 		int i = 0;
 		for (Article a : db.returnDb().values()) {
 			this.add(new Label(String.valueOf(a.getArticleCode())), 0, i + 2, 1, 1);
@@ -50,7 +50,7 @@ public class ProductOverviewPane extends GridPane {
 			this.add(new Label(a.getGroup()), 2, i + 2, 1, 1);
 			this.add(new Label(String.valueOf(a.getPrice())), 3, i + 2, 1, 1);
 			this.add(new Label(String.valueOf(a.getQuantity())), 4, i + 2, 1, 1);
-			;
+
 			i++;
 		}
 

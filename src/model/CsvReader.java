@@ -26,9 +26,12 @@ public class CsvReader implements ReaderStrategy {
         this.toRead = file;
         this.scanner = new Scanner(toRead);
         readFile();
-        for (Article article : articles) {
-            System.out.println(article.toString());
-        }
+
+        // For testing purposes only
+
+//        for (Article article : articles) {
+//            System.out.println(article.toString());
+//        }
 
 
     }
@@ -57,7 +60,7 @@ public class CsvReader implements ReaderStrategy {
 
     private void readFile() {
         while (scanner.hasNextLine()) {
-            Scanner lineScanner = new Scanner(scanner.nextLine());
+            Scanner lineScanner = new Scanner(scanner.nextLine().trim());
             lineScanner.useDelimiter(",");
             int articleId = Integer.parseInt(lineScanner.next());
             String articleName = lineScanner.next();
@@ -68,5 +71,9 @@ public class CsvReader implements ReaderStrategy {
             dbInMemory.addToMap(new Article(articleId, articleName, group, price, stock));
 
         }
+    }
+
+    public String toString() {
+        return dbInMemory.toString();
     }
 }

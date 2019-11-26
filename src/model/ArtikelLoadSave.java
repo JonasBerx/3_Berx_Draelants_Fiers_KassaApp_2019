@@ -18,7 +18,7 @@ import java.util.Scanner;
 
 
 public class ArtikelLoadSave extends TekstLoadSaveTemplate {
-    List<Article> articles = new ArrayList<>();
+
     ArticleDbInMemory dbInMemory = new ArticleDbInMemory();
     public ArtikelLoadSave(String path) {
         this.path = path;
@@ -30,15 +30,14 @@ public class ArtikelLoadSave extends TekstLoadSaveTemplate {
         try {
             Scanner sc = new Scanner(toRead);
             while (sc.hasNextLine()) {
-                Scanner lineScanner = new Scanner(sc.nextLine());
+                Scanner lineScanner = new Scanner(sc.nextLine().trim());
                 lineScanner.useDelimiter(",");
                 int articleId = Integer.parseInt(lineScanner.next());
                 String articleName = lineScanner.next();
                 String group = lineScanner.next();
                 double price = Double.parseDouble(lineScanner.next());
+
                 int stock = Integer.parseInt(lineScanner.next());
-                articles.add(new Article(articleId, articleName, group, price, stock));
-                System.out.println(articleId);
                 dbInMemory.addToMap(new Article(articleId, articleName, group, price, stock));
             }
         } catch (FileNotFoundException e) {
@@ -53,9 +52,10 @@ public class ArtikelLoadSave extends TekstLoadSaveTemplate {
         try {
             FileWriter writer = new FileWriter(toSave);
             String data = "";
-            //TODO Written for arraylist, change to hashmap later
-            for (Article article : articles) {
-                data += article.toString() + " \n";
+            //For testing purposes
+
+            for (Article article : dbInMemory.returnDb().values()) {
+                data += article.toString()+"\n";
                 System.out.println(article.toString());
             }
             writer.write(data);
