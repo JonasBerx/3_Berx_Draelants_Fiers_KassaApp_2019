@@ -1,15 +1,9 @@
 package database;
 
 import model.Article;
-import model.ReaderStrategy;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Scanner;
 
 public class ArticleDbInMemory {
 

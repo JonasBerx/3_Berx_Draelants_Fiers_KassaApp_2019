@@ -13,8 +13,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import model.Article;
+import model.CsvLoadSave;
+import model.LoadSaveStrategy;
 import sun.util.locale.provider.JRELocaleProviderAdapter;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 /**
  * @Author Dieter Draelants
@@ -25,9 +28,16 @@ import java.io.FileNotFoundException;
 
 public class CashierProductOverviewPane extends GridPane {
 	//private TableView<Product> table;
-	private ArticleDbInMemory db = new ArticleDbInMemory();
+	CsvLoadSave strategy = new CsvLoadSave();
+	File file = new File("src/bestanden/articles.csv");
 
-	public CashierProductOverviewPane() {
+
+
+	public CashierProductOverviewPane() throws FileNotFoundException {
+
+
+		strategy.read(file);
+
 		this.setPadding(new Insets(5, 5, 5, 5));
         this.setVgap(5);
         this.setHgap(5);
@@ -42,9 +52,8 @@ public class CashierProductOverviewPane extends GridPane {
 
 
 
-
 		int i = 0;
-		for (Article a : db.returnDb().values()) {
+		for (Article a : strategy.getArticles() ) {
 			this.add(new Label(String.valueOf(a.getArticleCode())), 0, i + 2, 1, 1);
 			this.add(new Label(a.getArticleName()), 1, i + 2, 1, 1);
 			this.add(new Label(a.getGroup()), 2, i + 2, 1, 1);
