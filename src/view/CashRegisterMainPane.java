@@ -4,18 +4,21 @@ package view;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
-import view.panels.ProductOverviewPane;
+import view.panels.CashierProductOverviewPane;
+import view.panels.CashierSettingsPane;
 
 import java.io.FileNotFoundException;
 
-public class CashRegisterMainPane extends BorderPane {
-    public CashRegisterMainPane() throws FileNotFoundException {
+class CashRegisterMainPane extends BorderPane {
+    private CashierProductOverviewPane cashierProductOverviewPane = new CashierProductOverviewPane();
+    private CashierSettingsPane settingsPane = new CashierSettingsPane();
+    CashRegisterMainPane() throws FileNotFoundException {
 		
 	    TabPane tabPane = new TabPane(); 	    
         Tab kassaTab = new Tab("Kassa");
-        ProductOverviewPane productOverviewPane = new ProductOverviewPane();
-        Tab artikelTab = new Tab("Artikelen",productOverviewPane);
-        Tab instellingTab = new Tab("Instellingen");
+
+        Tab artikelTab = new Tab("Artikelen", cashierProductOverviewPane);
+        Tab instellingTab = new Tab("Instellingen", settingsPane);
         Tab logTab = new Tab("Log");
         tabPane.getTabs().add(kassaTab);
         tabPane.getTabs().add(artikelTab);

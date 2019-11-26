@@ -12,6 +12,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws FileNotFoundException {
 		CashRegisterView cashRegisterView = new CashRegisterView();
 		CustomerView customerView = new CustomerView();
+
 	}
 	
 	public static void main(String[] args) {

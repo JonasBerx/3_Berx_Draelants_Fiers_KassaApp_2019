@@ -16,14 +16,18 @@ import model.Article;
 import sun.util.locale.provider.JRELocaleProviderAdapter;
 
 import java.io.FileNotFoundException;
+/**
+ * @Author Dieter Draelants
+ * Uitlezen van hashmap naar de artikelen pagina
+ * - Change to
+ */
+//TODO Change to TableVIEW!
 
-//TODO DIETER - Tableview moet gebruikt worden alle code die ge geschreven hebt hier is praktisch voor de vuilnisbak
-
-public class ProductOverviewPane extends GridPane {
+public class CashierProductOverviewPane extends GridPane {
 	//private TableView<Product> table;
-	ArticleDbInMemory db = new ArticleDbInMemory();
+	private ArticleDbInMemory db = new ArticleDbInMemory();
 
-	public ProductOverviewPane() throws FileNotFoundException {
+	public CashierProductOverviewPane() {
 		this.setPadding(new Insets(5, 5, 5, 5));
         this.setVgap(5);
         this.setHgap(5);
@@ -35,12 +39,8 @@ public class ProductOverviewPane extends GridPane {
 		this.add(new Label("Price"), 3, 1, 1, 1);
 		this.add(new Label("Stock"), 4, 1, 1, 1);
 
-		/**
-		 * @Author Dieter Draelants
-		 * Uitlezen van hashmap naar de artikelen pagina
-		 *
-		 */
-		//TODO Optimalise
+
+
 
 
 		int i = 0;
