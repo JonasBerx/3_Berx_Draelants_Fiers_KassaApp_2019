@@ -2,6 +2,9 @@ package model;
 
 import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 
+//@Author Dieter Draelants
+//Article class
+
 public class Article {
     private final int articleCode;
     private int quantity;

@@ -11,7 +11,9 @@ import java.io.IOException;
 * */
 public abstract class ReaderStrategy {
     String path;
-    ReaderStrategy(){}
+
+    public ReaderStrategy() {
+    }
 
     public abstract void read(String filePath) throws FileNotFoundException;
 
