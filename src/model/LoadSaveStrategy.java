@@ -10,7 +10,7 @@ import java.io.IOException;
 * Created StrategyPattern
 *
 * */
-public interface ReaderStrategy {
+public interface LoadSaveStrategy {
 
     public abstract void read(File file) throws FileNotFoundException;
 

@@ -20,6 +20,10 @@ import java.util.Scanner;
 public class ArtikelLoadSave extends TekstLoadSaveTemplate {
 
     ArticleDbInMemory dbInMemory = new ArticleDbInMemory();
+    public ArtikelLoadSave() {
+        this.path = "src/bestanden/articles.txt";
+    }
+
     public ArtikelLoadSave(String path) {
         this.path = path;
     }
