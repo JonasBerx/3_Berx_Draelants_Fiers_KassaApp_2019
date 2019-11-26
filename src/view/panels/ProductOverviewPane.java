@@ -41,7 +41,7 @@ public class ProductOverviewPane extends GridPane {
 		 */
 
 		ArticleDbInMemory db = new ArticleDbInMemory();
-		db.read("C:\\Users\\diete\\Documents\\2TI.Sem1\\OOO\\Groepwerk\\groupOOO\\src\\bestanden\\articles.csv");
+		db.read("src/bestanden/articles.csv");
 		int i = 0;
 		for (Article a : db.returnDb().values()) {
 			this.add(new Label(String.valueOf(a.getArticleCode())), 0, i + 2, 1, 1);
