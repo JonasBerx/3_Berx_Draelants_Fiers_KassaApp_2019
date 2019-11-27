@@ -8,7 +8,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import model.Article;
-import model.CsvLoadSave;
+import database.CsvLoadSave;
 
 import java.io.File;
 import java.io.FileNotFoundException;

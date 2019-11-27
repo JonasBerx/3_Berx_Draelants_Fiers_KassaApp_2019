@@ -1,11 +1,10 @@
-package model;
+package database;
 
-import database.ArticleDbInMemory;
+import model.Article;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
 
 /**

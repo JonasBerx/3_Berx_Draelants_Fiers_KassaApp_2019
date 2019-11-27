@@ -1,9 +1,7 @@
-package model;
+package database;
 
-import excel.ExcelPlugin;
-import jxl.read.biff.BiffException;
+import model.Article;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 

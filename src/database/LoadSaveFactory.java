@@ -1,4 +1,4 @@
-package model;
+package database;
 
 public class LoadSaveFactory {
     public LoadSaveStrategy create(String type) {

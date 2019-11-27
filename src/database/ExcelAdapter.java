@@ -1,15 +1,13 @@
-package model;
+package database;
 
-import database.ArticleDbInMemory;
 import excel.ExcelPlugin;
 import jxl.read.biff.BiffException;
 import jxl.write.WriteException;
-import jxl.write.biff.RowsExceededException;
+import model.Article;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 
 
 /**

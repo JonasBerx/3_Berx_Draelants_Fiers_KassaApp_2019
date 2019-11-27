@@ -1,4 +1,6 @@
-package model;
+package database;
+
+import model.Article;
 
 import java.io.File;
 import java.io.FileNotFoundException;

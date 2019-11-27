@@ -12,6 +12,7 @@ import javafx.scene.control.ComboBox;
  * Settings tab for Cashier
  * */
 public class CashierSettingsPane extends GridPane {
+
     private final ComboBox options = new ComboBox();
     private Button saveButton = new Button("Save");
 

@@ -1,6 +1,4 @@
-package model;
-
-import excel.ExcelPlugin;
+package database;
 
 public enum LoadSaveStrategyEnum {
     EXCEL(ExcelAdapter.class,"src/bestanden/articles.xls"),
