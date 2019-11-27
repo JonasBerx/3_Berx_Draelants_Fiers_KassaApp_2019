@@ -3,7 +3,6 @@ package view.panels;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -16,9 +15,8 @@ import java.io.FileNotFoundException;
 
 /**
  * @Author Dieter Draelants
- * Uitlezen van hashmap naar de artikelen pagina
+ * Tableview panel reads data from strategy item and puts it in table
  */
-//TODO Change to TableVIEW!
 
 public class CashierProductOverviewPane extends GridPane {
 	private TableView<Article> table = new TableView<>();
@@ -34,8 +32,9 @@ public class CashierProductOverviewPane extends GridPane {
         this.setVgap(5);
         this.setHgap(5);
 
-		this.add(new Label("Products:"), 0, 0, 1, 1);
 
+		//Pretty header for columns
+		TableColumn productInfo = new TableColumn("Products");
 
 		//Making all columns
 		TableColumn<Article, Integer> codeCol = new TableColumn<>("Article Code");
@@ -44,7 +43,7 @@ public class CashierProductOverviewPane extends GridPane {
 		TableColumn<Article, Double> priceCol = new TableColumn<>("Price");
 		TableColumn<Article, Integer> stockCol = new TableColumn<>("Stock");
 
-		//Setting width
+		//Setting width for table en columns
 		table.setMaxSize(600, 450);
 
 		codeCol.setMinWidth(table.getMaxWidth() / 5);
@@ -52,6 +51,7 @@ public class CashierProductOverviewPane extends GridPane {
 		groupCol.setMinWidth(table.getMaxWidth() / 5);
 		priceCol.setMinWidth(table.getMaxWidth() / 5);
 		stockCol.setMinWidth(table.getMaxWidth() / 5);
+
 
 
 		//Setting the data value for the table
@@ -62,8 +62,9 @@ public class CashierProductOverviewPane extends GridPane {
 		stockCol.setCellValueFactory(new PropertyValueFactory("quantity"));
 
 		//adding Everything together
+		productInfo.getColumns().addAll(codeCol, nameCol, groupCol, priceCol, stockCol);
 		table.setItems(getArticleList());
-		table.getColumns().addAll(codeCol, nameCol, groupCol, priceCol, stockCol);
+		table.getColumns().addAll(productInfo);
 		this.add(table, 0, 0);
 
 	}
