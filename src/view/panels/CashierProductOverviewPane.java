@@ -17,6 +17,7 @@ import java.io.FileNotFoundException;
  * @Author Dieter Draelants
  * Tableview panel reads data from strategy item and puts it in table
  */
+//TODO  MAKE SORTED
 
 public class CashierProductOverviewPane extends GridPane {
 	private TableView<Article> table = new TableView<>();
