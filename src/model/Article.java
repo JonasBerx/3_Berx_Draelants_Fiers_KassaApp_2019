@@ -10,7 +10,7 @@ package model;
  * Article class
  */
 
-public class Article {
+public class Article implements Comparable<Article> {
     private final int articleCode;
     private int quantity;
     private String articleName, group;
@@ -92,5 +92,14 @@ public class Article {
         String out = "";
         out += getArticleCode() + "," + getArticleName() + "," + getGroup() + "," + getPrice() + "," + getQuantity();
         return out;
+    }
+
+    //    CompareTo for sorting the Observable list
+    @Override
+    public int compareTo(Article toCompare) {
+        if (toCompare == null)
+            throw new IllegalArgumentException("<toCompare> cannot be null");
+
+        return this.getArticleName().compareTo(toCompare.getArticleName());
     }
 }

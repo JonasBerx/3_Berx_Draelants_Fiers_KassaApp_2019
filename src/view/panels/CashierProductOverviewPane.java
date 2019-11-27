@@ -16,8 +16,8 @@ import java.io.FileNotFoundException;
 /**
  * @Author Dieter Draelants
  * Tableview panel reads data from strategy item and puts it in table
+ * And sorts it
  */
-//TODO  MAKE SORTED
 
 public class CashierProductOverviewPane extends GridPane {
 	private TableView<Article> table = new TableView<>();
@@ -54,7 +54,6 @@ public class CashierProductOverviewPane extends GridPane {
 		stockCol.setMinWidth(table.getMaxWidth() / 5);
 
 
-
 		//Setting the data value for the table
 		codeCol.setCellValueFactory(new PropertyValueFactory("articleCode"));
 		nameCol.setCellValueFactory(new PropertyValueFactory("articleName"));
@@ -64,7 +63,7 @@ public class CashierProductOverviewPane extends GridPane {
 
 		//adding Everything together
 		productInfo.getColumns().addAll(codeCol, nameCol, groupCol, priceCol, stockCol);
-		table.setItems(getArticleList());
+		table.setItems(getArticleList().sorted(Article::compareTo));
 		table.getColumns().addAll(productInfo);
 		this.add(table, 0, 0);
 
