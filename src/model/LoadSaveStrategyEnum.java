@@ -14,6 +14,10 @@ public enum LoadSaveStrategyEnum {
         this.aClass = aClass;
     }
 
+    // Kunnen enum als extension schrijven
+    // path is dan = articles.ENUM
+    // Props to Andreas
+
     public String getThePath() {
         return path;
     }
