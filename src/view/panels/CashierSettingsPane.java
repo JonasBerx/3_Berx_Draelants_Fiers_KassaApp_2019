@@ -1,11 +1,16 @@
 package view.panels;
 
+import database.LoadSaveStrategyEnum;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.ComboBox;
+import model.StrategyProperties;
+
+import java.io.IOException;
+
 /**
  * @Author Jonas Berx
  * @Version 1.0
@@ -17,6 +22,12 @@ public class CashierSettingsPane extends GridPane {
     private Button saveButton = new Button("Save");
 
     public CashierSettingsPane() {
+        try {
+            StrategyProperties.load();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         options.getItems().addAll(
                 "Excel",
@@ -24,8 +35,9 @@ public class CashierSettingsPane extends GridPane {
                 "Csv"
 
         );
-        options.setValue("Select option");
 
+        options.setValue("Select option");
+        options.setValue(StrategyProperties.getStrategy());
 
         this.setHgap(5);
         this.setVgap(5);
@@ -37,8 +49,14 @@ public class CashierSettingsPane extends GridPane {
         saveButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println(options.getValue().toString().toUpperCase());
+                try {
 
+                    System.out.println(options.getValue().toString().toUpperCase());
+                    StrategyProperties.setStrategy((options.getValue().toString().toUpperCase()));
+                    StrategyProperties.save();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

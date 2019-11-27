@@ -1,35 +1,50 @@
 package model;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import database.LoadSaveStrategyEnum;
+
+import java.io.*;
 import java.util.Properties;
 
 public class StrategyProperties {
 
-    InputStream inputStream;
-    String result = "";
+    static InputStream inputStream;
+    static Properties properties;
+    static OutputStream outputStream;
 
-    public String getResult() throws IOException {
+
+    public static void load() throws IOException {
         try {
-            Properties prop = new Properties();
-            String propFileName = "config.properties";
+            properties = new Properties();
 
-            inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+            inputStream = new FileInputStream("src/bestanden/config.properties");
 
             if (inputStream != null) {
-                prop.load(inputStream);
+                properties.load(inputStream);
 
             } else {
-                throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
+                throw new FileNotFoundException("Not found yeet");
             }
-            result = prop.getProperty("STRATEGY");
+
 
         } catch (Exception e) {
             System.out.println("Exception: " + e);
         } finally {
             inputStream.close();
         }
-        return result;
+    }
+
+    public static void save() throws IOException {
+        outputStream = new FileOutputStream("src/bestanden/config.properties");
+        properties.store(outputStream,null);
+    }
+
+    public static String getStrategy() {
+
+        return properties.getProperty("STRATEGY");
+    }
+
+    public static void setStrategy(String value) {
+//        System.out.println(properties);
+        properties.setProperty("STRATEGY", value);
     }
 }
