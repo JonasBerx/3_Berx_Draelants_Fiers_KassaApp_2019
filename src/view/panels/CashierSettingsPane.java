@@ -32,12 +32,12 @@ public class CashierSettingsPane extends GridPane {
 
         this.add(options,2,1,1,1);
         this.add(saveButton,2,2,1,2);
-        System.out.println(options.getValue().toString().toUpperCase());
 
         saveButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 System.out.println(options.getValue().toString().toUpperCase());
+
             }
         });
     }
