@@ -13,6 +13,7 @@ import model.CsvLoadSave;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+
 /**
  * @Author Dieter Draelants
  * Uitlezen van hashmap naar de artikelen pagina
@@ -20,9 +21,9 @@ import java.io.FileNotFoundException;
 //TODO Change to TableVIEW!
 
 public class CashierProductOverviewPane extends GridPane {
+	private TableView<Article> table = new TableView<>();
 	private CsvLoadSave strategy = new CsvLoadSave();
 	File file = new File("src/bestanden/articles.csv");
-
 
 
 	public CashierProductOverviewPane() throws FileNotFoundException {
@@ -32,7 +33,7 @@ public class CashierProductOverviewPane extends GridPane {
 		this.setPadding(new Insets(5, 5, 5, 5));
         this.setVgap(5);
         this.setHgap(5);
-        
+
 		this.add(new Label("Products:"), 0, 0, 1, 1);
 
 
@@ -43,6 +44,16 @@ public class CashierProductOverviewPane extends GridPane {
 		TableColumn<Article, Double> priceCol = new TableColumn<>("Price");
 		TableColumn<Article, Integer> stockCol = new TableColumn<>("Stock");
 
+		//Setting width
+		table.setMaxSize(600, 450);
+
+		codeCol.setMinWidth(table.getMaxWidth() / 5);
+		nameCol.setMinWidth(table.getMaxWidth() / 5);
+		groupCol.setMinWidth(table.getMaxWidth() / 5);
+		priceCol.setMinWidth(table.getMaxWidth() / 5);
+		stockCol.setMinWidth(table.getMaxWidth() / 5);
+
+
 		//Setting the data value for the table
 		codeCol.setCellValueFactory(new PropertyValueFactory("articleCode"));
 		nameCol.setCellValueFactory(new PropertyValueFactory("articleName"));
@@ -51,15 +62,14 @@ public class CashierProductOverviewPane extends GridPane {
 		stockCol.setCellValueFactory(new PropertyValueFactory("quantity"));
 
 		//adding Everything together
-		TableView<Article> table = new TableView<>();
-		table.setItems(getKkrList());
+		table.setItems(getArticleList());
 		table.getColumns().addAll(codeCol, nameCol, groupCol, priceCol, stockCol);
 		this.add(table, 0, 0);
 
 	}
 
 	//Function that handles the data for the table
-	private ObservableList<Article> getKkrList() {
+	private ObservableList<Article> getArticleList() {
 		ObservableList<Article> articles = FXCollections.observableArrayList();
 		articles.addAll(strategy.getMemory().values());
 		return articles;
