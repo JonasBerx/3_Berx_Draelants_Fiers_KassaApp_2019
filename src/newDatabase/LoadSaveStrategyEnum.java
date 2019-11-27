@@ -1,10 +1,10 @@
-package database;
+package newDatabase;
 
-import newDatabase.ArticleCSVLoadSave;
-import newDatabase.ArticleTekstLoadSave;
+import database.ArtikelLoadSave;
+import database.ExcelAdapter;
 
 public enum LoadSaveStrategyEnum {
-    EXCEL(ExcelAdapter.class),
+    EXCEL(ArticleExcelLoadSave.class),
     TXT(ArticleTekstLoadSave.class),
     CSV( ArticleCSVLoadSave.class);
 

@@ -31,7 +31,7 @@ public class CashierSettingsPane extends GridPane {
 
         options.getItems().addAll(
                 "Excel",
-                "Text",
+                "Txt",
                 "Csv"
 
         );
@@ -46,17 +46,14 @@ public class CashierSettingsPane extends GridPane {
         this.add(options,2,1,1,1);
         this.add(saveButton,2,2,1,2);
 
-        saveButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
+        saveButton.setOnAction(event -> {
+            try {
 
-                    System.out.println(options.getValue().toString().toUpperCase());
-                    StrategyProperties.setStrategy((options.getValue().toString().toUpperCase()));
-                    StrategyProperties.save();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                System.out.println(options.getValue().toString().toUpperCase());
+                StrategyProperties.setStrategy((options.getValue().toString().toUpperCase()));
+                StrategyProperties.save();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
     }

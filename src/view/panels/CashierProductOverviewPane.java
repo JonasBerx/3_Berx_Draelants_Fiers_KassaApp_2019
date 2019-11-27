@@ -9,9 +9,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import model.Article;
 import database.CsvLoadSave;
+import model.StrategyProperties;
+import newDatabase.ArticleDbContext;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * @Author Dieter Draelants
@@ -21,13 +24,21 @@ import java.io.FileNotFoundException;
 
 public class CashierProductOverviewPane extends GridPane {
 	private TableView<Article> table = new TableView<>();
-	private CsvLoadSave strategy = new CsvLoadSave();
-	File file = new File("src/bestanden/articles.csv");
+
+	private ArticleDbContext context;
 
 
-	public CashierProductOverviewPane() throws FileNotFoundException {
+	public CashierProductOverviewPane() {
 		//Load articles from chosen filetype
-		strategy.load();
+		try {
+			StrategyProperties.load();
+			context = new ArticleDbContext("INMEMORY");
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println(context.getAll());
+		context.getAll();
 
 		this.setPadding(new Insets(5, 5, 5, 5));
         this.setVgap(5);
@@ -72,7 +83,8 @@ public class CashierProductOverviewPane extends GridPane {
 	//Function that handles the data for the table
 	private ObservableList<Article> getArticleList() {
 		ObservableList<Article> articles = FXCollections.observableArrayList();
-		articles.addAll(strategy.getMemory().values());
+		articles.addAll(context.getAll());
+		System.out.println(articles);
 		return articles;
 	}
 
