@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import model.Article;
@@ -31,13 +32,10 @@ public class CashierSalesPane extends GridPane {
         articleCode.getText();
         GridPane.setConstraints(articleCode, 0, 0);
         this.getChildren().add(articleCode);
-        //Defining the Submit button
-        Button submit = new Button("Search Article");
-        GridPane.setConstraints(submit, 1, 0);
-        this.getChildren().add(submit);
+
         //Defining the Clear button
         Button clear = new Button("Clear Field");
-        GridPane.setConstraints(clear, 2, 1);
+        GridPane.setConstraints(clear, 1, 0);
         this.getChildren().add(clear);
 
         TableColumn sales = new TableColumn("Products");
@@ -74,20 +72,17 @@ public class CashierSalesPane extends GridPane {
 
         //Setting an action for the Clear button
         clear.setOnAction(e -> articleCode.clear());
-        submit.setOnAction(event ->{
-
-            System.out.println(articleCode.getText());
-            Article article = shop.getContext().get(Integer.parseInt(articleCode.getText()));
-            articles.add(article);
-
-
-            thePrice[0] += article.getPrice();
-            System.out.println(article);
-            System.out.println(thePrice[0]);
-            table.setItems(articles);
-            totalprice.setText(String.valueOf(thePrice[0]));
-
-
+        articleCode.setOnKeyReleased(event ->{
+            if (event.getCode() == KeyCode.ENTER) {
+                System.out.println(articleCode.getText());
+                Article article = shop.getContext().get(Integer.parseInt(articleCode.getText()));
+                articles.add(article);
+                thePrice[0] += article.getPrice();
+                System.out.println(article);
+                System.out.println(thePrice[0]);
+                table.setItems(articles);
+                totalprice.setText(String.valueOf(thePrice[0]));
+            }
         });
 
     }

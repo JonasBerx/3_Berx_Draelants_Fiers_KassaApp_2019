@@ -63,21 +63,17 @@ public class CashierProductOverviewPane extends GridPane {
 		groupCol.setMinWidth(table.getMaxWidth() / 5);
 		priceCol.setMinWidth(table.getMaxWidth() / 5);
 		stockCol.setMinWidth(table.getMaxWidth() / 5);
-
-
 		//Setting the data value for the table
 		codeCol.setCellValueFactory(new PropertyValueFactory("articleCode"));
 		nameCol.setCellValueFactory(new PropertyValueFactory("articleName"));
 		groupCol.setCellValueFactory(new PropertyValueFactory("group"));
 		priceCol.setCellValueFactory(new PropertyValueFactory("price"));
 		stockCol.setCellValueFactory(new PropertyValueFactory("quantity"));
-
 		//adding Everything together
 		productInfo.getColumns().addAll(codeCol, nameCol, groupCol, priceCol, stockCol);
 		table.setItems(getArticleList().sorted(Article::compareTo));
 		table.getColumns().addAll(productInfo);
 		this.add(table, 0, 0);
-
 	}
 
 	//Function that handles the data for the table
@@ -87,5 +83,4 @@ public class CashierProductOverviewPane extends GridPane {
 		System.out.println(articles);
 		return articles;
 	}
-
 }
