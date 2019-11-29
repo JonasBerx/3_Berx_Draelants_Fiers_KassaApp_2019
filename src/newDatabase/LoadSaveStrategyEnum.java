@@ -1,7 +1,5 @@
 package newDatabase;
 
-import database.ArtikelLoadSave;
-import database.ExcelAdapter;
 
 public enum LoadSaveStrategyEnum {
     EXCEL(ArticleExcelLoadSave.class),

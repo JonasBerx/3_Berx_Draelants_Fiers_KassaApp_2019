@@ -8,7 +8,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import model.Article;
-import database.CsvLoadSave;
 import model.Shop;
 import model.StrategyProperties;
 import newDatabase.ArticleDbContext;

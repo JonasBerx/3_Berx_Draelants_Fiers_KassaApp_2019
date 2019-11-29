@@ -1,6 +1,5 @@
 package model;
 
-import database.LoadSaveStrategyEnum;
 
 import java.io.*;
 import java.util.Properties;
