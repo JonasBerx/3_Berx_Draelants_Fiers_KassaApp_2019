@@ -27,6 +27,10 @@ public class ArticleDbContext {
         strategy.add(articles);
     }
 
+    public Article get(int id) {
+        return strategy.getArticel(id);
+    }
+
     public ArrayList<Article> getAll() {
         return strategy.getAll();
     }

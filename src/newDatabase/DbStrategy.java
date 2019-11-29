@@ -14,6 +14,8 @@ public interface DbStrategy {
 
     void remove(Article article);
 
+    Article getArticel(int id);
+
     ArrayList<Article> getAll();
 
     HashMap<Integer, Article> returnDB();

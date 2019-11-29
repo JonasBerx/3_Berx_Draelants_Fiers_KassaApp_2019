@@ -62,6 +62,11 @@ public class ArticleDbInMemory implements DbStrategy {
     }
 
     @Override
+    public Article getArticel(int id) {
+        return db.get(id);
+    }
+
+    @Override
     public ArrayList<Article> getAll() {
         return new ArrayList<>(db.values());
     }

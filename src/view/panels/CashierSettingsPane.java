@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.ComboBox;
+import model.Shop;
 import model.StrategyProperties;
 
 import java.io.IOException;
@@ -20,10 +21,12 @@ public class CashierSettingsPane extends GridPane {
 
     private final ComboBox options = new ComboBox();
     private Button saveButton = new Button("Save");
+    Shop shop;
 
-    public CashierSettingsPane() {
+    public CashierSettingsPane(Shop shop) {
         try {
             StrategyProperties.load();
+            this.shop = shop;
 
         } catch (IOException e) {
             e.printStackTrace();

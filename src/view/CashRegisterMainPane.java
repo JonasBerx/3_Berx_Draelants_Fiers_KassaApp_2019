@@ -4,6 +4,7 @@ package view;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
+import model.Shop;
 import view.panels.CashierProductOverviewPane;
 import view.panels.CashierSalesPane;
 import view.panels.CashierSettingsPane;
@@ -11,10 +12,15 @@ import view.panels.CashierSettingsPane;
 import java.io.FileNotFoundException;
 
 class CashRegisterMainPane extends BorderPane {
-    private CashierProductOverviewPane cashierProductOverviewPane = new CashierProductOverviewPane();
-    private CashierSettingsPane settingsPane = new CashierSettingsPane();
-    private CashierSalesPane salesPane = new CashierSalesPane();
+    private CashierProductOverviewPane cashierProductOverviewPane;
+    private CashierSettingsPane settingsPane;
+    private CashierSalesPane salesPane;
+    private Shop shop;
     CashRegisterMainPane() throws FileNotFoundException {
+        shop = new Shop();
+        cashierProductOverviewPane = new CashierProductOverviewPane(shop);
+        salesPane = new CashierSalesPane(shop);
+        settingsPane = new CashierSettingsPane(shop);
 
 	    TabPane tabPane = new TabPane();
         Tab kassaTab = new Tab("Kassa", salesPane);
@@ -27,4 +33,8 @@ class CashRegisterMainPane extends BorderPane {
         tabPane.getTabs().add(logTab);
 	    this.setCenter(tabPane);
 	}
+
+    public Shop getShop() {
+        return shop;
+    }
 }

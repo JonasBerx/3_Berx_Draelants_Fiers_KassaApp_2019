@@ -9,6 +9,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import model.Article;
 import database.CsvLoadSave;
+import model.Shop;
 import model.StrategyProperties;
 import newDatabase.ArticleDbContext;
 
@@ -25,20 +26,19 @@ import java.io.IOException;
 public class CashierProductOverviewPane extends GridPane {
 	private TableView<Article> table = new TableView<>();
 
-	private ArticleDbContext context;
 
+	Shop shop;
 
-	public CashierProductOverviewPane() {
+	public CashierProductOverviewPane(Shop shop) {
 		//Load articles from chosen filetype
 		try {
 			StrategyProperties.load();
-			context = new ArticleDbContext("INMEMORY");
+			this.shop = shop;
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println(context.getAll());
-		context.getAll();
+
 
 		this.setPadding(new Insets(5, 5, 5, 5));
         this.setVgap(5);
@@ -83,7 +83,7 @@ public class CashierProductOverviewPane extends GridPane {
 	//Function that handles the data for the table
 	private ObservableList<Article> getArticleList() {
 		ObservableList<Article> articles = FXCollections.observableArrayList();
-		articles.addAll(context.getAll());
+		articles.addAll(shop.getContext().getAll());
 		System.out.println(articles);
 		return articles;
 	}

@@ -36,6 +36,12 @@ public class ArticleDbSQL implements DbStrategy {
     }
 
     @Override
+    public Article getArticel(int id) {
+        System.out.println("REEE ik werk niet");
+        return null;
+    }
+
+    @Override
     public ArrayList<Article> getAll() {
         System.out.println("This will not be implemented");
         return new ArrayList<>();

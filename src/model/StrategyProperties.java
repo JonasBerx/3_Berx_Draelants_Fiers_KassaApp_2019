@@ -43,6 +43,14 @@ public class StrategyProperties {
         return properties.getProperty("STRATEGY");
     }
 
+    public static String getMemory() {
+        return properties.getProperty("MEMORY");
+    }
+
+    public static void setMemory(String value) {
+        properties.setProperty("MEMORY", value);
+    }
+
     public static void setStrategy(String value) {
 //        System.out.println(properties);
         properties.setProperty("STRATEGY", value);
