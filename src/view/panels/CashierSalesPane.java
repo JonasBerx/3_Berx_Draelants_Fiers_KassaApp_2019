@@ -129,7 +129,14 @@ public class CashierSalesPane extends GridPane {
         //Delete button event
         delete.setOnAction(e -> {
             Article selectedItem = table.getSelectionModel().getSelectedItem();
-            table.getItems().remove(selectedItem);
+            Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+            a.setTitle("Delete");
+            a.setHeaderText("Are you sure?");
+            a.setContentText("You will remove: " + selectedItem.getArticleName());
+            Optional<ButtonType> result = a.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                table.getItems().remove(selectedItem);
+            }
         });
 
     }
