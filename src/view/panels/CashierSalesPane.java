@@ -10,23 +10,20 @@ import javafx.scene.layout.GridPane;
 import model.Article;
 import model.Shop;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 
-public class CashierSalesPane extends GridPane {
-    private Shop shop;
-    private TableView<Article> table = new TableView<>();
-    private double totalPrice;
+public class CashierSalesPane extends GridPane implements Observer {
+    private ObservableList<Article> articles = FXCollections.observableArrayList();
+    private Label totalPrice;
 
-    ObservableList<Article> articles = FXCollections.observableArrayList();
-
-
-    public CashierSalesPane(Shop shop) {
-
+    public CashierSalesPane(DomainInterface domainInterface) {
         this.setPadding(new Insets(5, 5, 5, 5));
         this.setVgap(5);
         this.setHgap(5);
 
-        this.shop = shop;
+        domainInterface.addBasketObserver(this);
 
         final TextField articleCode = new TextField();
         articleCode.setPromptText("Enter Article Code");
@@ -55,7 +52,8 @@ public class CashierSalesPane extends GridPane {
         TableColumn<Article, Integer> name = new TableColumn<>("Article Name");
         TableColumn<Article, Integer> group = new TableColumn<>("Article Group");
         TableColumn<Article, Integer> price = new TableColumn<>("Article Price");
-        Label totalprice = new Label("Total: € 0.0");
+        totalPrice = new Label();
+        setTotalPrice(0.0);
 
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Oofsies woofsies");
@@ -63,9 +61,9 @@ public class CashierSalesPane extends GridPane {
 
         sales.getColumns().addAll(code, name, group, price);
 
-
+        TableView<Article> table = new TableView<>();
         table.setMaxSize(800, 800);
-
+        table.setItems(articles);
 
         code.setMinWidth(table.getMaxWidth() / 5);
         name.setMinWidth(table.getMaxWidth() / 5);
@@ -79,11 +77,8 @@ public class CashierSalesPane extends GridPane {
 
         table.getColumns().addAll(sales);
 
-
         this.add(table, 0, 4,4,1);
-
-        this.add(totalprice,1,5);
-
+        this.add(totalPrice,1,5);
 
         //Setting an action for the Clear button
         clear.setOnAction(e -> {
@@ -93,37 +88,22 @@ public class CashierSalesPane extends GridPane {
             a.setContentText("You will remove all scanned products");
             Optional<ButtonType> result = a.showAndWait();
             if (result.get() == ButtonType.OK) {
-                articles.removeAll();
-                articles = FXCollections.observableArrayList();
-                totalPrice = 0;
-                System.out.println(articles);
-                System.out.println(totalPrice);
-                table.setItems(articles);
-                totalprice.setText("Total: €" + totalPrice);
+                domainInterface.clearBasketArticles();
                 articleCode.clear();
             }
-
         });
-        articleCode.setOnKeyReleased(event ->{
 
+        articleCode.setOnKeyReleased(event ->{
             if (event.getCode() == KeyCode.ENTER) {
-                if ( articleCode.getText().trim().isEmpty() || articleCode.getText() == null|| shop.getContext().get(Integer.parseInt(articleCode.getText())) == null) {
+                if ( articleCode.getText().trim().isEmpty() || articleCode.getText() == null|| domainInterface.getContext().get(Integer.parseInt(articleCode.getText())) == null) {
                     alert.setContentText("This code doesn't exist.\n Try a different code.");
                     alert.showAndWait();
                     articleCode.clear();
                 } else {
-                    System.out.println(articleCode.getText());
-                    Article article = shop.getContext().get(Integer.parseInt(articleCode.getText()));
-                    articles.add(article);
-                    totalPrice += article.getPrice();
-                    System.out.println(article);
-                    System.out.println(totalPrice);
-                    table.setItems(articles);
-                    totalprice.setText("Total: €" +totalPrice);
+                    Article article = domainInterface.getContext().get(Integer.parseInt(articleCode.getText()));
+                    domainInterface.addBasketArticle(article);
                     articleCode.clear();
-
                 }
-
             }
         });
         //Delete button event
@@ -141,4 +121,26 @@ public class CashierSalesPane extends GridPane {
 
     }
 
+    private void setTotalPrice(Double price) {
+        totalPrice.setText(String.format("Total: €%.2f", price));
+    }
+
+    @Override
+    public void update(Enum event, Object data) {
+        if (event instanceof BasketEvent) {
+            BasketEvent basketEvent = (BasketEvent) event;
+            switch (basketEvent) {
+                case ADDED_ARTICLE:
+                    articles.add((Article) data); break;
+                case CLEARED_ARTICLES:
+                    articles.clear(); break;
+                case REMOVED_ALL_ARTICLES:
+                    articles.removeAll((Collection<Article>) data); break;
+                case REMOVED_ARTICLE:
+                    articles.remove((Article) data); break;
+                case TOTAL_PRICE_CHANGED:
+                    setTotalPrice((Double)data);
+            }
+        }
+    }
 }

@@ -7,9 +7,11 @@ import newDatabase.LoadSaveStrategy;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Shop {
     private ArticleDbContext context;
+    private Basket basket;
 
     public Shop() {
         try {
@@ -19,11 +21,14 @@ public class Shop {
         }
         context = new ArticleDbContext(StrategyProperties.getMemory());
 
+        basket = new Basket();
+    }
+
+    public Basket getBasket() {
+        return basket;
     }
 
     public ArticleDbContext getContext() {
         return context;
     }
-
-
 }

@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.ComboBox;
+import model.DomainInterface;
 import model.Shop;
 import model.StrategyProperties;
 
@@ -20,13 +21,12 @@ public class CashierSettingsPane extends GridPane {
 
     private final ComboBox options = new ComboBox();
     private Button saveButton = new Button("Save");
-    Shop shop;
+    private DomainInterface domainInterface;
 
-    public CashierSettingsPane(Shop shop) {
+    public CashierSettingsPane(DomainInterface domainInterface) {
+        this.domainInterface = domainInterface;
         try {
             StrategyProperties.load();
-            this.shop = shop;
-
         } catch (IOException e) {
             e.printStackTrace();
         }
