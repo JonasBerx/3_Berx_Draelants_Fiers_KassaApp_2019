@@ -7,6 +7,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
@@ -20,6 +21,7 @@ import java.util.Optional;
 
 public class ClientOverview extends GridPane implements Observer {
     private ObservableList<Pair<Article, Integer>> articles = FXCollections.observableArrayList();
+    private Label totalPrice;
 
     public ClientOverview(DomainInterface domainInterface) {
         domainInterface.addBasketObserver(this);
@@ -48,7 +50,16 @@ public class ClientOverview extends GridPane implements Observer {
         domainInterface.getAllBasketArticles().forEach(this::addArticle);
         table.setItems(articles);
         table.getColumns().addAll(productInfo);
+
+        totalPrice = new Label();
+        setTotalPrice(0.0);
+
         this.add(table, 0, 0);
+        this.add(totalPrice,0,1);
+    }
+
+    private void setTotalPrice(Double price) {
+        totalPrice.setText(String.format("Total: €%.2f", price));
     }
 
     private Pair<Article, Integer> getPair(Article article) {
@@ -98,6 +109,8 @@ public class ClientOverview extends GridPane implements Observer {
                     break;
                 case REMOVED_ARTICLE:
                     removeArticle((Article) data); break;
+                case TOTAL_PRICE_CHANGED:
+                    setTotalPrice((Double) data);
             }
         }
     }

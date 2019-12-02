@@ -52,7 +52,8 @@ public class CashierSalesPane extends GridPane implements Observer {
         TableColumn<Article, Integer> name = new TableColumn<>("Article Name");
         TableColumn<Article, Integer> group = new TableColumn<>("Article Group");
         TableColumn<Article, Integer> price = new TableColumn<>("Article Price");
-        totalPrice = new Label("Total: € 0.0");
+        totalPrice = new Label();
+        setTotalPrice(0.0);
 
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Oofsies woofsies");
@@ -76,11 +77,8 @@ public class CashierSalesPane extends GridPane implements Observer {
 
         table.getColumns().addAll(sales);
 
-
         this.add(table, 0, 4,4,1);
-
         this.add(totalPrice,1,5);
-
 
         //Setting an action for the Clear button
         clear.setOnAction(e -> {
@@ -123,6 +121,10 @@ public class CashierSalesPane extends GridPane implements Observer {
 
     }
 
+    private void setTotalPrice(Double price) {
+        totalPrice.setText(String.format("Total: €%.2f", price));
+    }
+
     @Override
     public void update(Enum event, Object data) {
         if (event instanceof BasketEvent) {
@@ -137,7 +139,7 @@ public class CashierSalesPane extends GridPane implements Observer {
                 case REMOVED_ARTICLE:
                     articles.remove((Article) data); break;
                 case TOTAL_PRICE_CHANGED:
-                    totalPrice.setText("Total: €" + (Double)data);
+                    setTotalPrice((Double)data);
             }
         }
     }
