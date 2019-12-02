@@ -37,13 +37,17 @@ public class CashierSalesPane extends GridPane {
 
         //Defining the Clear button
         Button clear = new Button("Reset");
-        GridPane.setConstraints(clear, 2, 0);
+        GridPane.setConstraints(clear, 1, 0);
         this.getChildren().add(clear);
 
         //Defining Pause button
         Button pause = new Button("Pause Sale");
-        GridPane.setConstraints(pause, 3, 0);
+        GridPane.setConstraints(pause, 2, 0);
         this.getChildren().add(pause);
+        //Defining Pause button
+        Button delete = new Button("Delete Article");
+        GridPane.setConstraints(delete, 3, 0);
+        this.getChildren().add(delete);
 
 
         TableColumn sales = new TableColumn("Products");
@@ -121,6 +125,11 @@ public class CashierSalesPane extends GridPane {
                 }
 
             }
+        });
+        //Delete button event
+        delete.setOnAction(e -> {
+            Article selectedItem = table.getSelectionModel().getSelectedItem();
+            table.getItems().remove(selectedItem);
         });
 
     }
