@@ -90,7 +90,7 @@ public class Article implements Comparable<Article> {
 
     public String toString() {
         String out = "";
-        out += getArticleCode() + "," + getArticleName() + "," + getGroup() + "," + getPrice() + "," + getQuantity();
+        out += "Code: " + getArticleCode() + "\nName: " + getArticleName() + "\nGroup: " + getGroup() + "\nPrice: " + getPrice() + "\nStock: " + getQuantity() + "\n-------------------";
         return out;
     }
 

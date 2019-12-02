@@ -7,8 +7,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
-import javafx.stage.Popup;
 import model.Article;
 import model.Shop;
 
@@ -39,8 +37,14 @@ public class CashierSalesPane extends GridPane {
 
         //Defining the Clear button
         Button clear = new Button("Reset");
-        GridPane.setConstraints(clear, 3, 0,4,1);
+        GridPane.setConstraints(clear, 2, 0);
         this.getChildren().add(clear);
+
+        //Defining Pause button
+        Button pause = new Button("Pause Sale");
+        GridPane.setConstraints(pause, 3, 0);
+        this.getChildren().add(pause);
+
 
         TableColumn sales = new TableColumn("Products");
         TableColumn<Article, Integer> code = new TableColumn<>("Article Code");
