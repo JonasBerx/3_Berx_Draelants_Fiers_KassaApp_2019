@@ -14,22 +14,22 @@ public class Basket implements Observable {
 
     public void add(Article article) {
         articles.add(article);
-        updateObservers(BasketEvent.ADDED_ARTICLE, article);
+        priceMutatingUpdate(BasketEvent.ADDED_ARTICLE, article);
     }
 
     public void remove(Article article) {
         articles.remove(article);
-        updateObservers(BasketEvent.REMOVED_ARTICLE, article);
+        priceMutatingUpdate(BasketEvent.REMOVED_ARTICLE, article);
     }
 
     public void removeAll(Collection<Article> articles) {
         this.articles.removeAll(articles);
-        updateObservers(BasketEvent.REMOVED_ALL_ARTICLES, Collections.unmodifiableCollection(articles));
+        priceMutatingUpdate(BasketEvent.REMOVED_ALL_ARTICLES, Collections.unmodifiableCollection(articles));
     }
 
     public void clear() {
         articles.clear();
-        updateObservers(BasketEvent.CLEARED_ARTICLES, null);
+        priceMutatingUpdate(BasketEvent.CLEARED_ARTICLES, null);
     }
 
     public double getTotalPrice() {
@@ -44,6 +44,11 @@ public class Basket implements Observable {
     @Override
     public void removeObserver(Observer observer) {
         observers.remove(observer);
+    }
+
+    private void priceMutatingUpdate(BasketEvent event, Object data) {
+        updateObservers(event, data);
+        updateObservers(BasketEvent.TOTAL_PRICE_CHANGED, getTotalPrice());
     }
 
     private void updateObservers(BasketEvent event, Object data) {
