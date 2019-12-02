@@ -7,10 +7,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
-import model.Article;
-import model.Shop;
+import model.*;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -115,7 +113,7 @@ public class CashierSalesPane extends GridPane implements Observer {
             a.setContentText("You will remove: " + selectedItem.getArticleName());
             Optional<ButtonType> result = a.showAndWait();
             if (result.get() == ButtonType.OK) {
-                table.getItems().remove(selectedItem);
+                domainInterface.removeBasketArticle(selectedItem);
             }
         });
 

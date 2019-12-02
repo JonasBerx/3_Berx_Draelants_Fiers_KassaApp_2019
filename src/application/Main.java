@@ -14,7 +14,6 @@ public class Main extends Application {
 		DomainInterface domainInterface = new DomainInterface();
 		CashRegisterView cashRegisterView = new CashRegisterView(domainInterface);
 		ClientView clientView = new ClientView(domainInterface);
-
 	}
 	
 	public static void main(String[] args) {
