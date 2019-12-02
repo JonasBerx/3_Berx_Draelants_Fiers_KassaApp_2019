@@ -18,7 +18,7 @@ public class CashierSalesPane extends GridPane implements Observer {
     private DomainInterface domainInterface;
     private TableView<Article> table = new TableView<>();
     private ObservableList<Article> articles = FXCollections.observableList(new ArrayList<>());
-    private double totalPrice;
+    private Label totalPrice;
 
     public CashierSalesPane(DomainInterface domainInterface) {
         this.setPadding(new Insets(5, 5, 5, 5));
@@ -55,7 +55,7 @@ public class CashierSalesPane extends GridPane implements Observer {
         TableColumn<Article, Integer> name = new TableColumn<>("Article Name");
         TableColumn<Article, Integer> group = new TableColumn<>("Article Group");
         TableColumn<Article, Integer> price = new TableColumn<>("Article Price");
-        Label totalprice = new Label("Total: € 0.0");
+        totalPrice = new Label("Total: € 0.0");
 
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Oofsies woofsies");
@@ -81,7 +81,7 @@ public class CashierSalesPane extends GridPane implements Observer {
 
         this.add(table, 0, 4,4,1);
 
-        this.add(totalprice,1,5);
+        this.add(totalPrice,1,5);
 
 
         //Setting an action for the Clear button
@@ -106,8 +106,6 @@ public class CashierSalesPane extends GridPane implements Observer {
                 } else {
                     Article article = domainInterface.getContext().get(Integer.parseInt(articleCode.getText()));
                     domainInterface.addBasketArticle(article);
-                    totalPrice += article.getPrice();
-
                     articleCode.clear();
                 }
             }
@@ -129,19 +127,20 @@ public class CashierSalesPane extends GridPane implements Observer {
 
     @Override
     public void update(Enum event, Object data) {
-        System.out.println(event.name());
-        if (event.equals(BasketEvent.ADDED_ARTICLE)) {
-            Article article = (Article) data;
-            articles.add(article);
-        } else if (event.equals(BasketEvent.CLEARED_ARTICLES)) {
-            articles.clear();
-        } else if (event.equals(BasketEvent.REMOVED_ALL_ARTICLES)) {
-            Collection<Article> articles = (Collection<Article>) data;
-            articles.removeAll(articles);
+        if (event instanceof BasketEvent) {
+            BasketEvent basketEvent = (BasketEvent) event;
+            switch (basketEvent) {
+                case ADDED_ARTICLE:
+                    articles.add((Article) data); break;
+                case CLEARED_ARTICLES:
+                    articles.clear(); break;
+                case REMOVED_ALL_ARTICLES:
+                    articles.removeAll((Collection<Article>) data); break;
+                case REMOVED_ARTICLE:
+                    articles.remove((Article) data); break;
+                case TOTAL_PRICE_CHANGED:
+                    totalPrice.setText("Total: €" + (Double)data);
+            }
         }
-    }
-
-    private void updatePrice() {
-        totalprice.setText("Total: €" + domainInterface.getBasketTotalPrice());
     }
 }
