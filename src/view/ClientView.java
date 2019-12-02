@@ -8,16 +8,16 @@ import model.DomainInterface;
 
 import java.io.FileNotFoundException;
 
-public class CashRegisterView {
-	public CashRegisterView(DomainInterface domainInterface) throws FileNotFoundException {
+public class ClientView {
+	public ClientView(DomainInterface domainInterface) throws FileNotFoundException {
 		Stage stage = new Stage();
-		stage.setTitle("KASSA VIEW");
+		stage.setTitle("KLANT VIEW");
 		stage.setResizable(false);		
-		stage.setX(20);
+		stage.setX(775);
 		stage.setY(20);
 		Group root = new Group();
-		Scene scene = new Scene(root, 750, 500);
-		BorderPane borderPane = new CashRegisterMainPane(domainInterface);
+		Scene scene = new Scene(root, 500, 500);
+		BorderPane borderPane = new ClientMainPain(domainInterface);
 		borderPane.prefHeightProperty().bind(scene.heightProperty());
 		borderPane.prefWidthProperty().bind(scene.widthProperty());
 		root.getChildren().add(borderPane);

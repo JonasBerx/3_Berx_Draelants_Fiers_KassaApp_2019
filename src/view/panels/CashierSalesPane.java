@@ -15,9 +15,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 public class CashierSalesPane extends GridPane implements Observer {
-    private DomainInterface domainInterface;
-    private TableView<Article> table = new TableView<>();
-    private ObservableList<Article> articles = FXCollections.observableList(new ArrayList<>());
+    private ObservableList<Article> articles = FXCollections.observableArrayList();
     private Label totalPrice;
 
     public CashierSalesPane(DomainInterface domainInterface) {
@@ -25,7 +23,6 @@ public class CashierSalesPane extends GridPane implements Observer {
         this.setVgap(5);
         this.setHgap(5);
 
-        this.domainInterface = domainInterface;
         domainInterface.addBasketObserver(this);
 
         final TextField articleCode = new TextField();
@@ -63,6 +60,7 @@ public class CashierSalesPane extends GridPane implements Observer {
 
         sales.getColumns().addAll(code, name, group, price);
 
+        TableView<Article> table = new TableView<>();
         table.setMaxSize(800, 800);
         table.setItems(articles);
 
