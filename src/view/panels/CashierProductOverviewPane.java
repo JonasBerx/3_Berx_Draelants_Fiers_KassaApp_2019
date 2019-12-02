@@ -8,6 +8,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import model.Article;
+import model.DomainInterface;
 import model.Shop;
 import model.StrategyProperties;
 import newDatabase.ArticleDbContext;
@@ -24,16 +25,13 @@ import java.io.IOException;
 
 public class CashierProductOverviewPane extends GridPane {
 	private TableView<Article> table = new TableView<>();
+	DomainInterface domainInterface;
 
-
-	Shop shop;
-
-	public CashierProductOverviewPane(Shop shop) {
+	public CashierProductOverviewPane(DomainInterface domainInterface) {
 		//Load articles from chosen filetype
 		try {
 			StrategyProperties.load();
-			this.shop = shop;
-
+			this.domainInterface = domainInterface;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -78,7 +76,7 @@ public class CashierProductOverviewPane extends GridPane {
 	//Function that handles the data for the table
 	private ObservableList<Article> getArticleList() {
 		ObservableList<Article> articles = FXCollections.observableArrayList();
-		articles.addAll(shop.getContext().getAll());
+		articles.addAll(domainInterface.getContext().getAll());
 		System.out.println(articles);
 		return articles;
 	}

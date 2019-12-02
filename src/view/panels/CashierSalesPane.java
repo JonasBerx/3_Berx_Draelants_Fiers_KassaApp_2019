@@ -7,28 +7,25 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
-import javafx.stage.Popup;
-import model.Article;
-import model.Shop;
+import model.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 
-public class CashierSalesPane extends GridPane {
-    private Shop shop;
+public class CashierSalesPane extends GridPane implements Observer {
+    private DomainInterface domainInterface;
     private TableView<Article> table = new TableView<>();
+    private ObservableList<Article> articles = FXCollections.observableList(new ArrayList<>());
     private double totalPrice;
 
-    ObservableList<Article> articles = FXCollections.observableArrayList();
-
-
-    public CashierSalesPane(Shop shop) {
-
+    public CashierSalesPane(DomainInterface domainInterface) {
         this.setPadding(new Insets(5, 5, 5, 5));
         this.setVgap(5);
         this.setHgap(5);
 
-        this.shop = shop;
+        this.domainInterface = domainInterface;
+        domainInterface.addBasketObserver(this);
 
         final TextField articleCode = new TextField();
         articleCode.setPromptText("Enter Article Code");
@@ -55,9 +52,8 @@ public class CashierSalesPane extends GridPane {
 
         sales.getColumns().addAll(code, name, group, price);
 
-
         table.setMaxSize(800, 800);
-
+        table.setItems(articles);
 
         code.setMinWidth(table.getMaxWidth() / 5);
         name.setMinWidth(table.getMaxWidth() / 5);
@@ -85,40 +81,44 @@ public class CashierSalesPane extends GridPane {
             a.setContentText("You will remove all scanned products");
             Optional<ButtonType> result = a.showAndWait();
             if (result.get() == ButtonType.OK) {
-                articles.removeAll();
-                articles = FXCollections.observableArrayList();
-                totalPrice = 0;
-                System.out.println(articles);
-                System.out.println(totalPrice);
-                table.setItems(articles);
-                totalprice.setText("Total: €" + totalPrice);
+                domainInterface.clearBasketArticles();
                 articleCode.clear();
             }
-
         });
-        articleCode.setOnKeyReleased(event ->{
 
+        articleCode.setOnKeyReleased(event ->{
             if (event.getCode() == KeyCode.ENTER) {
-                if ( articleCode.getText().trim().isEmpty() || articleCode.getText() == null|| shop.getContext().get(Integer.parseInt(articleCode.getText())) == null) {
+                if ( articleCode.getText().trim().isEmpty() || articleCode.getText() == null|| domainInterface.getContext().get(Integer.parseInt(articleCode.getText())) == null) {
                     alert.setContentText("This code doesn't exist.\n Try a different code.");
                     alert.showAndWait();
                     articleCode.clear();
                 } else {
-                    System.out.println(articleCode.getText());
-                    Article article = shop.getContext().get(Integer.parseInt(articleCode.getText()));
-                    articles.add(article);
+                    Article article = domainInterface.getContext().get(Integer.parseInt(articleCode.getText()));
+                    domainInterface.addBasketArticle(article);
                     totalPrice += article.getPrice();
-                    System.out.println(article);
-                    System.out.println(totalPrice);
-                    table.setItems(articles);
-                    totalprice.setText("Total: €" +totalPrice);
+
                     articleCode.clear();
-
                 }
-
             }
         });
 
     }
 
+    @Override
+    public void update(Enum event, Object data) {
+        System.out.println(event.name());
+        if (event.equals(BasketEvent.ADDED_ARTICLE)) {
+            Article article = (Article) data;
+            articles.add(article);
+        } else if (event.equals(BasketEvent.CLEARED_ARTICLES)) {
+            articles.clear();
+        } else if (event.equals(BasketEvent.REMOVED_ALL_ARTICLES)) {
+            Collection<Article> articles = (Collection<Article>) data;
+            articles.removeAll(articles);
+        }
+    }
+
+    private void updatePrice() {
+        totalprice.setText("Total: €" + domainInterface.getBasketTotalPrice());
+    }
 }
