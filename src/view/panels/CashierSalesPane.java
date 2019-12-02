@@ -62,6 +62,7 @@ public class CashierSalesPane extends GridPane implements Observer {
         TableView<Article> table = new TableView<>();
         table.setMaxSize(800, 800);
         table.setItems(articles);
+        table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         code.setMinWidth(table.getMaxWidth() / 5);
         name.setMinWidth(table.getMaxWidth() / 5);
@@ -77,6 +78,11 @@ public class CashierSalesPane extends GridPane implements Observer {
 
         this.add(table, 0, 4,4,1);
         this.add(totalPrice,1,5);
+
+        delete.setDisable(true);
+        table.getSelectionModel().selectedItemProperty().addListener((lst, old, newSelection) -> {
+            delete.setDisable(newSelection == null);
+        });
 
         //Setting an action for the Clear button
         clear.setOnAction(e -> {
@@ -106,14 +112,17 @@ public class CashierSalesPane extends GridPane implements Observer {
         });
         //Delete button event
         delete.setOnAction(e -> {
-            Article selectedItem = table.getSelectionModel().getSelectedItem();
+            Collection<Integer> selectedIndices = table.getSelectionModel().getSelectedIndices();
+            if (selectedIndices.size() == 0) return;
             Alert a = new Alert(Alert.AlertType.CONFIRMATION);
             a.setTitle("Delete");
             a.setHeaderText("Are you sure?");
-            a.setContentText("You will remove: " + selectedItem.getArticleName());
+            StringBuilder itemTitlesBuilder = new StringBuilder();
+            selectedIndices.forEach(i -> itemTitlesBuilder.append(articles.get(i).getArticleName()).append('\n'));
+            a.setContentText("You will remove: \n" + itemTitlesBuilder.toString());
             Optional<ButtonType> result = a.showAndWait();
             if (result.get() == ButtonType.OK) {
-                domainInterface.removeBasketArticle(selectedItem);
+                domainInterface.removeBasketArticleIndices(selectedIndices);
             }
         });
 
@@ -132,12 +141,19 @@ public class CashierSalesPane extends GridPane implements Observer {
                     articles.add((Article) data); break;
                 case CLEARED_ARTICLES:
                     articles.clear(); break;
-                case REMOVED_ALL_ARTICLES:
-                    articles.removeAll((Collection<Article>) data); break;
                 case REMOVED_ARTICLE:
                     articles.remove((Article) data); break;
+                case REMOVED_ARTICLE_INDEX:
+                    articles.remove((int) data); break;
+                case REMOVED_ARTICLES:
+                    articles.removeAll((Collection<Article>) data); break;
+                case REMOVED_ARTICLE_INDICES:
+                    Collection<Integer> removedIndices = (Collection<Integer>) data;
+                    for (int i : removedIndices)
+                        articles.remove(i);
+                    break;
                 case TOTAL_PRICE_CHANGED:
-                    setTotalPrice((Double)data);
+                    setTotalPrice((Double)data); break;
             }
         }
     }

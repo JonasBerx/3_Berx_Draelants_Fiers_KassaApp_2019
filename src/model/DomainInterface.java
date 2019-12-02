@@ -36,8 +36,14 @@ public class DomainInterface {
         shop.getBasket().remove(article);
     }
 
+    public void removeBasketArticleIndex(int index) { shop.getBasket().removeIndex(index);}
+
     public void removeBasketArticles(Collection<Article> articles) {
         shop.getBasket().removeAll(articles);
+    }
+
+    public void removeBasketArticleIndices(Collection<Integer> indices) {
+        shop.getBasket().removeIndices(indices);
     }
 
     public void clearBasketArticles() {

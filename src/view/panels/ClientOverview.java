@@ -3,7 +3,6 @@ package view.panels;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -14,10 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
 import model.*;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Optional;
 
 public class ClientOverview extends GridPane implements Observer {
     private ObservableList<Pair<Article, Integer>> articles = FXCollections.observableArrayList();
@@ -103,14 +99,21 @@ public class ClientOverview extends GridPane implements Observer {
                     addArticle((Article) data); break;
                 case CLEARED_ARTICLES:
                     articles.clear(); break;
-                case REMOVED_ALL_ARTICLES:
+                case REMOVED_ARTICLES:
                     Collection<Article> removed = (Collection<Article>) data;
                     removed.forEach(this::removeArticle);
                     break;
+                case REMOVED_ARTICLE_INDEX:
+                    articles.remove((int) data); break;
                 case REMOVED_ARTICLE:
                     removeArticle((Article) data); break;
+                case REMOVED_ARTICLE_INDICES:
+                    Collection<Integer> removedIndices = (Collection<Integer>) data;
+                    for (int i : removedIndices)
+                        articles.remove(i);
+                    break;
                 case TOTAL_PRICE_CHANGED:
-                    setTotalPrice((Double) data);
+                    setTotalPrice((Double) data); break;
             }
         }
     }

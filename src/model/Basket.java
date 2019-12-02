@@ -1,11 +1,12 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
 public class Basket implements Observable {
-    LinkedList<Article> articles = new LinkedList<>();
+    ArrayList<Article> articles = new ArrayList<>();
     LinkedList<Observer> observers = new LinkedList();
 
     public Collection<Article> getAll() {
@@ -22,9 +23,20 @@ public class Basket implements Observable {
         priceMutatingUpdate(BasketEvent.REMOVED_ARTICLE, article);
     }
 
+    public void removeIndex(int index) {
+        articles.remove(index);
+        priceMutatingUpdate(BasketEvent.REMOVED_ARTICLE_INDEX, index);
+    }
+
     public void removeAll(Collection<Article> articles) {
         this.articles.removeAll(articles);
-        priceMutatingUpdate(BasketEvent.REMOVED_ALL_ARTICLES, Collections.unmodifiableCollection(articles));
+        priceMutatingUpdate(BasketEvent.REMOVED_ARTICLES, Collections.unmodifiableCollection(new LinkedList<Article>(articles)));
+    }
+
+    public void removeIndices(Collection<Integer> indices) {
+        for (int i : indices)
+            articles.remove(i);
+        priceMutatingUpdate(BasketEvent.REMOVED_ARTICLE_INDICES, Collections.unmodifiableCollection(new LinkedList<Integer>(indices)));
     }
 
     public void clear() {
