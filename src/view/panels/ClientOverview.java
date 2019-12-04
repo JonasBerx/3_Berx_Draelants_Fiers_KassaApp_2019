@@ -53,7 +53,6 @@ public class ClientOverview extends GridPane implements Observer {
 
         totalPrice = new Label();
         totalPrice.setFont(new Font("Arial", 30));
-        ;
         setTotalPrice(0.0);
 
         this.add(table, 0, 0);
