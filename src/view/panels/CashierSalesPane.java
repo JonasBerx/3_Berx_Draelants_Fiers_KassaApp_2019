@@ -8,6 +8,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
+import javafx.util.Pair;
 import model.Article;
 import model.BasketEvent;
 import model.DomainInterface;
@@ -20,12 +21,15 @@ import java.util.Optional;
 public class CashierSalesPane extends GridPane implements Observer {
     private ObservableList<Article> articles = FXCollections.observableArrayList();
     private Label totalPrice;
+    private Button holdSaleBtn;
+    private DomainInterface domainInterface;
 
     public CashierSalesPane(DomainInterface domainInterface) {
         this.setPadding(new Insets(5, 5, 5, 5));
         this.setVgap(5);
         this.setHgap(5);
 
+        this.domainInterface = domainInterface;
         domainInterface.addBasketObserver(this);
 
         final TextField articleCode = new TextField();
@@ -41,9 +45,10 @@ public class CashierSalesPane extends GridPane implements Observer {
         this.getChildren().add(clear);
 
         //Defining Pause button
-        Button pause = new Button("Pause Sale");
-        GridPane.setConstraints(pause, 2, 0);
-        this.getChildren().add(pause);
+        holdSaleBtn = new Button("Pause Sale");
+        GridPane.setConstraints(holdSaleBtn, 2, 0);
+        this.getChildren().add(holdSaleBtn);
+        updateHoldSaleButton();
         //Defining Pause button
         Button delete = new Button("Delete Article");
         GridPane.setConstraints(delete, 3, 0);
@@ -132,10 +137,21 @@ public class CashierSalesPane extends GridPane implements Observer {
             }
         });
 
-        pause.setOnAction(e -> {
-
+        holdSaleBtn.setOnAction(e -> {
+            domainInterface.removeBasketObserver(this);
+            if (domainInterface.saleIsOnHold()) {
+                domainInterface.continueHeldSale();
+            } else {
+                domainInterface.putSaleOnHold();
+            }
+            updateHoldSaleButton();
+            domainInterface.addBasketObserver(this);
         });
+    }
 
+    private void updateHoldSaleButton() {
+        String btnText = domainInterface.saleIsOnHold() ? "Continue sale on hold" : "Put sale on hold";
+        holdSaleBtn.setText(btnText);
     }
 
     private void setTotalPrice(Double price) {
@@ -158,7 +174,7 @@ public class CashierSalesPane extends GridPane implements Observer {
                 case REMOVED_ARTICLES:
                     articles.removeAll((Collection<Article>) data); break;
                 case REMOVED_ARTICLE_INDICES:
-                    Collection<Integer> removedIndices = (Collection<Integer>) data;
+                    Collection<Integer> removedIndices = ((Pair<Collection<Integer>, Collection<Article>>)data).getKey();
                     for (int i : removedIndices)
                         articles.remove(i);
                     break;

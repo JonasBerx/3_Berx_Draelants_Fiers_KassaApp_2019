@@ -33,6 +33,18 @@ public class Shop {
         this.basket = new Basket();
     }
 
+    public void continueHeldSale() {
+        if (this.heldBasket == null)
+            throw new IllegalStateException("There is no sale on hold");
+
+        this.basket = heldBasket;
+        this.heldBasket = null;
+    }
+
+    public boolean saleIsOnHold() {
+        return this.heldBasket != null;
+    }
+
     public ArticleDbContext getContext() {
         return context;
     }

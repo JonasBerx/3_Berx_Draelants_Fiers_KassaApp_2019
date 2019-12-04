@@ -18,12 +18,15 @@ import model.DomainInterface;
 import model.Observer;
 
 import java.util.Collection;
+import java.util.List;
 
 public class ClientOverview extends GridPane implements Observer {
     private ObservableList<Pair<Article, Integer>> articles = FXCollections.observableArrayList();
     private Label totalPrice;
+    private DomainInterface domainInterface;
 
     public ClientOverview(DomainInterface domainInterface) {
+        this.domainInterface = domainInterface;
         domainInterface.addBasketObserver(this);
 
         this.setPadding(new Insets(5, 5, 5, 5));
@@ -44,7 +47,7 @@ public class ClientOverview extends GridPane implements Observer {
 
         nameCol.setCellValueFactory(data -> new SimpleStringProperty((data.getValue().getKey().getArticleName())));
         priceCol.setCellValueFactory(data -> new SimpleDoubleProperty((data.getValue().getKey().getPrice())));
-        quantityCol.setCellValueFactory(data -> new SimpleIntegerProperty(((data.getValue().getValue()))));
+        quantityCol.setCellValueFactory(data -> new SimpleIntegerProperty(((data.getValue().getValue() + 1))));
 
         productInfo.getColumns().addAll(nameCol, priceCol, quantityCol);
         domainInterface.getAllBasketArticles().forEach(this::addArticle);
@@ -76,7 +79,7 @@ public class ClientOverview extends GridPane implements Observer {
 
     private void addArticle(Article article) {
         Pair<Article, Integer> existing = getPair(article);
-        int count = 1;
+        int count = 0;
         if (existing != null) {
             count = existing.getValue() + 1;
         }
@@ -109,13 +112,13 @@ public class ClientOverview extends GridPane implements Observer {
                     removed.forEach(this::removeArticle);
                     break;
                 case REMOVED_ARTICLE_INDEX:
-                    articles.remove((int) data); break;
+                    Article removedArticle = ((Pair<Integer, Article>) data).getValue();
+                    articles.remove(removedArticle); break;
                 case REMOVED_ARTICLE:
                     removeArticle((Article) data); break;
                 case REMOVED_ARTICLE_INDICES:
-                    Collection<Integer> removedIndices = (Collection<Integer>) data;
-                    for (int i : removedIndices)
-                        articles.remove(i);
+                    Collection<Article> removedArticles = ((Pair<Collection<Integer>, Collection<Article>>) data).getValue();
+                    removedArticles.forEach(this::removeArticle);
                     break;
                 case TOTAL_PRICE_CHANGED:
                     setTotalPrice((Double) data); break;

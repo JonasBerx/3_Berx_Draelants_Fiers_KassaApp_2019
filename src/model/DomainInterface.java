@@ -16,6 +16,18 @@ public class DomainInterface {
         return shop.getContext();
     }
 
+    public void putSaleOnHold() {
+        shop.putSaleOnHold();
+    }
+
+    public void continueHeldSale() {
+        shop.continueHeldSale();
+    }
+
+    public boolean saleIsOnHold() {
+        return shop.saleIsOnHold();
+    }
+
     //region Basket
     public void addBasketObserver(Observer observer) {
         shop.getBasket().addObserver(observer);
@@ -27,6 +39,10 @@ public class DomainInterface {
 
     public void addBasketArticle(Article article) {
         shop.getBasket().add(article);
+    }
+
+    public Article getBasketArticle(int index) {
+        return shop.getBasket().get(index);
     }
 
     public Collection<Article> getAllBasketArticles() {

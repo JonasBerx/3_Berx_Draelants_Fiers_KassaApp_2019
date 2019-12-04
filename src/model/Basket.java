@@ -1,5 +1,7 @@
 package model;
 
+import javafx.util.Pair;
+
 import java.util.*;
 
 public class Basket implements Observable {
@@ -15,14 +17,19 @@ public class Basket implements Observable {
         priceMutatingUpdate(BasketEvent.ADDED_ARTICLE, article);
     }
 
+    public Article get(int index) {
+        return articles.get(index);
+    }
+
     public void remove(Article article) {
         articles.remove(article);
         priceMutatingUpdate(BasketEvent.REMOVED_ARTICLE, article);
     }
 
     public void removeIndex(int index) {
+        Article removed = articles.get(index);
         articles.remove(index);
-        priceMutatingUpdate(BasketEvent.REMOVED_ARTICLE_INDEX, index);
+        priceMutatingUpdate(BasketEvent.REMOVED_ARTICLE_INDEX, new Pair<Article, Integer>(removed, index));
     }
 
     public void removeAll(Collection<Article> articles) {
@@ -33,9 +40,13 @@ public class Basket implements Observable {
     public void removeIndices(List<Integer> indices) {
         indices = new ArrayList<>(indices);
         indices.sort(Comparator.reverseOrder());
-        for (int i : indices)
+        List<Article> removed = new LinkedList<>();
+        for (int i : indices) {
+            removed.add(articles.get(i));
             articles.remove(i);
-        priceMutatingUpdate(BasketEvent.REMOVED_ARTICLE_INDICES, Collections.unmodifiableList(indices));
+        }
+        Pair<List<Integer>, List<Article>> eventData = new Pair<>(Collections.unmodifiableList(indices), Collections.unmodifiableList(removed));
+        priceMutatingUpdate(BasketEvent.REMOVED_ARTICLE_INDICES, eventData);
     }
 
     public void clear() {
