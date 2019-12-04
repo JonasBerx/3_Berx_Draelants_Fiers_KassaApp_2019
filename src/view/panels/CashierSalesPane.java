@@ -9,10 +9,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.util.Pair;
-import model.Article;
-import model.BasketEvent;
-import model.DomainInterface;
-import model.Observer;
+import model.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -30,6 +27,7 @@ public class CashierSalesPane extends GridPane implements Observer {
         this.setHgap(5);
 
         this.domainInterface = domainInterface;
+        domainInterface.addShopObserver(this);
         domainInterface.addBasketObserver(this);
 
         final TextField articleCode = new TextField();
@@ -73,6 +71,7 @@ public class CashierSalesPane extends GridPane implements Observer {
         TableView<Article> table = new TableView<>();
         table.setMaxSize(800, 800);
         table.setItems(articles);
+        populateArticles();
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         code.setMinWidth(table.getMaxWidth() / 5);
@@ -138,15 +137,18 @@ public class CashierSalesPane extends GridPane implements Observer {
         });
 
         holdSaleBtn.setOnAction(e -> {
-            domainInterface.removeBasketObserver(this);
             if (domainInterface.saleIsOnHold()) {
                 domainInterface.continueHeldSale();
             } else {
                 domainInterface.putSaleOnHold();
             }
             updateHoldSaleButton();
-            domainInterface.addBasketObserver(this);
         });
+    }
+
+    public void populateArticles() {
+        articles.clear();
+        articles.addAll(domainInterface.getAllBasketArticles());
     }
 
     private void updateHoldSaleButton() {
@@ -180,6 +182,23 @@ public class CashierSalesPane extends GridPane implements Observer {
                     break;
                 case TOTAL_PRICE_CHANGED:
                     setTotalPrice((Double)data); break;
+            }
+        } else if (event instanceof ShopEvent) {
+            ShopEvent shopEvent = (ShopEvent) event;
+            switch (shopEvent) {
+                case PUT_SALE_ON_HOLD:
+                    Pair<Basket, Basket> baskets = (Pair) data;
+                    Basket oldBasket = baskets.getKey();
+                    Basket newBasket = baskets.getValue();
+                    oldBasket.removeObserver(this);
+                    newBasket.addObserver(this);
+                    populateArticles();
+                    break;
+                case RESUMED_SALE:
+                    Basket basket = (Basket) data;
+                    basket.addObserver(this);
+                    populateArticles();
+                    break;
             }
         }
     }

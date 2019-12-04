@@ -21,12 +21,16 @@ public class DomainInterface {
     }
 
     public void continueHeldSale() {
-        shop.continueHeldSale();
+        shop.resumeSale();
     }
 
     public boolean saleIsOnHold() {
         return shop.saleIsOnHold();
     }
+
+    public void addShopObserver(Observer observer) { shop.addObserver(observer); }
+
+    public void removeShopObserver(Observer observer) { shop.removeObserver(observer); }
 
     //region Basket
     public void addBasketObserver(Observer observer) {

@@ -12,10 +12,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.util.Pair;
-import model.Article;
-import model.BasketEvent;
-import model.DomainInterface;
-import model.Observer;
+import model.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -27,6 +24,7 @@ public class ClientOverview extends GridPane implements Observer {
 
     public ClientOverview(DomainInterface domainInterface) {
         this.domainInterface = domainInterface;
+        domainInterface.addShopObserver(this);
         domainInterface.addBasketObserver(this);
 
         this.setPadding(new Insets(5, 5, 5, 5));
@@ -52,6 +50,7 @@ public class ClientOverview extends GridPane implements Observer {
         productInfo.getColumns().addAll(nameCol, priceCol, quantityCol);
         domainInterface.getAllBasketArticles().forEach(this::addArticle);
         table.setItems(articles);
+        populateArticles();
         table.getColumns().addAll(productInfo);
 
         totalPrice = new Label();
@@ -60,6 +59,11 @@ public class ClientOverview extends GridPane implements Observer {
 
         this.add(table, 0, 0);
         this.add(totalPrice, 0, 1);
+    }
+
+    public void populateArticles() {
+        articles.clear();
+        domainInterface.getAllBasketArticles().forEach(this::addArticle);
     }
 
     private void setTotalPrice(Double price) {
@@ -122,6 +126,23 @@ public class ClientOverview extends GridPane implements Observer {
                     break;
                 case TOTAL_PRICE_CHANGED:
                     setTotalPrice((Double) data); break;
+            }
+        } else if (event instanceof ShopEvent) {
+            ShopEvent shopEvent = (ShopEvent) event;
+            switch (shopEvent) {
+                case PUT_SALE_ON_HOLD:
+                    Pair<Basket, Basket> baskets = (Pair) data;
+                    Basket oldBasket = baskets.getKey();
+                    Basket newBasket = baskets.getValue();
+                    oldBasket.removeObserver(this);
+                    newBasket.addObserver(this);
+                    populateArticles();
+                    break;
+                case RESUMED_SALE:
+                    Basket basket = (Basket) data;
+                    basket.addObserver(this);
+                    populateArticles();
+                    break;
             }
         }
     }
