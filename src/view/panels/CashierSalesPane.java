@@ -7,7 +7,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
-import model.*;
+import javafx.scene.text.Font;
+import model.Article;
+import model.BasketEvent;
+import model.DomainInterface;
+import model.Observer;
 
 import java.util.Collection;
 import java.util.List;
@@ -52,6 +56,7 @@ public class CashierSalesPane extends GridPane implements Observer {
         TableColumn<Article, Integer> group = new TableColumn<>("Article Group");
         TableColumn<Article, Integer> price = new TableColumn<>("Article Price");
         totalPrice = new Label();
+        totalPrice.setFont(new Font("Arial", 25));
         setTotalPrice(0.0);
 
         Alert alert = new Alert(Alert.AlertType.ERROR);

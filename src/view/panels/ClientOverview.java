@@ -10,8 +10,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 import javafx.util.Pair;
-import model.*;
+import model.Article;
+import model.BasketEvent;
+import model.DomainInterface;
+import model.Observer;
 
 import java.util.Collection;
 
@@ -48,10 +52,12 @@ public class ClientOverview extends GridPane implements Observer {
         table.getColumns().addAll(productInfo);
 
         totalPrice = new Label();
+        totalPrice.setFont(new Font("Arial", 30));
+        ;
         setTotalPrice(0.0);
 
         this.add(table, 0, 0);
-        this.add(totalPrice,0,1);
+        this.add(totalPrice, 0, 1);
     }
 
     private void setTotalPrice(Double price) {
@@ -71,7 +77,7 @@ public class ClientOverview extends GridPane implements Observer {
 
     private void addArticle(Article article) {
         Pair<Article, Integer> existing = getPair(article);
-        int count = 0;
+        int count = 1;
         if (existing != null) {
             count = existing.getValue() + 1;
         }
