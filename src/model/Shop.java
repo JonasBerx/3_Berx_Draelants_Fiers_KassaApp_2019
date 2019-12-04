@@ -1,7 +1,6 @@
 package model;
 
 
-import javafx.util.Pair;
 import newDatabase.ArticleDbContext;
 
 import java.io.IOException;
@@ -87,6 +86,18 @@ public class Shop implements Observable {
 
     private void updateObservers(ShopEvent event, Object data) {
         observers.forEach(observer -> observer.update(event, data));
+    }
+
+    public String getReceipt() {
+        String receipt = "";
+        receipt += String.format("Omschrijving       Aantal   Prijs(€)%n");
+        receipt += String.format("************************************%n");
+        for (Article a : basket.articles) {
+            receipt += String.format("%-12s       %6d    %6.2f%n", a.getArticleName(), a.getQuantity(), a.getPrice());
+        }
+        receipt += String.format("************************************%n");
+        receipt += String.format("Betaald (inclusief korting) : %.2f€", basket.getTotalPrice());
+        return receipt;
     }
 
 
