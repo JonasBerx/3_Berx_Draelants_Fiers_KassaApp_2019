@@ -51,6 +51,10 @@ public class CashierSalesPane extends GridPane implements Observer {
         Button delete = new Button("Delete Article");
         GridPane.setConstraints(delete, 3, 0);
         this.getChildren().add(delete);
+        //Defining Pause button
+        Button pay = new Button("Pay");
+        GridPane.setConstraints(pay, 4, 0);
+        this.getChildren().add(pay);
 
 
         TableColumn sales = new TableColumn("Products");
@@ -86,8 +90,8 @@ public class CashierSalesPane extends GridPane implements Observer {
 
         table.getColumns().addAll(sales);
 
-        this.add(table, 0, 4,4,1);
-        this.add(totalPrice,1,5);
+        this.add(table, 0, 4, 5, 1);
+        this.add(totalPrice, 1, 5);
 
         delete.setDisable(true);
         table.getSelectionModel().selectedItemProperty().addListener((lst, old, newSelection) -> {
