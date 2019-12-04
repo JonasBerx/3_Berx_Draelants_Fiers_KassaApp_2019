@@ -54,4 +54,38 @@ public class StrategyProperties {
 //        System.out.println(properties);
         properties.setProperty("STRATEGY", value);
     }
+
+    public static String getGroup() {
+        return properties.getProperty("GROUP");
+    }
+    public static void setGroup(String value) {
+        properties.setProperty("GROUP", value);
+    }
+    public static String getGroupDiscount() {
+        return properties.getProperty("GDISCOUNT");
+    }
+    public static void setGroupDiscount(String value) {
+        properties.setProperty("GDISCOUNT", value);
+    }
+    public static String getExpensiveDiscount() {
+        return properties.getProperty("EXPDISCOUNT");
+    }
+    public static void setExpensiveDiscount(String value) {
+        properties.setProperty("EXPDISCOUNT", value);
+    }
+    public static String getThreshold() {
+        return properties.getProperty("THRESHPRICE");
+    }
+    public static void setThreshPrice(String value) {
+        properties.setProperty("THRESHPRICE", value);
+    }
+
+    public static String getThresholdDiscount() {
+        return properties.getProperty("THRESHDISCOUNT");
+    }
+    public static void setThreshDiscount(String value) {
+        properties.setProperty("THRESHDISCOUNT", value);
+    }
+
+
 }

@@ -1,14 +1,12 @@
 package model;
 
 
-import javafx.util.Pair;
 import newDatabase.ArticleDbContext;
 
 import java.io.IOException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
-public class Shop implements Observable {
-    LinkedList<Observer> observers = new LinkedList();
+public class Shop {
     private ArticleDbContext context;
     private Basket basket;
     private Basket heldBasket; // "pause sale" functionality
@@ -34,37 +32,28 @@ public class Shop implements Observable {
 
         this.heldBasket = basket;
         this.basket = new Basket();
-        updateObservers(ShopEvent.PUT_SALE_ON_HOLD, new Pair<Basket, Basket>(heldBasket, basket));
+    }
+    public ArrayList<Article> getByGroup(String group) {
+        ArrayList<Article> groupList = new ArrayList<>();
+        for (int i = 0; i < basket.articles.size(); i++) {
+            if (basket.articles.get(i).getGroup().equals(group)) {
+                groupList.add(basket.articles.get(i));
+            }
+        }
+        return groupList;
     }
 
-    public void resumeSale() {
-        if (this.heldBasket == null)
-            throw new IllegalStateException("There is no sale on hold");
-
-        this.basket = heldBasket;
-        this.heldBasket = null;
-        updateObservers(ShopEvent.RESUMED_SALE, basket);
-    }
-
-    public boolean saleIsOnHold() {
-        return this.heldBasket != null;
+    public ArrayList<Article> getByNumber(int artNumber) {
+        ArrayList<Article> numberList = new ArrayList<>();
+        for (int i = 0; i < basket.articles.size(); i++) {
+            if (basket.articles.get(i).getArticleCode() == artNumber) {
+                numberList.add(basket.articles.get(i));
+            }
+        }
+        return numberList;
     }
 
     public ArticleDbContext getContext() {
         return context;
-    }
-
-    @Override
-    public void addObserver(Observer observer) {
-        observers.add(observer);
-    }
-
-    @Override
-    public void removeObserver(Observer observer) {
-        observers.remove(observer);
-    }
-
-    private void updateObservers(ShopEvent event, Object data) {
-        observers.forEach(observer -> observer.update(event, data));
     }
 }
