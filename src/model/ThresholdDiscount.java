@@ -1,7 +1,7 @@
 package model;
 
-public class DuursteKorting implements KortingStrategy {
-    int duurste = 25;
+public class ThresholdDiscount implements KortingStrategy {
+    int drempel = 100;
 
     @Override
     public int berekenKorting(Shop shop) {

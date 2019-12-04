@@ -10,9 +10,11 @@ import java.util.LinkedList;
 
 public class Shop implements Observable {
     LinkedList<Observer> observers = new LinkedList();
+    private KortingContext kortingContext;
     private ArticleDbContext context;
     private Basket basket;
     private Basket heldBasket; // "pause sale" functionality
+
 
     public Shop() {
         try {
@@ -21,7 +23,7 @@ public class Shop implements Observable {
             e.printStackTrace();
         }
         context = new ArticleDbContext(StrategyProperties.getMemory());
-
+        kortingContext = new KortingContext(StrategyProperties.getDiscounts());
         basket = new Basket();
     }
 
@@ -35,7 +37,7 @@ public class Shop implements Observable {
 
         this.heldBasket = basket;
         this.basket = new Basket();
-        updateObservers(ShopEvent.PUT_SALE_ON_HOLD, new Pair<Basket, Basket>(heldBasket, basket));
+        updateObservers(ShopEvent.PUT_SALE_ON_HOLD, new Pair<>(heldBasket, basket));
     }
 
     public ArrayList<Article> getByGroup(String group) {
@@ -92,15 +94,15 @@ public class Shop implements Observable {
     }
 
     public String getReceipt() {
-        String receipt = "";
-        receipt += String.format("Omschrijving       Aantal   Prijs(€)%n");
-        receipt += String.format("************************************%n");
+        StringBuilder receipt = new StringBuilder();
+        receipt.append(String.format("Omschrijving       Aantal   Prijs(€)%n"));
+        receipt.append(String.format("************************************%n"));
         for (Article a : basket.articles) {
-            receipt += String.format("%-12s       %6d    %6.2f%n", a.getArticleName(), a.getQuantity(), a.getPrice());
+            receipt.append(String.format("%-12s       %6d    %6.2f%n", a.getArticleName(), a.getQuantity(), a.getPrice()));
         }
-        receipt += String.format("************************************%n");
-        receipt += String.format("Betaald (inclusief korting) : %.2f€", basket.getTotalPrice());
-        return receipt;
+        receipt.append(String.format("************************************%n"));
+        receipt.append(String.format("Betaald (inclusief korting) : %.2f€", basket.getTotalPrice()));
+        return receipt.toString();
     }
 
 

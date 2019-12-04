@@ -1,6 +1,6 @@
 package model;
 
-public class GroepsKorting implements KortingStrategy {
+public class GroupDiscount implements KortingStrategy {
     int groep = 3;
     int korting = 5;
 

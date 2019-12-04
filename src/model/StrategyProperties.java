@@ -2,6 +2,8 @@ package model;
 
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class StrategyProperties {
@@ -56,36 +58,72 @@ public class StrategyProperties {
     }
 
     public static String getGroup() {
-        return properties.getProperty("GROUP");
+        return properties.getProperty("GROUPNUMBER");
     }
     public static void setGroup(String value) {
-        properties.setProperty("GROUP", value);
+        properties.setProperty("GROUPNUMBER", value);
     }
     public static String getGroupDiscount() {
-        return properties.getProperty("GDISCOUNT");
+        return properties.getProperty("GROUPDISCOUNT");
     }
     public static void setGroupDiscount(String value) {
-        properties.setProperty("GDISCOUNT", value);
+        properties.setProperty("GROUPDISCOUNT", value);
     }
     public static String getExpensiveDiscount() {
-        return properties.getProperty("EXPDISCOUNT");
+        return properties.getProperty("EXPENSIVEDISCOUNT");
     }
     public static void setExpensiveDiscount(String value) {
-        properties.setProperty("EXPDISCOUNT", value);
+        properties.setProperty("EXPENSIVEDISCOUNT", value);
     }
-    public static String getThreshold() {
-        return properties.getProperty("THRESHPRICE");
+    public static String getThresholdPrice() {
+        return properties.getProperty("THRESHOLDPRICE");
     }
+
+
     public static void setThreshPrice(String value) {
-        properties.setProperty("THRESHPRICE", value);
+        properties.setProperty("THRESHOLDPRICE", value);
     }
 
     public static String getThresholdDiscount() {
-        return properties.getProperty("THRESHDISCOUNT");
+        return properties.getProperty("THRESHOLDDISCOUNT");
     }
     public static void setThreshDiscount(String value) {
-        properties.setProperty("THRESHDISCOUNT", value);
+        properties.setProperty("THRESHOLDDISCOUNT", value);
     }
 
+    public static ArrayList<String> getDiscounts() {
+        ArrayList<String> discounts = new ArrayList<>();
+        if (properties.getProperty("EXPENSIVE").equals("true")) {
+            discounts.add("EXPENSIVE");
+        }
+        if (properties.getProperty("GROUP").equals("true")) {
+            discounts.add("GROUP");
+        }
+        if (properties.getProperty("THRESHOLD").equals("true")) {
+            discounts.add("THRESHOLD");
+        }
+        return discounts;
+    }
+
+
+    public static void setDiscountGroup(boolean selected) {
+        properties.setProperty("GROUP", String.valueOf(selected));
+    }
+
+    public static void setDiscountThreshold(boolean selected) {
+        properties.setProperty("THRESHOLD", String.valueOf(selected));
+    }
+
+    public static void setDiscountExpensive(boolean selected) {
+        properties.setProperty("EXPENSIVE", String.valueOf(selected));
+    }
+
+    public static boolean getDiscountGroup() {
+        return Boolean.parseBoolean(properties.getProperty("GROUP"));
+    }public static boolean getDiscountThreshold() {
+        return Boolean.parseBoolean(properties.getProperty("THRESHOLD"));
+    }public static boolean getDiscountExpensive() {
+        return Boolean.parseBoolean(properties.getProperty("EXPENSIVE"));
+    }
 
 }
