@@ -4,7 +4,7 @@ package model;
  * @Author Jonas Berx
  * @Version 1.1
  * changed Dieters author sign to correct javadoc
- * */
+ */
 
 /**@Author Dieter Draelants
  * Article class
@@ -83,17 +83,14 @@ public class Article implements Comparable<Article> {
         this.price = price;
     }
 
-    /*
-     * Leave toString like this - Has to cope with the reader input and output order!
-     *
-     * */
-
+    //Pretty To String
     public String toString() {
         String out = "";
         out += "\nCode: " + getArticleCode() + "\nName: " + getArticleName() + "\nGroup: " + getGroup() + "\nPrice: " + getPrice() + "\nStock: " + getQuantity() + "\n-------------------";
         return out;
     }
 
+    //To string for csv file
     public String saveToString() {
         String out = "";
         out += getArticleCode() + "," + getArticleName() + "," + getGroup() + "," + getPrice() + "," + getQuantity() + "\n";
