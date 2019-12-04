@@ -1,6 +1,7 @@
 package model;
 
 
+import javafx.util.Pair;
 import newDatabase.ArticleDbContext;
 
 import java.io.IOException;
@@ -34,7 +35,9 @@ public class Shop implements Observable {
 
         this.heldBasket = basket;
         this.basket = new Basket();
+        updateObservers(ShopEvent.PUT_SALE_ON_HOLD, new Pair<Basket, Basket>(heldBasket, basket));
     }
+
     public ArrayList<Article> getByGroup(String group) {
         ArrayList<Article> groupList = new ArrayList<>();
         for (int i = 0; i < basket.articles.size(); i++) {
