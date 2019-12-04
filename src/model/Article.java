@@ -84,13 +84,19 @@ public class Article implements Comparable<Article> {
     }
 
     /*
-    * Leave toString like this - Has to cope with the reader input and output order!
-    *
-    * */
+     * Leave toString like this - Has to cope with the reader input and output order!
+     *
+     * */
 
     public String toString() {
         String out = "";
-        out += "Code: " + getArticleCode() + "\nName: " + getArticleName() + "\nGroup: " + getGroup() + "\nPrice: " + getPrice() + "\nStock: " + getQuantity() + "\n-------------------";
+        out += "\nCode: " + getArticleCode() + "\nName: " + getArticleName() + "\nGroup: " + getGroup() + "\nPrice: " + getPrice() + "\nStock: " + getQuantity() + "\n-------------------";
+        return out;
+    }
+
+    public String saveToString() {
+        String out = "";
+        out += getArticleCode() + "," + getArticleName() + "," + getGroup() + "," + getPrice() + "," + getQuantity() + "\n";
         return out;
     }
 
