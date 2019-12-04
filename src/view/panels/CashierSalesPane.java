@@ -10,6 +10,7 @@ import javafx.scene.layout.GridPane;
 import model.*;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public class CashierSalesPane extends GridPane implements Observer {
@@ -112,7 +113,7 @@ public class CashierSalesPane extends GridPane implements Observer {
         });
         //Delete button event
         delete.setOnAction(e -> {
-            Collection<Integer> selectedIndices = table.getSelectionModel().getSelectedIndices();
+            List<Integer> selectedIndices = table.getSelectionModel().getSelectedIndices();
             if (selectedIndices.size() == 0) return;
             Alert a = new Alert(Alert.AlertType.CONFIRMATION);
             a.setTitle("Delete");
@@ -124,6 +125,10 @@ public class CashierSalesPane extends GridPane implements Observer {
             if (result.get() == ButtonType.OK) {
                 domainInterface.removeBasketArticleIndices(selectedIndices);
             }
+        });
+
+        pause.setOnAction(e -> {
+
         });
 
     }

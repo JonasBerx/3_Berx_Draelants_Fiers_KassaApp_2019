@@ -2,16 +2,13 @@ package model;
 
 
 import newDatabase.ArticleDbContext;
-import newDatabase.LoadSaveFactory;
-import newDatabase.LoadSaveStrategy;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class Shop {
     private ArticleDbContext context;
     private Basket basket;
+    private Basket heldBasket; // "pause sale" functionality
 
     public Shop() {
         try {
@@ -26,6 +23,14 @@ public class Shop {
 
     public Basket getBasket() {
         return basket;
+    }
+
+    public void putSaleOnHold() {
+        if (this.heldBasket != null)
+            throw new IllegalStateException("There is already a sale on hold");
+
+        this.heldBasket = basket;
+        this.basket = new Basket();
     }
 
     public ArticleDbContext getContext() {

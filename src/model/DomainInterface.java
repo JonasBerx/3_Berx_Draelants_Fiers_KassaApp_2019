@@ -3,6 +3,7 @@ package model;
 import newDatabase.ArticleDbContext;
 
 import java.util.Collection;
+import java.util.List;
 
 public class DomainInterface {
     private final Shop shop;
@@ -42,7 +43,7 @@ public class DomainInterface {
         shop.getBasket().removeAll(articles);
     }
 
-    public void removeBasketArticleIndices(Collection<Integer> indices) {
+    public void removeBasketArticleIndices(List<Integer> indices) {
         shop.getBasket().removeIndices(indices);
     }
 
