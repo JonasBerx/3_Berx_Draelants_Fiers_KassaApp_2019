@@ -1,8 +1,10 @@
 package model;
 
+import java.util.ArrayList;
+
 public interface KortingStrategy {
 
-    int berekenKorting(Shop shop);
+    ArrayList<Article> berekenKorting(Shop shop);
 
 
 }

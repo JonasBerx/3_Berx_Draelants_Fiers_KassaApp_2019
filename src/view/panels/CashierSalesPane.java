@@ -116,12 +116,11 @@ public class CashierSalesPane extends GridPane implements Observer {
                 if ( articleCode.getText().trim().isEmpty() || articleCode.getText() == null|| domainInterface.getContext().get(Integer.parseInt(articleCode.getText())) == null) {
                     alert.setContentText("This code doesn't exist.\n Try a different code.");
                     alert.showAndWait();
-                    articleCode.clear();
                 } else {
                     Article article = domainInterface.getContext().get(Integer.parseInt(articleCode.getText()));
                     domainInterface.addBasketArticle(article);
-                    articleCode.clear();
                 }
+                articleCode.clear();
             }
         });
         //Delete button event
@@ -148,7 +147,16 @@ public class CashierSalesPane extends GridPane implements Observer {
             }
             updateHoldSaleButton();
         });
+
+        pay.setOnAction(event -> {
+
+
+        });
+
+
     }
+
+
 
     public void populateArticles() {
         articles.clear();
