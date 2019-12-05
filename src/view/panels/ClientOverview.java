@@ -21,6 +21,7 @@ public class ClientOverview extends GridPane implements Observer {
     private ObservableList<Pair<Article, Integer>> articles = FXCollections.observableArrayList();
     private Label totalPrice;
     private DomainInterface domainInterface;
+    private Label discountPrice;
 
     public ClientOverview(DomainInterface domainInterface) {
         this.domainInterface = domainInterface;
@@ -57,8 +58,13 @@ public class ClientOverview extends GridPane implements Observer {
         totalPrice.setFont(new Font("Arial", 30));
         setTotalPrice(0.0);
 
+        discountPrice = new Label();
+        totalPrice.setFont(new Font("Arial", 30));
+        setDiscountPrice(0.0);
+
         this.add(table, 0, 0);
         this.add(totalPrice, 0, 1);
+        this.add(discountPrice, 0, 2);
     }
 
     public void populateArticles() {
@@ -68,6 +74,17 @@ public class ClientOverview extends GridPane implements Observer {
 
     private void setTotalPrice(Double price) {
         totalPrice.setText(String.format("Total: €%.2f", price));
+    }
+
+    private void setDiscountPrice(Double price) {
+        domainInterface.getBasketTotalPrice();
+        if (domainInterface.getAllBasketArticles().size() != 0) {
+            domainInterface.getShop().applyKorting();
+        }
+
+        System.out.println(domainInterface.getBasketTotalPrice());
+        discountPrice.setText(String.format("DiscountPrice: €%.2f", price));
+
     }
 
     private Pair<Article, Integer> getPair(Article article) {
@@ -125,7 +142,9 @@ public class ClientOverview extends GridPane implements Observer {
                     removedArticles.forEach(this::removeArticle);
                     break;
                 case TOTAL_PRICE_CHANGED:
-                    setTotalPrice((Double) data); break;
+                    setTotalPrice((Double) data);
+                    setDiscountPrice((Double) data);
+                    break;
             }
         } else if (event instanceof ShopEvent) {
             ShopEvent shopEvent = (ShopEvent) event;

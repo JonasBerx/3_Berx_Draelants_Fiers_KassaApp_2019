@@ -12,6 +12,10 @@ public class DomainInterface {
         this.shop = new Shop();
     }
 
+    public Shop getShop() {
+        return shop;
+    }
+
     public ArticleDbContext getContext() {
         return shop.getContext();
     }
