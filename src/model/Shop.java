@@ -19,16 +19,29 @@ public class Shop implements Observable {
     public Shop() {
         try {
             StrategyProperties.load();
+            context = new ArticleDbContext(StrategyProperties.getMemory());
+            kortingContext = new KortingContext(StrategyProperties.getDiscounts());
+            basket = new Basket();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        context = new ArticleDbContext(StrategyProperties.getMemory());
-        kortingContext = new KortingContext(StrategyProperties.getDiscounts());
-        basket = new Basket();
+
+    }
+
+    public ArrayList<KortingStrategy> getKortingen() {
+        System.out.println(kortingContext.getKortingen());
+        return kortingContext.getKortingen();
     }
 
     public Basket getBasket() {
         return basket;
+    }
+
+    public void applyKorting() {
+
+        for (int i = 0; i < getKortingen().size(); i++) {
+            getKortingen().get(i).berekenKorting(this);
+        }
     }
 
     public void putSaleOnHold() {
@@ -58,6 +71,18 @@ public class Shop implements Observable {
             }
         }
         return numberList;
+    }
+
+    public Article getMostExpensive() {
+        Article max = basket.get(0);
+        for (int i = 0; i < basket.getAll().size(); i++) {
+
+
+            if (basket.get(i).getPrice() > max.getPrice()) {
+                max = basket.get(i);
+            }
+        }
+        return max;
     }
 
     public ArticleDbContext getContext() {
@@ -92,16 +117,27 @@ public class Shop implements Observable {
     private void updateObservers(ShopEvent event, Object data) {
         observers.forEach(observer -> observer.update(event, data));
     }
+    //No discount counted
+    public double getTotalPrice() {
+        return basket.getTotalPrice();
+    }
+
+    //Discounts added
+    public double getDiscountedPrice() {
+        this.applyKorting();
+        return getTotalPrice();
+
+    }
 
     public String getReceipt() {
         StringBuilder receipt = new StringBuilder();
         receipt.append(String.format("Description       Quantity   Price(€)%n"));
         receipt.append(String.format("************************************%n"));
-        for (Article a : basket.articles) {
+        for (Article a : basket.getAll()) {
             receipt.append(String.format("%-12s       %6d    %6.2f%n", a.getArticleName(), a.getQuantity(), a.getPrice()));
         }
         receipt.append(String.format("************************************%n"));
-        receipt.append(String.format("Payed (including discount) : %.2f€", basket.getTotalPrice()));
+        receipt.append(String.format("Betaald (inclusief korting) : %.2f€", basket.getTotalPrice()));
         return receipt.toString();
     }
 

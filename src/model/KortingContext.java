@@ -11,6 +11,8 @@ public class KortingContext {
         kortingen = factory.getKortingen();
     }
 
+
+
     public ArrayList<KortingStrategy> getKortingen() {
         return kortingen;
     }
