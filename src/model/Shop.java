@@ -95,13 +95,13 @@ public class Shop implements Observable {
 
     public String getReceipt() {
         StringBuilder receipt = new StringBuilder();
-        receipt.append(String.format("Omschrijving       Aantal   Prijs(€)%n"));
+        receipt.append(String.format("Description       Quantity   Price(€)%n"));
         receipt.append(String.format("************************************%n"));
         for (Article a : basket.articles) {
             receipt.append(String.format("%-12s       %6d    %6.2f%n", a.getArticleName(), a.getQuantity(), a.getPrice()));
         }
         receipt.append(String.format("************************************%n"));
-        receipt.append(String.format("Betaald (inclusief korting) : %.2f€", basket.getTotalPrice()));
+        receipt.append(String.format("Payed (including discount) : %.2f€", basket.getTotalPrice()));
         return receipt.toString();
     }
 
