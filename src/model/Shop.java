@@ -137,7 +137,7 @@ public class Shop implements Observable {
             receipt.append(String.format("%-12s       %6d    %6.2f%n", a.getArticleName(), a.getQuantity(), a.getPrice()));
         }
         receipt.append(String.format("************************************%n"));
-        receipt.append(String.format("Betaald (inclusief korting) : %.2f€", basket.getTotalPrice()));
+        receipt.append(String.format("Payed (includes discount) :  %.2f€", basket.getTotalPrice()));
         return receipt.toString();
     }
 
