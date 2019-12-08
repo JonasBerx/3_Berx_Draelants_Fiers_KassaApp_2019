@@ -149,8 +149,9 @@ public class CashierSalesPane extends GridPane implements Observer {
         });
 
         pay.setOnAction(event -> {
-
-
+            //Om te testen
+            Receipt basic = new BasicReceipt();
+            System.out.println(basic.getReceipt(domainInterface));
         });
 
 
