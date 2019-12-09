@@ -29,7 +29,7 @@ public class CashierSettingsPane extends GridPane {
     private TextField thresholdDiscountPrice;
 
     //Declarations for header/footer buttons/labels
-    private TextField customMessage;
+    private TextField customMessage = new TextField();
     private final CheckBox HeaderDateTime = new CheckBox();
     private final CheckBox HeaderMessage = new CheckBox();
     private final CheckBox FooterClosure = new CheckBox();
@@ -126,6 +126,7 @@ public class CashierSettingsPane extends GridPane {
         this.add(new Label("Show/hide show date and time on receipt"), 2, 9);
         this.add(HeaderMessage, 1, 10);
         this.add(new Label("Show/hide create custom message"), 2, 10);
+        this.add(customMessage, 4, 10);
 
         //All customize footer stuff
         Label receiptcustomFooter = new Label("Receipt print Options - Footer");
@@ -142,6 +143,7 @@ public class CashierSettingsPane extends GridPane {
 
         //save button placement
         this.add(saveButton, 2, 15);
+
 
         //ALl checkbox actions
         if (thresholdCheckbox.isSelected()) {
