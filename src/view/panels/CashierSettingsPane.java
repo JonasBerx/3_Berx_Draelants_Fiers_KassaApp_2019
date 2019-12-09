@@ -30,11 +30,11 @@ public class CashierSettingsPane extends GridPane {
 
     //Declarations for header/footer buttons/labels
     private TextField customMessage = new TextField();
-    private final CheckBox HeaderDateTime = new CheckBox();
-    private final CheckBox HeaderMessage = new CheckBox();
-    private final CheckBox FooterClosure = new CheckBox();
-    private final CheckBox FooterBtwSeparate = new CheckBox();
-    private final CheckBox FooterPriceDiscountSeparate = new CheckBox();
+    private final CheckBox headerDateTime = new CheckBox();
+    private final CheckBox headerMessage = new CheckBox();
+    private final CheckBox footerClosure = new CheckBox();
+    private final CheckBox footerBtwSeparate = new CheckBox();
+    private final CheckBox footerPriceDiscountSeparate = new CheckBox();
 
 
     public CashierSettingsPane(DomainInterface domainInterface) {
@@ -79,9 +79,13 @@ public class CashierSettingsPane extends GridPane {
         options.setValue("Select option");
         options.setValue(StrategyProperties.getStrategy());
 
+        //check in config if box should be selected on startup
         expensiveCheckbox.setSelected( StrategyProperties.getDiscountExpensive());
         groupCheckBox.setSelected( StrategyProperties.getDiscountGroup());
         thresholdCheckbox.setSelected( StrategyProperties.getDiscountThreshold());
+
+//        headerDateTime.setSelected();
+
 
         groups.setValue("Select Group");
         groups.setValue(StrategyProperties.getGroup());
@@ -122,9 +126,9 @@ public class CashierSettingsPane extends GridPane {
         receiptcustomHeader.setFont(new Font("Arial", 20));
         this.add(receiptcustomHeader, 1, 8, 2, 1);
         //checkboxes + labels
-        this.add(HeaderDateTime, 1, 9);
+        this.add(headerDateTime, 1, 9);
         this.add(new Label("Show/hide show date and time on receipt"), 2, 9);
-        this.add(HeaderMessage, 1, 10);
+        this.add(headerMessage, 1, 10);
         this.add(new Label("Show/hide create custom message"), 2, 10);
         this.add(customMessage, 4, 10);
 
@@ -133,11 +137,11 @@ public class CashierSettingsPane extends GridPane {
         receiptcustomFooter.setFont(new Font("Arial", 20));
         this.add(receiptcustomFooter, 1, 11, 2, 1);
         //checkboxes + labels
-        this.add(FooterPriceDiscountSeparate, 1, 12);
+        this.add(footerPriceDiscountSeparate, 1, 12);
         this.add(new Label("Show/hide price and discount separately"), 2, 12);
-        this.add(FooterBtwSeparate, 1, 13);
+        this.add(footerBtwSeparate, 1, 13);
         this.add(new Label("Show/hide btw separate"), 2, 13);
-        this.add(FooterClosure, 1, 14);
+        this.add(footerClosure, 1, 14);
         this.add(new Label("Show/hide closure message"), 2, 14);
         //save button placement
         this.add(saveButton, 2, 15);
@@ -160,41 +164,49 @@ public class CashierSettingsPane extends GridPane {
         if (!expensiveCheckbox.isSelected()) {
             expensiveDiscount.setDisable(true);
         }
+        //Only need to check for headermessage cause this is the only textfield
+        if(!headerMessage.isSelected()) {
+            customMessage.setDisable(true);
+        }
+
+
 
         /*
         THIS SECTION HANDLES THE EVENTS BEHIND THE BUTTONS
          */
         groupCheckBox.setOnAction(event -> {
             if (groupCheckBox.isSelected()) {
-                System.out.println(groupCheckBox.isSelected());
                 groups.setDisable(false);
                 groupDiscount.setDisable(false);
-            } else if (!groupCheckBox.isSelected()) {
+            } else  {
                 groupDiscount.setDisable(true);
                 groups.setDisable(true);
             }
         });
         thresholdCheckbox.setOnAction(event -> {
             if (thresholdCheckbox.isSelected()) {
-                System.out.println(thresholdCheckbox.isSelected());
                 thresholdDiscountPrice.setDisable(false);
                 discountsThreshold.setDisable(false);
-            } else if (!thresholdCheckbox.isSelected()){
+            } else {
                 thresholdDiscountPrice.setDisable(true);
                 discountsThreshold.setDisable(true);
             }
         });
         expensiveCheckbox.setOnAction(event -> {
             if (expensiveCheckbox.isSelected()) {
-                System.out.println(expensiveCheckbox.isSelected());
                 expensiveDiscount.setDisable(false);
-
-            } else if (!expensiveCheckbox.isSelected()){
-
+            } else {
                 expensiveDiscount.setDisable(true);
             }
         });
 
+        headerMessage.setOnAction(event -> {
+            if(headerMessage.isSelected()) {
+                customMessage.setDisable(false);
+            } else {
+                customMessage.setDisable(true);
+            }
+        });
 
         saveButton.setOnAction(event -> {
             try {
