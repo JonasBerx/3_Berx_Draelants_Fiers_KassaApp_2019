@@ -7,6 +7,10 @@ public class FooterClosure extends ReceiptDecorator {
 
     @Override
     public String getReceipt(DomainInterface d) {
-        return null;
+        StringBuilder receipt = new StringBuilder();
+        receipt.append(this.getDescription(d));
+        receipt.append(String.format("%n------------------------------------%n"));
+        receipt.append("Bedankt voor uw aankoop!");
+        return receipt.toString();
     }
 }

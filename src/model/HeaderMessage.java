@@ -5,7 +5,7 @@ public class HeaderMessage extends ReceiptDecorator {
         super(newReceipt);
     }
 
-    @Override
+    @Override //TODO need to figure out how to get message out of config in this
     public String getReceipt(DomainInterface d) {
         return null;
     }

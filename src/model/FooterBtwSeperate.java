@@ -6,6 +6,7 @@ public class FooterBtwSeperate extends ReceiptDecorator {
     }
 
     @Override
+    //TODO btw functions needed
     public String getReceipt(DomainInterface d) {
         return null;
     }
