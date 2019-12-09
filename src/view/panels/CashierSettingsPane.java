@@ -2,6 +2,7 @@ package view.panels;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 import model.DomainInterface;
 import model.StrategyProperties;
 
@@ -26,6 +27,8 @@ public class CashierSettingsPane extends GridPane {
     private final ComboBox discountsThreshold = new ComboBox<>();
     private TextField expensiveDiscount;
     private TextField thresholdDiscountPrice;
+
+    //Declarations for header/footer buttons/labels
 
 
     public CashierSettingsPane(DomainInterface domainInterface) {
@@ -94,9 +97,13 @@ public class CashierSettingsPane extends GridPane {
         this.setHgap(5);
         this.setVgap(5);
 
+        this.add(new Label("Read from:"), 1, 1);
+        this.add(options, 2, 1);
 
-        this.add(options,2,1,1,1);
-
+        //All discount tralala
+        Label discountHeader = new Label("Discount Options");
+        discountHeader.setFont(new Font("Arial", 20));
+        this.add(discountHeader, 1, 2, 2, 1);
         this.add(groupCheckBox, 1, 4);
         this.add(groupLabel, 2, 4);
         this.add(groups, 3, 4);
@@ -108,10 +115,14 @@ public class CashierSettingsPane extends GridPane {
 
         this.add(thresholdCheckbox, 1, 6);
         this.add(thresholdLabel, 2, 6);
-        this.add(thresholdDiscountPrice,4,6);
+        this.add(thresholdDiscountPrice, 4, 6);
         this.add(discountsThreshold, 3, 6);
 
-        this.add(saveButton,2,8,1,2);
+        //All customize header/footer stuff
+
+
+        //save button placement
+        this.add(saveButton, 2, 8, 1, 2);
 
 
         if (thresholdCheckbox.isSelected()) {
