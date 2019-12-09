@@ -1,7 +1,7 @@
 package model;
 
-public class FooterPriceDiscountSeperate extends ReceiptDecorator {
-    public FooterPriceDiscountSeperate(Receipt newReceipt) {
+public class FooterPriceDiscountSeparate extends ReceiptDecorator {
+    public FooterPriceDiscountSeparate(Receipt newReceipt) {
         super(newReceipt);
     }
 

@@ -29,6 +29,12 @@ public class CashierSettingsPane extends GridPane {
     private TextField thresholdDiscountPrice;
 
     //Declarations for header/footer buttons/labels
+    private TextField customMessage;
+    private final CheckBox HeaderDateTime = new CheckBox();
+    private final CheckBox HeaderMessage = new CheckBox();
+    private final CheckBox FooterClosure = new CheckBox();
+    private final CheckBox FooterBtwSeparate = new CheckBox();
+    private final CheckBox FooterPriceDiscountSeparate = new CheckBox();
 
 
     public CashierSettingsPane(DomainInterface domainInterface) {
@@ -62,13 +68,6 @@ public class CashierSettingsPane extends GridPane {
         Label groupLabel = new Label("Group Discount %");
         Label expensiveLabel = new Label("Most expensive discount %");
         Label thresholdLabel = new Label("Threshold discount price €");
-
-
-
-
-
-
-
 
 
         groupDiscount = new TextField();
@@ -122,11 +121,23 @@ public class CashierSettingsPane extends GridPane {
         Label receiptcustomHeader = new Label("Receipt print Options - Header");
         receiptcustomHeader.setFont(new Font("Arial", 20));
         this.add(receiptcustomHeader, 1, 8, 2, 1);
+        //checkboxes + labels
+        this.add(HeaderDateTime, 1, 9);
+        this.add(new Label("Show/hide show date and time on receipt"), 2, 9);
+        this.add(HeaderMessage, 1, 10);
+        this.add(new Label("Show/hide create custom message"), 2, 10);
 
         //All customize footer stuff
         Label receiptcustomFooter = new Label("Receipt print Options - Footer");
         receiptcustomFooter.setFont(new Font("Arial", 20));
         this.add(receiptcustomFooter, 1, 11, 2, 1);
+        //checkboxes + labels
+        this.add(FooterPriceDiscountSeparate, 1, 12);
+        this.add(new Label("Show/hide price and discount separately"), 2, 12);
+        this.add(FooterBtwSeparate, 1, 13);
+        this.add(new Label("Show/hide btw separate"), 2, 13);
+        this.add(FooterClosure, 1, 14);
+        this.add(new Label("Show/hide closure message"), 2, 14);
 
 
         //save button placement
