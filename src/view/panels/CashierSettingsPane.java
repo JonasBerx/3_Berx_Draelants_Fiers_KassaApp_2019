@@ -94,8 +94,8 @@ public class CashierSettingsPane extends GridPane {
         discountsThreshold.setValue(StrategyProperties.getThresholdDiscount() + "%");
 
 
-        this.setHgap(5);
-        this.setVgap(5);
+        this.setHgap(2);
+        this.setVgap(4);
 
         this.add(new Label("Read from:"), 1, 1);
         this.add(options, 2, 1);
@@ -118,13 +118,21 @@ public class CashierSettingsPane extends GridPane {
         this.add(thresholdDiscountPrice, 4, 6);
         this.add(discountsThreshold, 3, 6);
 
-        //All customize header/footer stuff
+        //All customize header stuff
+        Label receiptcustomHeader = new Label("Receipt print Options - Header");
+        receiptcustomHeader.setFont(new Font("Arial", 20));
+        this.add(receiptcustomHeader, 1, 8, 2, 1);
+
+        //All customize footer stuff
+        Label receiptcustomFooter = new Label("Receipt print Options - Footer");
+        receiptcustomFooter.setFont(new Font("Arial", 20));
+        this.add(receiptcustomFooter, 1, 11, 2, 1);
 
 
         //save button placement
-        this.add(saveButton, 2, 8, 1, 2);
+        this.add(saveButton, 2, 15);
 
-
+        //ALl checkbox actions
         if (thresholdCheckbox.isSelected()) {
             System.out.println(groupCheckBox.isSelected());
             thresholdDiscountPrice.setDisable(false);

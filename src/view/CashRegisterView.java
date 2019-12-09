@@ -12,17 +12,17 @@ public class CashRegisterView {
 	public CashRegisterView(DomainInterface domainInterface) throws FileNotFoundException {
 		Stage stage = new Stage();
 		stage.setTitle("KASSA VIEW");
-		stage.setResizable(false);		
+		stage.setResizable(false);
 		stage.setX(20);
 		stage.setY(20);
 		Group root = new Group();
-		Scene scene = new Scene(root, 750, 500);
+		Scene scene = new Scene(root, 750, 600);
 		BorderPane borderPane = new CashRegisterMainPane(domainInterface);
 		borderPane.prefHeightProperty().bind(scene.heightProperty());
 		borderPane.prefWidthProperty().bind(scene.widthProperty());
 		root.getChildren().add(borderPane);
 		stage.setScene(scene);
-		stage.sizeToScene();			
-		stage.show();		
+		stage.sizeToScene();
+		stage.show();
 	}
 }
