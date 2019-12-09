@@ -139,43 +139,37 @@ public class CashierSettingsPane extends GridPane {
         this.add(new Label("Show/hide btw separate"), 2, 13);
         this.add(FooterClosure, 1, 14);
         this.add(new Label("Show/hide closure message"), 2, 14);
-
-
         //save button placement
         this.add(saveButton, 2, 15);
 
-
-        //ALl checkbox actions
-        if (thresholdCheckbox.isSelected()) {
-            System.out.println(groupCheckBox.isSelected());
-            thresholdDiscountPrice.setDisable(false);
-            discountsThreshold.setDisable(false);
-        } else {
+        //TODO add actions for new boxes
+        /*
+        THIS SECTiON MAKES SURE THE TEXTFIELDS/... stay disabled on startup
+         */
+        //ThresholdCheckbox check
+        if (!thresholdCheckbox.isSelected()) {
             thresholdDiscountPrice.setDisable(true);
             discountsThreshold.setDisable(true);
         }
-        if (groupCheckBox.isSelected()) {
-            System.out.println(groupCheckBox.isSelected());
-            groups.setDisable(false);
-            groupDiscount.setDisable(false);
-        } else{
+        //GroupCheckbox check
+        if (!groupCheckBox.isSelected()) {
             groupDiscount.setDisable(true);
             groups.setDisable(true);
         }
-        if (expensiveCheckbox.isSelected()) {
-            System.out.println(groupCheckBox.isSelected());
-            expensiveDiscount.setDisable(false);
-        } else {
+        //expensiveCheckbox check
+        if (!expensiveCheckbox.isSelected()) {
             expensiveDiscount.setDisable(true);
         }
 
-
+        /*
+        THIS SECTION HANDLES THE EVENTS BEHIND THE BUTTONS
+         */
         groupCheckBox.setOnAction(event -> {
             if (groupCheckBox.isSelected()) {
                 System.out.println(groupCheckBox.isSelected());
                 groups.setDisable(false);
                 groupDiscount.setDisable(false);
-            } else if (!groupCheckBox.isSelected()){
+            } else if (!groupCheckBox.isSelected()) {
                 groupDiscount.setDisable(true);
                 groups.setDisable(true);
             }
