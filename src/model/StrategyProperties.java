@@ -85,25 +85,20 @@ public class StrategyProperties {
     public static String getHeaderMessage() {
         return properties.getProperty("HEADERMESSAGE");
     }
-
     public static String getHeaderMesssageState() {
         return properties.getProperty("HEADERMESSAGESTATE");
     }
-
     public static String getHeaderDateTime() {
         return properties.getProperty("HEADERDATETIME");
     }
-
     public static String getFooterPriceDiscountSeparate() {
         return properties.getProperty("FOOTERPRICEDISCOUNTSEPARATE");
     }
-
     public static String getFooterBtwSeparate() {
-        return null;
+        return properties.getProperty("FOOTERBTWSEPARATE");
     }
-
     public static String getFooterClosure() {
-        return null;
+        return properties.getProperty("FOOTERCLOSURE");
     }
 
 
