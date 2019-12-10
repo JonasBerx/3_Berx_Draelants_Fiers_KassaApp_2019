@@ -11,6 +11,7 @@ import javafx.scene.text.Font;
 import javafx.util.Pair;
 import model.*;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -150,8 +151,12 @@ public class CashierSalesPane extends GridPane implements Observer {
 
         pay.setOnAction(event -> {
             //Om te testen
-            Receipt basic = new BasicReceipt();
-            System.out.println(basic.getReceipt(domainInterface));
+            ReceiptFactory generateReceipt = new ReceiptFactory();
+            try {
+                System.out.println(generateReceipt.MakeReceiptFactory().getReceipt(domainInterface));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
 

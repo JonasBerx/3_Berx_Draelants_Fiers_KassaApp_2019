@@ -243,6 +243,7 @@ public class CashierSettingsPane extends GridPane {
                 StrategyProperties.setDiscountGroup(groupCheckBox.isSelected());
                 StrategyProperties.setDiscountThreshold(thresholdCheckbox.isSelected());
                 StrategyProperties.setDiscountExpensive(expensiveCheckbox.isSelected());
+
                 StrategyProperties.save();
             } catch (IOException e) {
                 e.printStackTrace();
