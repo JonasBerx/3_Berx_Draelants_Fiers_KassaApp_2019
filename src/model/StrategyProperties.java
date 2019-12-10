@@ -89,24 +89,24 @@ public class StrategyProperties {
         return properties.getProperty("HEADERMESSAGE");
     }
 
-    public static String getHeaderMesssageState() {
-        return properties.getProperty("HEADERMESSAGESTATE");
+    public static boolean getHeaderMesssageState() {
+        return Boolean.parseBoolean(properties.getProperty("HEADERMESSAGESTATE"));
     }
 
-    public static String getHeaderDateTime() {
-        return properties.getProperty("HEADERDATETIME");
+    public static boolean getHeaderDateTime() {
+        return Boolean.parseBoolean(properties.getProperty("HEADERDATETIME"));
     }
 
-    public static String getFooterPriceDiscountSeparate() {
-        return properties.getProperty("FOOTERPRICEDISCOUNTSEPARATE");
+    public static boolean getFooterPriceDiscountSeparate() {
+        return Boolean.parseBoolean(properties.getProperty("FOOTERPRICEDISCOUNTSEPARATE"));
     }
 
-    public static String getFooterBtwSeparate() {
-        return properties.getProperty("FOOTERBTWSEPARATE");
+    public static boolean getFooterBtwSeparate() {
+        return Boolean.parseBoolean(properties.getProperty("FOOTERBTWSEPARATE"));
     }
 
-    public static String getFooterClosure() {
-        return properties.getProperty("FOOTERCLOSURE");
+    public static boolean getFooterClosure() {
+        return Boolean.parseBoolean(properties.getProperty("FOOTERCLOSURE"));
     }
 
     //Property Setters for Receipt

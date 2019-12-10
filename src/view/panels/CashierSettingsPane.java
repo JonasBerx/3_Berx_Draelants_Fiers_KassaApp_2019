@@ -75,16 +75,21 @@ public class CashierSettingsPane extends GridPane {
         thresholdDiscountPrice = new TextField();
 
 
-
         options.setValue("Select option");
         options.setValue(StrategyProperties.getStrategy());
 
         //check in config if box should be selected on startup
-        expensiveCheckbox.setSelected( StrategyProperties.getDiscountExpensive());
-        groupCheckBox.setSelected( StrategyProperties.getDiscountGroup());
-        thresholdCheckbox.setSelected( StrategyProperties.getDiscountThreshold());
+        expensiveCheckbox.setSelected(StrategyProperties.getDiscountExpensive());
+        groupCheckBox.setSelected(StrategyProperties.getDiscountGroup());
+        thresholdCheckbox.setSelected(StrategyProperties.getDiscountThreshold());
 
-//        headerDateTime.setSelected();
+        headerDateTime.setSelected(StrategyProperties.getHeaderDateTime());
+        headerMessage.setSelected(StrategyProperties.getHeaderMesssageState());
+        footerPriceDiscountSeparate.setSelected(StrategyProperties.getFooterPriceDiscountSeparate());
+        footerBtwSeparate.setSelected(StrategyProperties.getFooterBtwSeparate());
+        footerClosure.setSelected(StrategyProperties.getFooterClosure());
+
+        headerCustomMessage.setText(StrategyProperties.getHeaderMessage());
 
 
         groups.setValue("Select Group");
@@ -245,6 +250,7 @@ public class CashierSettingsPane extends GridPane {
                 StrategyProperties.setDiscountExpensive(expensiveCheckbox.isSelected());
 
                 StrategyProperties.save();
+                System.out.println("saved props");
             } catch (IOException e) {
                 e.printStackTrace();
             }

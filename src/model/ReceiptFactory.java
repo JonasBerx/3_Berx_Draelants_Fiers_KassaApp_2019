@@ -6,19 +6,19 @@ public class ReceiptFactory {
     public Receipt MakeReceiptFactory() throws IOException {
         StrategyProperties.load();
         Receipt base = new BasicReceipt();
-        if (StrategyProperties.getHeaderMesssageState().equals("true")) {
+        if (StrategyProperties.getHeaderMesssageState()) {
             base = new HeaderMessage(base);
         }
-        if (StrategyProperties.getHeaderDateTime().equals("true")) {
+        if (StrategyProperties.getHeaderDateTime()) {
             base = new HeaderDateTime(base);
         }
-        if (StrategyProperties.getFooterPriceDiscountSeparate().equals("true")) {
+        if (StrategyProperties.getFooterPriceDiscountSeparate()) {
             base = new FooterPriceDiscountSeparate(base);
         }
-        if (StrategyProperties.getFooterBtwSeparate().equals("true")) {
+        if (StrategyProperties.getFooterBtwSeparate()) {
             base = new FooterBtwSeparate(base);
         }
-        if (StrategyProperties.getFooterClosure().equals("true")) {
+        if (StrategyProperties.getFooterClosure()) {
             base = new FooterClosure(base);
         }
         return base;
