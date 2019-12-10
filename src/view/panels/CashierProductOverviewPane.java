@@ -9,12 +9,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import model.Article;
 import model.DomainInterface;
-import model.Shop;
-import model.StrategyProperties;
-import newDatabase.ArticleDbContext;
+import model.AppProperties;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -22,7 +18,7 @@ import java.io.IOException;
  * Tableview panel reads data from strategy item and puts it in table
  * And sorts it
  */
-
+//TODO Create controller
 public class CashierProductOverviewPane extends GridPane {
 	private TableView<Article> table = new TableView<>();
 	DomainInterface domainInterface;
@@ -30,7 +26,7 @@ public class CashierProductOverviewPane extends GridPane {
 	public CashierProductOverviewPane(DomainInterface domainInterface) {
 		//Load articles from chosen filetype
 		try {
-			StrategyProperties.load();
+			AppProperties.load();
 			this.domainInterface = domainInterface;
 		} catch (IOException e) {
 			e.printStackTrace();

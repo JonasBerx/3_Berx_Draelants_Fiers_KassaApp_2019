@@ -4,21 +4,21 @@ import java.io.IOException;
 
 public class ReceiptFactory {
     public Receipt MakeReceiptFactory() throws IOException {
-        StrategyProperties.load();
+        AppProperties.load();
         Receipt base = new BasicReceipt();
-        if (StrategyProperties.getHeaderMesssageState()) {
+        if (AppProperties.getHeaderMesssageState()) {
             base = new HeaderMessage(base);
         }
-        if (StrategyProperties.getHeaderDateTime()) {
+        if (AppProperties.getHeaderDateTime()) {
             base = new HeaderDateTime(base);
         }
-        if (StrategyProperties.getFooterPriceDiscountSeparate()) {
+        if (AppProperties.getFooterPriceDiscountSeparate()) {
             base = new FooterPriceDiscountSeparate(base);
         }
-        if (StrategyProperties.getFooterBtwSeparate()) {
+        if (AppProperties.getFooterBtwSeparate()) {
             base = new FooterBtwSeparate(base);
         }
-        if (StrategyProperties.getFooterClosure()) {
+        if (AppProperties.getFooterClosure()) {
             base = new FooterClosure(base);
         }
         return base;

@@ -3,18 +3,17 @@ package model;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Properties;
 
-public class StrategyProperties {
+public class AppProperties {
 
     static InputStream inputStream;
-    static Properties properties;
+    static java.util.Properties properties;
     static OutputStream outputStream;
 
 
     public static void load() throws IOException {
         try {
-            properties = new Properties();
+            properties = new java.util.Properties();
 
             inputStream = new FileInputStream("src/bestanden/config.properties");
 
@@ -38,9 +37,9 @@ public class StrategyProperties {
         properties.store(outputStream, null);
     }
 
-    public static String getStrategy() {
+    public static String getLoader() {
 
-        return properties.getProperty("STRATEGY");
+        return properties.getProperty("LOADER");
     }
 
     public static String getMemory() {
@@ -51,9 +50,9 @@ public class StrategyProperties {
         properties.setProperty("MEMORY", value);
     }
 
-    public static void setStrategy(String value) {
+    public static void setLoader(String value) {
 //        System.out.println(properties);
-        properties.setProperty("STRATEGY", value);
+        properties.setProperty("LOADER", value);
     }
 
     public static String getGroup() {

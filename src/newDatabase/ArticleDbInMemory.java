@@ -1,13 +1,12 @@
 package newDatabase;
 
 import model.Article;
-import model.StrategyProperties;
+import model.AppProperties;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 
 public class ArticleDbInMemory implements DbStrategy {
 
@@ -19,12 +18,12 @@ public class ArticleDbInMemory implements DbStrategy {
 
     ArticleDbInMemory() {
         try {
-            StrategyProperties.load();
+            AppProperties.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        strategy = factory.create(StrategyProperties.getStrategy());
-        System.out.println(StrategyProperties.getStrategy());
+        strategy = factory.create(AppProperties.getLoader());
+        System.out.println(AppProperties.getLoader());
 
         db = new HashMap<>();
         add(strategy.load());

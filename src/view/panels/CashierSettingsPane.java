@@ -4,7 +4,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import model.DomainInterface;
-import model.StrategyProperties;
+import model.AppProperties;
 
 import java.io.IOException;
 
@@ -13,6 +13,7 @@ import java.io.IOException;
  * @Version 1.0
  * Settings tab for Cashier
  * */
+//TODO Create controller
 public class CashierSettingsPane extends GridPane {
 
     private final ComboBox options = new ComboBox<>();
@@ -40,7 +41,7 @@ public class CashierSettingsPane extends GridPane {
     public CashierSettingsPane(DomainInterface domainInterface) {
         this.domainInterface = domainInterface;
         try {
-            StrategyProperties.load();
+            AppProperties.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -76,30 +77,30 @@ public class CashierSettingsPane extends GridPane {
 
 
         options.setValue("Select option");
-        options.setValue(StrategyProperties.getStrategy());
+        options.setValue(AppProperties.getLoader());
 
         //check in config if box should be selected on startup
-        expensiveCheckbox.setSelected(StrategyProperties.getDiscountExpensive());
-        groupCheckBox.setSelected(StrategyProperties.getDiscountGroup());
-        thresholdCheckbox.setSelected(StrategyProperties.getDiscountThreshold());
+        expensiveCheckbox.setSelected(AppProperties.getDiscountExpensive());
+        groupCheckBox.setSelected(AppProperties.getDiscountGroup());
+        thresholdCheckbox.setSelected(AppProperties.getDiscountThreshold());
 
-        headerDateTime.setSelected(StrategyProperties.getHeaderDateTime());
-        headerMessage.setSelected(StrategyProperties.getHeaderMesssageState());
-        footerPriceDiscountSeparate.setSelected(StrategyProperties.getFooterPriceDiscountSeparate());
-        footerBtwSeparate.setSelected(StrategyProperties.getFooterBtwSeparate());
-        footerClosure.setSelected(StrategyProperties.getFooterClosure());
+        headerDateTime.setSelected(AppProperties.getHeaderDateTime());
+        headerMessage.setSelected(AppProperties.getHeaderMesssageState());
+        footerPriceDiscountSeparate.setSelected(AppProperties.getFooterPriceDiscountSeparate());
+        footerBtwSeparate.setSelected(AppProperties.getFooterBtwSeparate());
+        footerClosure.setSelected(AppProperties.getFooterClosure());
 
-        headerCustomMessage.setText(StrategyProperties.getHeaderMessage());
+        headerCustomMessage.setText(AppProperties.getHeaderMessage());
 
 
         groups.setValue("Select Group");
-        groups.setValue(StrategyProperties.getGroup());
-        groupDiscount.setText(StrategyProperties.getGroupDiscount());
+        groups.setValue(AppProperties.getGroup());
+        groupDiscount.setText(AppProperties.getGroupDiscount());
 
-        expensiveDiscount.setText(StrategyProperties.getExpensiveDiscount());
+        expensiveDiscount.setText(AppProperties.getExpensiveDiscount());
 
-        thresholdDiscountPrice.setText(StrategyProperties.getThresholdPrice());
-        discountsThreshold.setValue(StrategyProperties.getThresholdDiscount() + "%");
+        thresholdDiscountPrice.setText(AppProperties.getThresholdPrice());
+        discountsThreshold.setValue(AppProperties.getThresholdDiscount() + "%");
 
 
         this.setHgap(2);
@@ -230,26 +231,26 @@ public class CashierSettingsPane extends GridPane {
                 System.out.println(thresholdDiscount);
 
                 //Property setters for receipt
-                StrategyProperties.setHeaderDateTime(headerDateTime.isSelected());
-                StrategyProperties.setHeaderMesssageState(headerMessage.isSelected());
-                StrategyProperties.setHeaderMessage(headerCustomMessage.getText());
-                StrategyProperties.setFooterPriceDiscountSeparate(footerPriceDiscountSeparate.isSelected());
-                StrategyProperties.setFooterBtwSeparate(footerBtwSeparate.isSelected());
-                StrategyProperties.setFooterClosure(footerClosure.isSelected());
+                AppProperties.setHeaderDateTime(headerDateTime.isSelected());
+                AppProperties.setHeaderMesssageState(headerMessage.isSelected());
+                AppProperties.setHeaderMessage(headerCustomMessage.getText());
+                AppProperties.setFooterPriceDiscountSeparate(footerPriceDiscountSeparate.isSelected());
+                AppProperties.setFooterBtwSeparate(footerBtwSeparate.isSelected());
+                AppProperties.setFooterClosure(footerClosure.isSelected());
 
 
-                StrategyProperties.setStrategy((options.getValue().toString().toUpperCase()));
-                StrategyProperties.setGroup((groups.getValue().toString().toUpperCase()));
-                StrategyProperties.setGroupDiscount((groupDiscount.getText().toUpperCase()));
-                StrategyProperties.setThreshDiscount(thresholdDiscount);
-                StrategyProperties.setThreshPrice((thresholdDiscountPrice.getText().toUpperCase()));
-                StrategyProperties.setExpensiveDiscount((expensiveDiscount.getText().toUpperCase()));
+                AppProperties.setLoader((options.getValue().toString().toUpperCase()));
+                AppProperties.setGroup((groups.getValue().toString().toUpperCase()));
+                AppProperties.setGroupDiscount((groupDiscount.getText().toUpperCase()));
+                AppProperties.setThreshDiscount(thresholdDiscount);
+                AppProperties.setThreshPrice((thresholdDiscountPrice.getText().toUpperCase()));
+                AppProperties.setExpensiveDiscount((expensiveDiscount.getText().toUpperCase()));
 
-                StrategyProperties.setDiscountGroup(groupCheckBox.isSelected());
-                StrategyProperties.setDiscountThreshold(thresholdCheckbox.isSelected());
-                StrategyProperties.setDiscountExpensive(expensiveCheckbox.isSelected());
+                AppProperties.setDiscountGroup(groupCheckBox.isSelected());
+                AppProperties.setDiscountThreshold(thresholdCheckbox.isSelected());
+                AppProperties.setDiscountExpensive(expensiveCheckbox.isSelected());
 
-                StrategyProperties.save();
+                AppProperties.save();
                 System.out.println("saved props");
             } catch (IOException e) {
                 e.printStackTrace();

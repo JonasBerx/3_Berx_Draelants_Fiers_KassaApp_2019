@@ -10,14 +10,14 @@ public class HeaderMessage extends ReceiptDecorator {
     @Override
     public String getReceipt(DomainInterface d) {
         try {
-            StrategyProperties.load();
+            AppProperties.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
         StringBuilder receipt = new StringBuilder();
-        receipt.append(String.format(StrategyProperties.getHeaderMessage() + "%n"));
+        receipt.append(String.format(AppProperties.getHeaderMessage() + "%n"));
         receipt.append(String.format("____________________________________%n"));
-        receipt.append(this.getDescription(d) + "%n");
+        receipt.append(this.getDescription(d)).append("%n");
         return receipt.toString();
     }
 }

@@ -7,12 +7,12 @@ public class GroupDiscount implements KortingStrategy {
     @Override
     public ArrayList<Article> berekenKorting(Shop shop) {
         try {
-            StrategyProperties.load();
-            ArrayList<Article> group = shop.getByGroup(StrategyProperties.getGroup());
+            AppProperties.load();
+            ArrayList<Article> group = shop.getByGroup(AppProperties.getGroup());
             if (shop.getBasket() != null) {
 
                 for (Article article : group) {
-                    article.setPrice(article.getPrice() * ((100 - Double.parseDouble(StrategyProperties.getGroupDiscount())) / 100));
+                    article.setPrice(article.getPrice() * ((100 - Double.parseDouble(AppProperties.getGroupDiscount())) / 100));
                 }
             }
             return group;

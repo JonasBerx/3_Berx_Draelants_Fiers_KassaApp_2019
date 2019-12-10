@@ -11,10 +11,10 @@ public class ExpensiveDiscount implements KortingStrategy {
         ArrayList<Article> expensive = new ArrayList<>();
 
         try {
-            StrategyProperties.load();
+            AppProperties.load();
             expensive.add(shop.getMostExpensive());
-            for (int i = 0; i < expensive.size(); i++) {
-                expensive.get(i).setPrice(expensive.get(i).getPrice() * (100- Double.parseDouble(StrategyProperties.getExpensiveDiscount()))/100);
+            for (Article article : expensive) {
+                article.setPrice(article.getPrice() * (100 - Double.parseDouble(AppProperties.getExpensiveDiscount())) / 100);
             }
             return expensive;
         } catch (IOException e) {

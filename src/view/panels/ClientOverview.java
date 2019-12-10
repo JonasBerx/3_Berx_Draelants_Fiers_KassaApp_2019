@@ -16,7 +16,7 @@ import model.*;
 
 import java.util.Collection;
 import java.util.List;
-
+//TODO Create controller
 public class ClientOverview extends GridPane implements Observer {
     private ObservableList<Pair<Article, Integer>> articles = FXCollections.observableArrayList();
     private Label totalPrice;

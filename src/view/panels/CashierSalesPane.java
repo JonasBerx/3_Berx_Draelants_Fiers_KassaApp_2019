@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-
+//TODO Create controller
 public class CashierSalesPane extends GridPane implements Observer {
     private ObservableList<Article> articles = FXCollections.observableArrayList();
     private Label totalPrice;

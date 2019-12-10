@@ -10,10 +10,10 @@ public class ThresholdDiscount implements KortingStrategy {
     public ArrayList<Article> berekenKorting(Shop shop) {
         ArrayList<Article> drempels = new ArrayList<>();
         try{
-            StrategyProperties.load();
-            if (shop.getBasket().getTotalPrice() >= Double.parseDouble(StrategyProperties.getThresholdPrice())) {
+            AppProperties.load();
+            if (shop.getBasket().getTotalPrice() >= Double.parseDouble(AppProperties.getThresholdPrice())) {
                 for (int i = 0; i < shop.getBasket().getAll().size(); i++) {
-                    shop.getBasket().get(i).setPrice(shop.getBasket().get(i).getPrice() * (100 - Double.parseDouble(StrategyProperties.getExpensiveDiscount()))/100);
+                    shop.getBasket().get(i).setPrice(shop.getBasket().get(i).getPrice() * (100 - Double.parseDouble(AppProperties.getExpensiveDiscount()))/100);
                     drempels.add(shop.getBasket().get(i));
                 }
             }

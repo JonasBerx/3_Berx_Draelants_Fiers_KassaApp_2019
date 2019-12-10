@@ -18,9 +18,9 @@ public class Shop implements Observable {
 
     public Shop() {
         try {
-            StrategyProperties.load();
-            context = new ArticleDbContext(StrategyProperties.getMemory());
-            kortingContext = new KortingContext(StrategyProperties.getDiscounts());
+            AppProperties.load();
+            context = new ArticleDbContext(AppProperties.getMemory());
+            kortingContext = new KortingContext(AppProperties.getDiscounts());
             basket = new Basket();
         } catch (IOException e) {
             e.printStackTrace();
