@@ -68,14 +68,42 @@ public class StrategyProperties {
     public static void setGroupDiscount(String value) {
         properties.setProperty("GROUPDISCOUNT", value);
     }
+
     public static String getExpensiveDiscount() {
         return properties.getProperty("EXPENSIVEDISCOUNT");
     }
+
     public static void setExpensiveDiscount(String value) {
         properties.setProperty("EXPENSIVEDISCOUNT", value);
     }
+
     public static String getThresholdPrice() {
         return properties.getProperty("THRESHOLDPRICE");
+    }
+
+    //Property Getters for Receipt
+    public static String getHeaderMessage() {
+        return properties.getProperty("HEADERMESSAGE");
+    }
+
+    public static String getHeaderMesssageState() {
+        return properties.getProperty("HEADERMESSAGESTATE");
+    }
+
+    public static String getHeaderDateTime() {
+        return properties.getProperty("HEADERDATETIME");
+    }
+
+    public static String getFooterPriceDiscountSeparate() {
+        return properties.getProperty("FOOTERPRICEDISCOUNTSEPARATE");
+    }
+
+    public static String getFooterBtwSeparate() {
+        return null;
+    }
+
+    public static String getFooterClosure() {
+        return null;
     }
 
 
@@ -86,6 +114,7 @@ public class StrategyProperties {
     public static String getThresholdDiscount() {
         return properties.getProperty("THRESHOLDDISCOUNT");
     }
+
     public static void setThreshDiscount(String value) {
         properties.setProperty("THRESHOLDDISCOUNT", value);
     }
