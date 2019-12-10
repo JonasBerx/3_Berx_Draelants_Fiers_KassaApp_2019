@@ -3,7 +3,6 @@ package model;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 public class StrategyProperties {
@@ -125,5 +124,4 @@ public class StrategyProperties {
     }public static boolean getDiscountExpensive() {
         return Boolean.parseBoolean(properties.getProperty("EXPENSIVE"));
     }
-
 }

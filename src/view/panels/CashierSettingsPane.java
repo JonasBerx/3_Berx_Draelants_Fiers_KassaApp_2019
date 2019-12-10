@@ -146,7 +146,6 @@ public class CashierSettingsPane extends GridPane {
         //save button placement
         this.add(saveButton, 2, 15);
 
-        //TODO add actions for new boxes
         /*
         THIS SECTiON MAKES SURE THE TEXTFIELDS/... stay disabled on startup
          */
@@ -225,6 +224,7 @@ public class CashierSettingsPane extends GridPane {
                 thresholdDiscount = String.valueOf(thresholdDiscount.charAt(0));
                 System.out.println(thresholdDiscount);
 
+                //TODO add the proporty updaters
                 StrategyProperties.setStrategy((options.getValue().toString().toUpperCase()));
                 StrategyProperties.setGroup((groups.getValue().toString().toUpperCase()));
                 StrategyProperties.setGroupDiscount((groupDiscount.getText().toUpperCase()));
