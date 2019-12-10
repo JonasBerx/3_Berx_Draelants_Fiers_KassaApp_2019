@@ -1,15 +1,16 @@
-package model;
+package model.properties;
 
+
+import model.discount.DiscountType;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 
-public class AppProperties {
-
+public class Properties {
     static InputStream inputStream;
     static java.util.Properties properties;
     static OutputStream outputStream;
-
 
     public static void load() throws IOException {
         try {
@@ -146,43 +147,53 @@ public class AppProperties {
         properties.setProperty("THRESHOLDDISCOUNT", value);
     }
 
+    public static Collection<DiscountType> getDiscountTypes() {
+        Collection<DiscountType> discountTypes = new LinkedList<>();
+        if (Properties.getBoolean(Property.DISCOUNT_GROUP))
+            discountTypes.add(DiscountType.GROUP);
 
-    public static ArrayList<String> getDiscounts() {
-        ArrayList<String> discounts = new ArrayList<>();
-        if (properties.getProperty("EXPENSIVE").equals("true")) {
-            discounts.add("EXPENSIVE");
-        }
-        if (properties.getProperty("GROUP").equals("true")) {
-            discounts.add("GROUP");
-        }
-        if (properties.getProperty("THRESHOLD").equals("true")) {
-            discounts.add("THRESHOLD");
-        }
-        return discounts;
+        if (Properties.getBoolean(Property.DISCOUNT_THRESHOLD))
+            discountTypes.add(DiscountType.THRESHOLD);
+
+        if (Properties.getBoolean(Property.DISCOUNT_EXPENSIVE))
+            discountTypes.add(DiscountType.EXPENSIVE);
+
+        return discountTypes;
     }
 
-
-    public static void setDiscountGroup(boolean selected) {
-        properties.setProperty("GROUP", String.valueOf(selected));
+    private static String getPropertyKey(Property property) {
+        return property.name();
     }
 
-    public static void setDiscountThreshold(boolean selected) {
-        properties.setProperty("THRESHOLD", String.valueOf(selected));
+    public static String getString(Property property) {
+        return properties.getProperty(getPropertyKey(property));
     }
 
-    public static void setDiscountExpensive(boolean selected) {
-        properties.setProperty("EXPENSIVE", String.valueOf(selected));
+    public static double getDouble(Property property) {
+        return Double.parseDouble(getString(property));
     }
 
-    public static boolean getDiscountGroup() {
-        return Boolean.parseBoolean(properties.getProperty("GROUP"));
+    public static int getInt(Property property) {
+        return Integer.parseInt(getString(property));
     }
 
-    public static boolean getDiscountThreshold() {
-        return Boolean.parseBoolean(properties.getProperty("THRESHOLD"));
+    public static boolean getBoolean(Property property) {
+        return Boolean.parseBoolean(getString(property));
     }
 
-    public static boolean getDiscountExpensive() {
-        return Boolean.parseBoolean(properties.getProperty("EXPENSIVE"));
+    public static void setString(Property property, String value) {
+        properties.setProperty(getPropertyKey(property), value);
+    }
+
+    public static void setDouble(Property property, Double value) {
+        setString(property, value.toString());
+    }
+
+    public static void setInt(Property property, int value) {
+        setString(property, Integer.toString(value));
+    }
+
+    public static void setBoolean(Property property, boolean value) {
+        setString(property, Boolean.toString(value));
     }
 }

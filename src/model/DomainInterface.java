@@ -1,14 +1,18 @@
 package model;
 
+import model.properties.Properties;
 import newDatabase.ArticleDbContext;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
 public class DomainInterface {
     private final Shop shop;
 
-    public DomainInterface() {
+    public DomainInterface() throws IOException {
+        Properties.load();
+
         this.shop = new Shop();
     }
 
@@ -77,6 +81,10 @@ public class DomainInterface {
 
     public double getBasketTotalPrice() {
         return shop.getBasket().getTotalPrice();
+    }
+
+    public double getBasketDiscountedPrice() {
+        return shop.getBasket().getTotalDiscountedPrice();
     }
     //endregion
 }

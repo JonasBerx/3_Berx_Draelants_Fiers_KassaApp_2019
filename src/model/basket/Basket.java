@@ -1,12 +1,22 @@
-package model;
+package model.basket;
 
 import javafx.util.Pair;
+import model.Article;
+import model.Observer;
+import model.discount.DiscountContext;
+import model.properties.Properties;
 
 import java.util.*;
 
-public class Basket implements Observable {
+public class Basket implements model.Observable {
     ArrayList<Article> articles = new ArrayList<>();
-    LinkedList<Observer> observers = new LinkedList();
+    LinkedList<model.Observer> observers = new LinkedList();
+    Map<Article, Double> discountedPrices;
+    private DiscountContext discountContext;
+
+    public Basket() {
+        discountContext = new DiscountContext(Properties.getDiscountTypes());
+    }
 
     public Collection<Article> getAll() {
         return Collections.unmodifiableList(articles);
@@ -19,6 +29,26 @@ public class Basket implements Observable {
 
     public Article get(int index) {
         return articles.get(index);
+    }
+
+    public ArrayList<Article> getByGroup(String group) {
+        ArrayList<Article> groupList = new ArrayList<>();
+        for (int i = 0; i < articles.size(); i++) {
+            if (articles.get(i).getGroup().equals(group)) {
+                groupList.add(articles.get(i));
+            }
+        }
+        return groupList;
+    }
+
+    public ArrayList<Article> getByNumber(int artNumber) {
+        ArrayList<Article> numberList = new ArrayList<>();
+        for (int i = 0; i < articles.size(); i++) {
+            if (articles.get(i).getArticleCode() == artNumber) {
+                numberList.add(articles.get(i));
+            }
+        }
+        return numberList;
     }
 
     public void remove(Article article) {
@@ -58,8 +88,16 @@ public class Basket implements Observable {
         return articles.stream().mapToDouble(Article::getPrice).sum();
     }
 
+    public double getTotalDiscountedPrice() {
+        return discountedPrices.values().stream().mapToDouble(Double::new).sum();
+    }
+
+    public void updateDiscountedPrices() {
+        this.discountedPrices = discountContext.getDiscountedPrices(this);
+    }
+
     @Override
-    public void addObserver(Observer observer) {
+    public void addObserver(model.Observer observer) {
         observers.add(observer);
     }
 
@@ -69,8 +107,10 @@ public class Basket implements Observable {
     }
 
     private void priceMutatingUpdate(BasketEvent event, Object data) {
+        updateDiscountedPrices();
+
         updateObservers(event, data);
-        updateObservers(BasketEvent.TOTAL_PRICE_CHANGED, getTotalPrice());
+        updateObservers(BasketEvent.TOTAL_PRICE_CHANGED, new Pair<Double, Double>(getTotalPrice(), getTotalDiscountedPrice()));
     }
 
     private void updateObservers(BasketEvent event, Object data) {

@@ -9,7 +9,7 @@ import model.DomainInterface;
 import java.io.FileNotFoundException;
 
 public class CashRegisterView {
-	public CashRegisterView(DomainInterface domainInterface) throws FileNotFoundException {
+	public CashRegisterView(DomainInterface domainInterface) {
 		Stage stage = new Stage();
 		stage.setTitle("KASSA VIEW");
 		stage.setResizable(false);

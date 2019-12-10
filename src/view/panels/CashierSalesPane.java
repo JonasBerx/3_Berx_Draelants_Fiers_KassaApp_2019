@@ -10,6 +10,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.util.Pair;
 import model.*;
+import model.basket.Basket;
+import model.basket.BasketEvent;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -199,7 +201,8 @@ public class CashierSalesPane extends GridPane implements Observer {
                         articles.remove(i);
                     break;
                 case TOTAL_PRICE_CHANGED:
-                    setTotalPrice((Double)data); break;
+                    Pair<Double, Double> prices = (Pair<Double, Double>) data;
+                    setTotalPrice(prices.getKey()); break;
             }
         } else if (event instanceof ShopEvent) {
             ShopEvent shopEvent = (ShopEvent) event;
@@ -211,11 +214,13 @@ public class CashierSalesPane extends GridPane implements Observer {
                     oldBasket.removeObserver(this);
                     newBasket.addObserver(this);
                     populateArticles();
+                    setTotalPrice(newBasket.getTotalPrice());
                     break;
                 case RESUMED_SALE:
                     Basket basket = (Basket) data;
                     basket.addObserver(this);
                     populateArticles();
+                    setTotalPrice(basket.getTotalPrice());
                     break;
             }
         }

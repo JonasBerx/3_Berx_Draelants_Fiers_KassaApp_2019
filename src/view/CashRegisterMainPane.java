@@ -16,7 +16,7 @@ class CashRegisterMainPane extends BorderPane {
     private CashierProductOverviewPane cashierProductOverviewPane;
     private CashierSettingsPane settingsPane;
     private CashierSalesPane salesPane;
-    CashRegisterMainPane(DomainInterface domainInterface) throws FileNotFoundException {
+    CashRegisterMainPane(DomainInterface domainInterface) {
         cashierProductOverviewPane = new CashierProductOverviewPane(domainInterface);
         salesPane = new CashierSalesPane(domainInterface);
         settingsPane = new CashierSettingsPane(domainInterface);

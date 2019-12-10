@@ -1,4 +1,4 @@
-package model;
+package model.basket;
 
 public enum BasketEvent {
     ADDED_ARTICLE,

@@ -1,24 +1,26 @@
 package model;
 
+import model.properties.Properties;
+
 import java.io.IOException;
 
 public class ReceiptFactory {
     public Receipt MakeReceiptFactory() throws IOException {
-        AppProperties.load();
+        Properties.load();
         Receipt base = new BasicReceipt();
-        if (AppProperties.getHeaderMesssageState()) {
+        if (Properties.getHeaderMesssageState()) {
             base = new HeaderMessage(base);
         }
-        if (AppProperties.getHeaderDateTime()) {
+        if (Properties.getHeaderDateTime()) {
             base = new HeaderDateTime(base);
         }
-        if (AppProperties.getFooterPriceDiscountSeparate()) {
+        if (Properties.getFooterPriceDiscountSeparate()) {
             base = new FooterPriceDiscountSeparate(base);
         }
-        if (AppProperties.getFooterBtwSeparate()) {
+        if (Properties.getFooterBtwSeparate()) {
             base = new FooterBtwSeparate(base);
         }
-        if (AppProperties.getFooterClosure()) {
+        if (Properties.getFooterClosure()) {
             base = new FooterClosure(base);
         }
         return base;

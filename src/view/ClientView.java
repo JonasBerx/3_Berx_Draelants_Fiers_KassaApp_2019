@@ -9,7 +9,7 @@ import model.DomainInterface;
 import java.io.FileNotFoundException;
 
 public class ClientView {
-	public ClientView(DomainInterface domainInterface) throws FileNotFoundException {
+	public ClientView(DomainInterface domainInterface) {
 		Stage stage = new Stage();
 		stage.setTitle("KLANT VIEW");
 		stage.setResizable(false);		

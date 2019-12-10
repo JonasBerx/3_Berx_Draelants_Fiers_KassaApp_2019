@@ -9,7 +9,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import model.Article;
 import model.DomainInterface;
-import model.AppProperties;
+import model.properties.Properties;
 
 import java.io.IOException;
 
@@ -26,7 +26,7 @@ public class CashierProductOverviewPane extends GridPane {
 	public CashierProductOverviewPane(DomainInterface domainInterface) {
 		//Load articles from chosen filetype
 		try {
-			AppProperties.load();
+			Properties.load();
 			this.domainInterface = domainInterface;
 		} catch (IOException e) {
 			e.printStackTrace();

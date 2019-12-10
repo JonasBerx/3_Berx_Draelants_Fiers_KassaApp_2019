@@ -1,6 +1,6 @@
 package model;
 
-public class BasicReceipt extends DomainInterface implements Receipt {
+public class BasicReceipt implements Receipt {
     //Basic receipt return
     public String getReceipt(DomainInterface d) {
         StringBuilder receipt = new StringBuilder();

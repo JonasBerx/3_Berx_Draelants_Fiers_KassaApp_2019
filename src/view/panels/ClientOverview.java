@@ -13,15 +13,17 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.util.Pair;
 import model.*;
+import model.basket.Basket;
+import model.basket.BasketEvent;
 
 import java.util.Collection;
-import java.util.List;
+
 //TODO Create controller
 public class ClientOverview extends GridPane implements Observer {
     private ObservableList<Pair<Article, Integer>> articles = FXCollections.observableArrayList();
-    private Label totalPrice;
+    private Label totalPriceLbl;
     private DomainInterface domainInterface;
-    private Label discountPrice;
+    private Label discountPriceLbl;
 
     public ClientOverview(DomainInterface domainInterface) {
         this.domainInterface = domainInterface;
@@ -54,17 +56,17 @@ public class ClientOverview extends GridPane implements Observer {
         populateArticles();
         table.getColumns().addAll(productInfo);
 
-        totalPrice = new Label();
-        totalPrice.setFont(new Font("Arial", 30));
-        setTotalPrice(0.0);
+        totalPriceLbl = new Label();
+        totalPriceLbl.setFont(new Font("Arial", 30));
+        setTotalPriceLbl(0.0);
 
-        discountPrice = new Label();
-        totalPrice.setFont(new Font("Arial", 30));
-        setDiscountPrice(0.0);
+        discountPriceLbl = new Label();
+        totalPriceLbl.setFont(new Font("Arial", 30));
+        setDiscountPriceLbl(0.0);
 
         this.add(table, 0, 0);
-        this.add(totalPrice, 0, 1);
-        this.add(discountPrice, 0, 2);
+        this.add(totalPriceLbl, 0, 1);
+        this.add(discountPriceLbl, 0, 2);
     }
 
     public void populateArticles() {
@@ -72,19 +74,13 @@ public class ClientOverview extends GridPane implements Observer {
         domainInterface.getAllBasketArticles().forEach(this::addArticle);
     }
 
-    private void setTotalPrice(Double price) {
-        totalPrice.setText(String.format("Total: €%.2f", price));
+    private void setTotalPriceLbl(Double price) {
+        totalPriceLbl.setText(String.format("Total: €%.2f", price));
     }
 
-    private void setDiscountPrice(Double price) {
-        domainInterface.getBasketTotalPrice();
-        if (domainInterface.getAllBasketArticles().size() != 0) {
-            domainInterface.getShop().applyKorting();
-        }
-
+    private void setDiscountPriceLbl(Double price) {
         System.out.println(domainInterface.getBasketTotalPrice());
-        discountPrice.setText(String.format("DiscountPrice: €%.2f", price));
-
+        discountPriceLbl.setText(String.format("DiscountPrice: €%.2f", price));
     }
 
     private Pair<Article, Integer> getPair(Article article) {
@@ -142,8 +138,9 @@ public class ClientOverview extends GridPane implements Observer {
                     removedArticles.forEach(this::removeArticle);
                     break;
                 case TOTAL_PRICE_CHANGED:
-                    setTotalPrice((Double) data);
-                    setDiscountPrice((Double) data);
+                    Pair<Double, Double> prices = (Pair<Double, Double>) data;
+                    setTotalPriceLbl(prices.getKey());
+                    setDiscountPriceLbl(prices.getValue());
                     break;
             }
         } else if (event instanceof ShopEvent) {
@@ -156,11 +153,13 @@ public class ClientOverview extends GridPane implements Observer {
                     oldBasket.removeObserver(this);
                     newBasket.addObserver(this);
                     populateArticles();
+                    setTotalPriceLbl(newBasket.getTotalPrice());
                     break;
                 case RESUMED_SALE:
                     Basket basket = (Basket) data;
                     basket.addObserver(this);
                     populateArticles();
+                    setTotalPriceLbl(basket.getTotalPrice());
                     break;
             }
         }
