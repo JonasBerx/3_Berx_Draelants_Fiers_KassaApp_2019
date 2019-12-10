@@ -35,7 +35,7 @@ public class StrategyProperties {
 
     public static void save() throws IOException {
         outputStream = new FileOutputStream("src/bestanden/config.properties");
-        properties.store(outputStream,null);
+        properties.store(outputStream, null);
     }
 
     public static String getStrategy() {
@@ -59,12 +59,15 @@ public class StrategyProperties {
     public static String getGroup() {
         return properties.getProperty("GROUPNUMBER");
     }
+
     public static void setGroup(String value) {
         properties.setProperty("GROUPNUMBER", value);
     }
+
     public static String getGroupDiscount() {
         return properties.getProperty("GROUPDISCOUNT");
     }
+
     public static void setGroupDiscount(String value) {
         properties.setProperty("GROUPDISCOUNT", value);
     }
@@ -85,20 +88,50 @@ public class StrategyProperties {
     public static String getHeaderMessage() {
         return properties.getProperty("HEADERMESSAGE");
     }
+
     public static String getHeaderMesssageState() {
         return properties.getProperty("HEADERMESSAGESTATE");
     }
+
     public static String getHeaderDateTime() {
         return properties.getProperty("HEADERDATETIME");
     }
+
     public static String getFooterPriceDiscountSeparate() {
         return properties.getProperty("FOOTERPRICEDISCOUNTSEPARATE");
     }
+
     public static String getFooterBtwSeparate() {
         return properties.getProperty("FOOTERBTWSEPARATE");
     }
+
     public static String getFooterClosure() {
         return properties.getProperty("FOOTERCLOSURE");
+    }
+
+    //Property Setters for Receipt
+    public static void setHeaderMessage(String txt) {
+        properties.setProperty("HEADERMESSAGE", txt);
+    }
+
+    public static void setHeaderMesssageState(boolean b) {
+        properties.setProperty("HEADERMESSAGESTATE", String.valueOf(b));
+    }
+
+    public static void setHeaderDateTime(boolean b) {
+        properties.setProperty("HEADERDATETIME", String.valueOf(b));
+    }
+
+    public static void setFooterPriceDiscountSeparate(boolean b) {
+        properties.setProperty("FOOTERPRICEDISCOUNTSEPARATE", String.valueOf(b));
+    }
+
+    public static void setFooterBtwSeparate(boolean b) {
+        properties.setProperty("FOOTERBTWSEPARATE", String.valueOf(b));
+    }
+
+    public static void setFooterClosure(boolean b) {
+        properties.setProperty("FOOTERCLOSURE", String.valueOf(b));
     }
 
 
@@ -113,6 +146,7 @@ public class StrategyProperties {
     public static void setThreshDiscount(String value) {
         properties.setProperty("THRESHOLDDISCOUNT", value);
     }
+
 
     public static ArrayList<String> getDiscounts() {
         ArrayList<String> discounts = new ArrayList<>();
@@ -143,9 +177,13 @@ public class StrategyProperties {
 
     public static boolean getDiscountGroup() {
         return Boolean.parseBoolean(properties.getProperty("GROUP"));
-    }public static boolean getDiscountThreshold() {
+    }
+
+    public static boolean getDiscountThreshold() {
         return Boolean.parseBoolean(properties.getProperty("THRESHOLD"));
-    }public static boolean getDiscountExpensive() {
+    }
+
+    public static boolean getDiscountExpensive() {
         return Boolean.parseBoolean(properties.getProperty("EXPENSIVE"));
     }
 }

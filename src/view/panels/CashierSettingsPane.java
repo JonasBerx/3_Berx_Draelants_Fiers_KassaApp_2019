@@ -29,7 +29,7 @@ public class CashierSettingsPane extends GridPane {
     private TextField thresholdDiscountPrice;
 
     //Declarations for header/footer buttons/labels
-    private TextField customMessage = new TextField();
+    private TextField headerCustomMessage = new TextField();
     private final CheckBox headerDateTime = new CheckBox();
     private final CheckBox headerMessage = new CheckBox();
     private final CheckBox footerClosure = new CheckBox();
@@ -130,7 +130,7 @@ public class CashierSettingsPane extends GridPane {
         this.add(new Label("Show/hide show date and time on receipt"), 2, 9);
         this.add(headerMessage, 1, 10);
         this.add(new Label("Show/hide create custom message"), 2, 10);
-        this.add(customMessage, 4, 10);
+        this.add(headerCustomMessage, 4, 10);
 
         //All customize footer stuff
         Label receiptcustomFooter = new Label("Receipt print Options - Footer");
@@ -165,7 +165,7 @@ public class CashierSettingsPane extends GridPane {
         }
         //Only need to check for headermessage cause this is the only textfield
         if(!headerMessage.isSelected()) {
-            customMessage.setDisable(true);
+            headerCustomMessage.setDisable(true);
         }
 
 
@@ -201,9 +201,9 @@ public class CashierSettingsPane extends GridPane {
 
         headerMessage.setOnAction(event -> {
             if(headerMessage.isSelected()) {
-                customMessage.setDisable(false);
+                headerCustomMessage.setDisable(false);
             } else {
-                customMessage.setDisable(true);
+                headerCustomMessage.setDisable(true);
             }
         });
 
@@ -224,7 +224,15 @@ public class CashierSettingsPane extends GridPane {
                 thresholdDiscount = String.valueOf(thresholdDiscount.charAt(0));
                 System.out.println(thresholdDiscount);
 
-                //TODO add the proporty updaters
+                //Property setters for receipt
+                StrategyProperties.setHeaderDateTime(headerDateTime.isSelected());
+                StrategyProperties.setHeaderMesssageState(headerMessage.isSelected());
+                StrategyProperties.setHeaderMessage(headerCustomMessage.getText());
+                StrategyProperties.setFooterPriceDiscountSeparate(footerPriceDiscountSeparate.isSelected());
+                StrategyProperties.setFooterBtwSeparate(footerBtwSeparate.isSelected());
+                StrategyProperties.setFooterClosure(footerClosure.isSelected());
+
+
                 StrategyProperties.setStrategy((options.getValue().toString().toUpperCase()));
                 StrategyProperties.setGroup((groups.getValue().toString().toUpperCase()));
                 StrategyProperties.setGroupDiscount((groupDiscount.getText().toUpperCase()));
