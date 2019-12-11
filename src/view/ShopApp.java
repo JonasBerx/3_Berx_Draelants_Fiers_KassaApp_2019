@@ -26,4 +26,8 @@ public class ShopApp extends Application {
 		CashRegisterView cashRegisterView = new CashRegisterView(domainFacade);
 		ClientView clientView = new ClientView(domainFacade);
 	}
+
+	public static void main(String[] args) {
+		launch(args);
+	}
 }
