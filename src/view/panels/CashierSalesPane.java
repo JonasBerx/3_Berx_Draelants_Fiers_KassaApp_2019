@@ -9,7 +9,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.util.Pair;
-import model.*;
+import model.DomainFacade;
 import model.article.Article;
 import model.basket.Basket;
 import model.basket.BasketEvent;
@@ -78,7 +78,7 @@ public class CashierSalesPane extends GridPane implements Observer {
         alert.setHeaderText("You made an oopsies");
 
         sales.getColumns().addAll(code, name, group, price);
-
+        pay.setDisable(true);
         TableView<Article> table = new TableView<>();
         table.setMaxSize(800, 800);
         table.setItems(articles);
@@ -125,6 +125,7 @@ public class CashierSalesPane extends GridPane implements Observer {
                     alert.showAndWait();
                 } else {
                     Article article = domainFacade.getContext().get(Integer.parseInt(articleCode.getText()));
+                    pay.setDisable(false);
                     domainFacade.addBasketArticle(article);
                 }
                 articleCode.clear();
@@ -143,6 +144,9 @@ public class CashierSalesPane extends GridPane implements Observer {
             Optional<ButtonType> result = a.showAndWait();
             if (result.get() == ButtonType.OK) {
                 domainFacade.removeBasketArticleIndices(selectedIndices);
+                if (domainFacade.getAllBasketArticles().isEmpty()) {
+                    pay.setDisable(true);
+                }
             }
         });
 
@@ -156,18 +160,18 @@ public class CashierSalesPane extends GridPane implements Observer {
         });
 
         pay.setOnAction(event -> {
-            //Om te testen
-            ReceiptFactory generateReceipt = new ReceiptFactory();
-            try {
-                System.out.println(generateReceipt.MakeReceiptFactory().getReceipt(domainFacade));
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (domainFacade.getAllBasketArticles().size() > 0) {
+                ReceiptFactory generateReceipt = new ReceiptFactory();
+                try {
+                    System.out.println(generateReceipt.MakeReceiptFactory().getReceipt(domainFacade));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
 
     }
-
 
 
     public void populateArticles() {
