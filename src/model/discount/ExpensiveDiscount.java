@@ -1,7 +1,7 @@
 package model.discount;
 
 import model.properties.Properties;
-import model.Article;
+import model.article.Article;
 import model.basket.Basket;
 import model.properties.Property;
 

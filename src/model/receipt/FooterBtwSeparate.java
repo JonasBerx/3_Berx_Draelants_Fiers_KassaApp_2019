@@ -1,4 +1,6 @@
-package model;
+package model.receipt;
+
+import model.DomainFacade;
 
 public class FooterBtwSeparate extends ReceiptDecorator {
     public FooterBtwSeparate(Receipt newReceipt) {
@@ -7,7 +9,7 @@ public class FooterBtwSeparate extends ReceiptDecorator {
 
     @Override
     //TODO btw functions needed
-    public String getReceipt(DomainInterface d) {
+    public String getReceipt(DomainFacade d) {
         return null;
     }
 }

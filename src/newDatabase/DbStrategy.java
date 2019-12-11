@@ -1,6 +1,6 @@
 package newDatabase;
 
-import model.Article;
+import model.article.Article;
 
 import java.util.ArrayList;
 import java.util.Collection;

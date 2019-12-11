@@ -1,14 +1,13 @@
-package model;
+package model.shop;
 
 
 import javafx.util.Pair;
+import model.observer.Observable;
+import model.observer.Observer;
 import model.basket.Basket;
-import model.discount.DiscountContext;
 import model.properties.Properties;
 import newDatabase.ArticleDbContext;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Shop implements Observable {

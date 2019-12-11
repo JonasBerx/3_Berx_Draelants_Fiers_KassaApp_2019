@@ -13,8 +13,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.util.Pair;
 import model.*;
+import model.article.Article;
 import model.basket.Basket;
 import model.basket.BasketEvent;
+import model.observer.Observer;
+import model.shop.ShopEvent;
 
 import java.util.Collection;
 
@@ -22,13 +25,13 @@ import java.util.Collection;
 public class ClientOverview extends GridPane implements Observer {
     private ObservableList<Pair<Article, Integer>> articles = FXCollections.observableArrayList();
     private Label totalPriceLbl;
-    private DomainInterface domainInterface;
+    private DomainFacade domainFacade;
     private Label discountPriceLbl;
 
-    public ClientOverview(DomainInterface domainInterface) {
-        this.domainInterface = domainInterface;
-        domainInterface.addShopObserver(this);
-        domainInterface.addBasketObserver(this);
+    public ClientOverview(DomainFacade domainFacade) {
+        this.domainFacade = domainFacade;
+        domainFacade.addShopObserver(this);
+        domainFacade.addBasketObserver(this);
 
         this.setPadding(new Insets(5, 5, 5, 5));
         this.setVgap(5);
@@ -51,7 +54,7 @@ public class ClientOverview extends GridPane implements Observer {
         quantityCol.setCellValueFactory(data -> new SimpleIntegerProperty(((data.getValue().getValue() + 1))));
 
         productInfo.getColumns().addAll(nameCol, priceCol, quantityCol);
-        domainInterface.getAllBasketArticles().forEach(this::addArticle);
+        domainFacade.getAllBasketArticles().forEach(this::addArticle);
         table.setItems(articles);
         populateArticles();
         table.getColumns().addAll(productInfo);
@@ -71,7 +74,7 @@ public class ClientOverview extends GridPane implements Observer {
 
     public void populateArticles() {
         articles.clear();
-        domainInterface.getAllBasketArticles().forEach(this::addArticle);
+        domainFacade.getAllBasketArticles().forEach(this::addArticle);
     }
 
     private void setTotalPriceLbl(Double price) {
@@ -79,7 +82,7 @@ public class ClientOverview extends GridPane implements Observer {
     }
 
     private void setDiscountPriceLbl(Double price) {
-        System.out.println(domainInterface.getBasketTotalPrice());
+        System.out.println(domainFacade.getBasketTotalPrice());
         discountPriceLbl.setText(String.format("DiscountPrice: €%.2f", price));
     }
 

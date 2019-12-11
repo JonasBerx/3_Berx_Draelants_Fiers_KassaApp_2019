@@ -1,4 +1,4 @@
-package model;
+package model.receipt;
 
 public enum ReceiptOptions {
     HEADERMESSAGE,

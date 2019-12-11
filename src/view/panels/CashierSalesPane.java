@@ -10,8 +10,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.util.Pair;
 import model.*;
+import model.article.Article;
 import model.basket.Basket;
 import model.basket.BasketEvent;
+import model.observer.Observer;
+import model.receipt.ReceiptFactory;
+import model.shop.ShopEvent;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -22,16 +26,16 @@ public class CashierSalesPane extends GridPane implements Observer {
     private ObservableList<Article> articles = FXCollections.observableArrayList();
     private Label totalPrice;
     private Button holdSaleBtn;
-    private DomainInterface domainInterface;
+    private DomainFacade domainFacade;
 
-    public CashierSalesPane(DomainInterface domainInterface) {
+    public CashierSalesPane(DomainFacade domainFacade) {
         this.setPadding(new Insets(5, 5, 5, 5));
         this.setVgap(5);
         this.setHgap(5);
 
-        this.domainInterface = domainInterface;
-        domainInterface.addShopObserver(this);
-        domainInterface.addBasketObserver(this);
+        this.domainFacade = domainFacade;
+        domainFacade.addShopObserver(this);
+        domainFacade.addBasketObserver(this);
 
         final TextField articleCode = new TextField();
         articleCode.setPromptText("Enter Article Code");
@@ -109,19 +113,19 @@ public class CashierSalesPane extends GridPane implements Observer {
             a.setContentText("You will remove all scanned products");
             Optional<ButtonType> result = a.showAndWait();
             if (result.get() == ButtonType.OK) {
-                domainInterface.clearBasketArticles();
+                domainFacade.clearBasketArticles();
                 articleCode.clear();
             }
         });
 
         articleCode.setOnKeyReleased(event ->{
             if (event.getCode() == KeyCode.ENTER) {
-                if ( articleCode.getText().trim().isEmpty() || articleCode.getText() == null|| domainInterface.getContext().get(Integer.parseInt(articleCode.getText())) == null) {
+                if ( articleCode.getText().trim().isEmpty() || articleCode.getText() == null|| domainFacade.getContext().get(Integer.parseInt(articleCode.getText())) == null) {
                     alert.setContentText("This code doesn't exist.\n Try a different code.");
                     alert.showAndWait();
                 } else {
-                    Article article = domainInterface.getContext().get(Integer.parseInt(articleCode.getText()));
-                    domainInterface.addBasketArticle(article);
+                    Article article = domainFacade.getContext().get(Integer.parseInt(articleCode.getText()));
+                    domainFacade.addBasketArticle(article);
                 }
                 articleCode.clear();
             }
@@ -138,15 +142,15 @@ public class CashierSalesPane extends GridPane implements Observer {
             a.setContentText("You will remove: \n" + itemTitlesBuilder.toString());
             Optional<ButtonType> result = a.showAndWait();
             if (result.get() == ButtonType.OK) {
-                domainInterface.removeBasketArticleIndices(selectedIndices);
+                domainFacade.removeBasketArticleIndices(selectedIndices);
             }
         });
 
         holdSaleBtn.setOnAction(e -> {
-            if (domainInterface.saleIsOnHold()) {
-                domainInterface.continueHeldSale();
+            if (domainFacade.saleIsOnHold()) {
+                domainFacade.continueHeldSale();
             } else {
-                domainInterface.putSaleOnHold();
+                domainFacade.putSaleOnHold();
             }
             updateHoldSaleButton();
         });
@@ -155,7 +159,7 @@ public class CashierSalesPane extends GridPane implements Observer {
             //Om te testen
             ReceiptFactory generateReceipt = new ReceiptFactory();
             try {
-                System.out.println(generateReceipt.MakeReceiptFactory().getReceipt(domainInterface));
+                System.out.println(generateReceipt.MakeReceiptFactory().getReceipt(domainFacade));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -168,11 +172,11 @@ public class CashierSalesPane extends GridPane implements Observer {
 
     public void populateArticles() {
         articles.clear();
-        articles.addAll(domainInterface.getAllBasketArticles());
+        articles.addAll(domainFacade.getAllBasketArticles());
     }
 
     private void updateHoldSaleButton() {
-        String btnText = domainInterface.saleIsOnHold() ? "Continue sale on hold" : "Put sale on hold";
+        String btnText = domainFacade.saleIsOnHold() ? "Continue sale on hold" : "Put sale on hold";
         holdSaleBtn.setText(btnText);
     }
 

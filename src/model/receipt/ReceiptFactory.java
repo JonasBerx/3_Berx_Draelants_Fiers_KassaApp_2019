@@ -1,4 +1,4 @@
-package model;
+package model.receipt;
 
 import model.properties.Properties;
 

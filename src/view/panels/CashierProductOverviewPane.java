@@ -7,8 +7,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
-import model.Article;
-import model.DomainInterface;
+import model.article.Article;
+import model.DomainFacade;
 import model.properties.Properties;
 
 import java.io.IOException;
@@ -21,13 +21,13 @@ import java.io.IOException;
 //TODO Create controller
 public class CashierProductOverviewPane extends GridPane {
 	private TableView<Article> table = new TableView<>();
-	DomainInterface domainInterface;
+	DomainFacade domainFacade;
 
-	public CashierProductOverviewPane(DomainInterface domainInterface) {
+	public CashierProductOverviewPane(DomainFacade domainFacade) {
 		//Load articles from chosen filetype
 		try {
 			Properties.load();
-			this.domainInterface = domainInterface;
+			this.domainFacade = domainFacade;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -72,7 +72,7 @@ public class CashierProductOverviewPane extends GridPane {
 	//Function that handles the data for the table
 	private ObservableList<Article> getArticleList() {
 		ObservableList<Article> articles = FXCollections.observableArrayList();
-		articles.addAll(domainInterface.getContext().getAll());
+		articles.addAll(domainFacade.getContext().getAll());
 		System.out.println(articles);
 		return articles;
 	}

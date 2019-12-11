@@ -1,4 +1,6 @@
-package model;
+package model.receipt;
+
+import model.DomainFacade;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,7 +11,7 @@ public class HeaderDateTime extends ReceiptDecorator {
     }
 
     @Override
-    public String getReceipt(DomainInterface d) {
+    public String getReceipt(DomainFacade d) {
         StringBuilder receipt = new StringBuilder();
         //Date Formater
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '            ' HH:mm:ss z");

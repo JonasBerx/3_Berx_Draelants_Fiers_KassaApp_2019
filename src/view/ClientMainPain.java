@@ -1,14 +1,12 @@
 package view;
 
 import javafx.scene.layout.BorderPane;
-import model.DomainInterface;
+import model.DomainFacade;
 import view.panels.ClientOverview;
 
-import java.io.FileNotFoundException;
-
 class ClientMainPain extends BorderPane {
-    ClientMainPain(DomainInterface domainInterface) {
-        ClientOverview clientOverview = new ClientOverview(domainInterface);
+    ClientMainPain(DomainFacade domainFacade) {
+        ClientOverview clientOverview = new ClientOverview(domainFacade);
         this.setCenter(clientOverview);
     }
 }

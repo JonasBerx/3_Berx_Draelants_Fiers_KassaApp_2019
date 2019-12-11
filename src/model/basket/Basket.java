@@ -1,16 +1,16 @@
 package model.basket;
 
 import javafx.util.Pair;
-import model.Article;
-import model.Observer;
+import model.article.Article;
+import model.observer.Observer;
 import model.discount.DiscountContext;
 import model.properties.Properties;
 
 import java.util.*;
 
-public class Basket implements model.Observable {
+public class Basket implements model.observer.Observable {
     ArrayList<Article> articles = new ArrayList<>();
-    LinkedList<model.Observer> observers = new LinkedList();
+    LinkedList<Observer> observers = new LinkedList();
     Map<Article, Double> discountedPrices;
     private DiscountContext discountContext;
 
@@ -97,7 +97,7 @@ public class Basket implements model.Observable {
     }
 
     @Override
-    public void addObserver(model.Observer observer) {
+    public void addObserver(Observer observer) {
         observers.add(observer);
     }
 

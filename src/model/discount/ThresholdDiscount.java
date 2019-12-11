@@ -1,13 +1,10 @@
 package model.discount;
 
-import model.Article;
-import model.Shop;
+import model.article.Article;
 import model.basket.Basket;
 import model.properties.Properties;
 import model.properties.Property;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 

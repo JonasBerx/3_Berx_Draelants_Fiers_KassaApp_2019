@@ -1,5 +1,6 @@
-package model;
+package model.receipt;
 
+import model.DomainFacade;
 import model.properties.Properties;
 
 import java.io.IOException;
@@ -10,7 +11,7 @@ public class HeaderMessage extends ReceiptDecorator {
     }
 
     @Override
-    public String getReceipt(DomainInterface d) {
+    public String getReceipt(DomainFacade d) {
         try {
             Properties.load();
         } catch (IOException e) {

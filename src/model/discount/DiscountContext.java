@@ -1,9 +1,8 @@
 package model.discount;
 
-import model.Article;
+import model.article.Article;
 import model.basket.Basket;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;

@@ -3,17 +3,16 @@ package view;
 import javafx.application.Application;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
-import model.DomainInterface;
+import model.DomainFacade;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class ShopApp extends Application {
 	@Override
 	public void start(Stage primaryStage)  {
-		DomainInterface domainInterface = null;
+		DomainFacade domainFacade = null;
 		try {
-			domainInterface = new DomainInterface();
+			domainFacade = new DomainFacade();
 		} catch (IOException e) {
 			e.printStackTrace();
 
@@ -24,7 +23,7 @@ public class ShopApp extends Application {
 
 			alert.showAndWait();
 		}
-		CashRegisterView cashRegisterView = new CashRegisterView(domainInterface);
-		ClientView clientView = new ClientView(domainInterface);
+		CashRegisterView cashRegisterView = new CashRegisterView(domainFacade);
+		ClientView clientView = new ClientView(domainFacade);
 	}
 }

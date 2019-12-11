@@ -1,6 +1,6 @@
 package newDatabase;
 
-import model.Article;
+import model.article.Article;
 import model.properties.Properties;
 
 import java.io.IOException;

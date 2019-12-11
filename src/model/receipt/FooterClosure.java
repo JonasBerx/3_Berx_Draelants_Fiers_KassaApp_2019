@@ -1,4 +1,6 @@
-package model;
+package model.receipt;
+
+import model.DomainFacade;
 
 public class FooterClosure extends ReceiptDecorator {
     public FooterClosure(Receipt newReceipt) {
@@ -6,7 +8,7 @@ public class FooterClosure extends ReceiptDecorator {
     }
 
     @Override
-    public String getReceipt(DomainInterface d) {
+    public String getReceipt(DomainFacade d) {
         StringBuilder receipt = new StringBuilder();
         receipt.append(this.getDescription(d));
         receipt.append(String.format("%n------------------------------------%n"));

@@ -1,13 +1,16 @@
 package model;
 
+import model.article.Article;
+import model.receipt.*;
+
 import java.io.IOException;
 
 public class ShopTest {
     public static void main(String[] args) {
         //Test for Decorator receipt
-        DomainInterface d = null;
+        DomainFacade d = null;
         try {
-            d = new DomainInterface();
+            d = new DomainFacade();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,10 +1,8 @@
 package model.discount;
 
-import model.Article;
-import model.Shop;
+import model.article.Article;
 import model.basket.Basket;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public interface DiscountStrategy {

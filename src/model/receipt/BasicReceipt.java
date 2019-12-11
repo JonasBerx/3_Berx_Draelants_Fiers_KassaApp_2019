@@ -1,8 +1,11 @@
-package model;
+package model.receipt;
+
+import model.article.Article;
+import model.DomainFacade;
 
 public class BasicReceipt implements Receipt {
     //Basic receipt return
-    public String getReceipt(DomainInterface d) {
+    public String getReceipt(DomainFacade d) {
         StringBuilder receipt = new StringBuilder();
         receipt.append(String.format("Description       Quantity   Price(€)%n"));
         receipt.append(String.format("************************************%n"));

@@ -2,7 +2,7 @@ package model.discount;
 
 import model.basket.Basket;
 import model.properties.Properties;
-import model.Article;
+import model.article.Article;
 import model.properties.Property;
 
 import java.util.Collection;

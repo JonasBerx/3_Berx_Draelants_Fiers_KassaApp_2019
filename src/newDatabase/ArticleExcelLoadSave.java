@@ -3,7 +3,7 @@ package newDatabase;
 import excel.ExcelPlugin;
 import jxl.read.biff.BiffException;
 import jxl.write.WriteException;
-import model.Article;
+import model.article.Article;
 
 import java.io.File;
 import java.io.IOException;

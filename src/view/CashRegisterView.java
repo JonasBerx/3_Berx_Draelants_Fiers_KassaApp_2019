@@ -4,12 +4,10 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import model.DomainInterface;
-
-import java.io.FileNotFoundException;
+import model.DomainFacade;
 
 public class CashRegisterView {
-	public CashRegisterView(DomainInterface domainInterface) {
+	public CashRegisterView(DomainFacade domainFacade) {
 		Stage stage = new Stage();
 		stage.setTitle("KASSA VIEW");
 		stage.setResizable(false);
@@ -17,7 +15,7 @@ public class CashRegisterView {
 		stage.setY(20);
 		Group root = new Group();
 		Scene scene = new Scene(root, 750, 600);
-		BorderPane borderPane = new CashRegisterMainPane(domainInterface);
+		BorderPane borderPane = new CashRegisterMainPane(domainFacade);
 		borderPane.prefHeightProperty().bind(scene.heightProperty());
 		borderPane.prefWidthProperty().bind(scene.widthProperty());
 		root.getChildren().add(borderPane);

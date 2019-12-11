@@ -1,16 +1,19 @@
 package model;
 
+import model.article.Article;
+import model.observer.Observer;
 import model.properties.Properties;
+import model.shop.Shop;
 import newDatabase.ArticleDbContext;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
-public class DomainInterface {
+public class DomainFacade {
     private final Shop shop;
 
-    public DomainInterface() throws IOException {
+    public DomainFacade() throws IOException {
         Properties.load();
 
         this.shop = new Shop();

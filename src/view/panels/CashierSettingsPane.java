@@ -3,7 +3,7 @@ package view.panels;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
-import model.DomainInterface;
+import model.DomainFacade;
 import model.properties.Properties;
 import model.properties.Property;
 
@@ -20,7 +20,7 @@ public class CashierSettingsPane extends GridPane {
     private final ComboBox options = new ComboBox<>();
     private final CheckBox expensiveCheckbox = new CheckBox();
     private Button saveButton = new Button("Save");
-    private DomainInterface domainInterface;
+    private DomainFacade domainFacade;
     private final CheckBox groupCheckBox = new CheckBox();
     private final CheckBox thresholdCheckbox = new CheckBox();
 
@@ -39,8 +39,8 @@ public class CashierSettingsPane extends GridPane {
     private final CheckBox footerPriceDiscountSeparate = new CheckBox();
 
 
-    public CashierSettingsPane(DomainInterface domainInterface) {
-        this.domainInterface = domainInterface;
+    public CashierSettingsPane(DomainFacade domainFacade) {
+        this.domainFacade = domainFacade;
         try {
             Properties.load();
         } catch (IOException e) {

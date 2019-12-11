@@ -1,4 +1,4 @@
-package model;
+package model.shop;
 
 public enum ShopEvent {
     PUT_SALE_ON_HOLD,
