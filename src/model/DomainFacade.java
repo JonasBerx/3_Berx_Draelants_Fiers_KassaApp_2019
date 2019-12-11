@@ -82,10 +82,12 @@ public class DomainFacade {
         shop.getBasket().clear();
     }
 
+    //Geeft prijs ZONDER toegepaste korting
     public double getBasketTotalPrice() {
         return shop.getBasket().getTotalPrice();
     }
 
+    //Geeft totale prijs MET korting toegepast
     public double getBasketDiscountedPrice() {
         return shop.getBasket().getTotalDiscountedPrice();
     }

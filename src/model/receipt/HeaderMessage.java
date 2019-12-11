@@ -20,7 +20,7 @@ public class HeaderMessage extends ReceiptDecorator {
         StringBuilder receipt = new StringBuilder();
         receipt.append(String.format(Properties.getHeaderMessage() + "%n"));
         receipt.append(String.format("____________________________________%n"));
-        receipt.append(this.getDescription(d)).append("%n");
+        receipt.append(this.getDescription(d));
         return receipt.toString();
     }
 }
