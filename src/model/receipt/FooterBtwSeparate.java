@@ -8,7 +8,6 @@ public class FooterBtwSeparate extends ReceiptDecorator {
     }
 
     @Override
-    //TODO btw functions needed
     public String getReceipt(DomainFacade d) {
         StringBuilder receipt = new StringBuilder();
         receipt.append(this.getDescription(d));
