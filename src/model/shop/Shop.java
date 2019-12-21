@@ -1,24 +1,23 @@
 package model.shop;
 
 
-import javafx.util.Pair;
 import model.observer.Observable;
 import model.observer.Observer;
 import model.basket.Basket;
-import model.properties.Properties;
+import model.properties.PropertiesOld;
 import newDatabase.ArticleDbContext;
 
 import java.util.LinkedList;
 
 public class Shop implements Observable {
-    LinkedList<Observer> observers = new LinkedList();
+    LinkedList<Observer> observers = new LinkedList<>();
     private ArticleDbContext context;
     private Basket basket;
     private Basket heldBasket; // "pause sale" functionality
 
 
     public Shop() {
-        context = new ArticleDbContext(Properties.getMemory());
+        context = new ArticleDbContext(PropertiesOld.getMemory());
         basket = new Basket();
     }
 
@@ -32,7 +31,7 @@ public class Shop implements Observable {
 
         this.heldBasket = basket;
         this.basket = new Basket();
-        updateObservers(ShopEvent.PUT_SALE_ON_HOLD, new Pair<>(heldBasket, basket));
+        updateObservers(ShopEvent.PUT_SALE_ON_HOLD, new ShopEventData(heldBasket));
     }
 
     public ArticleDbContext getContext() {
@@ -43,9 +42,10 @@ public class Shop implements Observable {
         if (this.heldBasket == null)
             throw new IllegalStateException("There is no sale on hold");
 
+        Basket oldBasket = heldBasket;
         this.basket = heldBasket;
         this.heldBasket = null;
-        updateObservers(ShopEvent.RESUMED_SALE, basket);
+        updateObservers(ShopEvent.RESUMED_SALE, new ShopEventData(oldBasket));
     }
 
     public boolean saleIsOnHold() {
@@ -62,7 +62,7 @@ public class Shop implements Observable {
         observers.remove(observer);
     }
 
-    private void updateObservers(ShopEvent event, Object data) {
+    private void updateObservers(ShopEvent event, ShopEventData data) {
         observers.forEach(observer -> observer.update(event, data));
     }
 }

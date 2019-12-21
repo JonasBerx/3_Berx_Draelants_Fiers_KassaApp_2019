@@ -1,26 +1,26 @@
 package model.receipt;
 
-import model.properties.Properties;
+import model.properties.PropertiesOld;
 
 import java.io.IOException;
 
 public class ReceiptFactory {
     public Receipt MakeReceiptFactory() throws IOException {
-        Properties.load();
+        PropertiesOld.load();
         Receipt base = new BasicReceipt();
-        if (Properties.getHeaderMesssageState()) {
+        if (PropertiesOld.getHeaderMesssageState()) {
             base = new HeaderMessage(base);
         }
-        if (Properties.getHeaderDateTime()) {
+        if (PropertiesOld.getHeaderDateTime()) {
             base = new HeaderDateTime(base);
         }
-        if (Properties.getFooterPriceDiscountSeparate()) {
+        if (PropertiesOld.getFooterPriceDiscountSeparate()) {
             base = new FooterPriceDiscountSeparate(base);
         }
-        if (Properties.getFooterBtwSeparate()) {
+        if (PropertiesOld.getFooterBtwSeparate()) {
             base = new FooterBtwSeparate(base);
         }
-        if (Properties.getFooterClosure()) {
+        if (PropertiesOld.getFooterClosure()) {
             base = new FooterClosure(base);
         }
         return base;

@@ -45,7 +45,7 @@ public class ArticleExcelLoadSave implements LoadSaveStrategy {
         for (Article article : articles) {
             ArrayList<String> articl = new ArrayList<>();
             articl.add(String.valueOf(article.getArticleCode()));
-            articl.add(article.getArticleName());
+            articl.add(article.getName());
             articl.add(article.getGroup());
             articl.add(String.valueOf(article.getPrice()));
             articl.add(String.valueOf(article.getQuantity()));

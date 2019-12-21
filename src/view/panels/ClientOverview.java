@@ -16,10 +16,11 @@ import model.*;
 import model.article.Article;
 import model.basket.Basket;
 import model.basket.BasketEvent;
+import model.basket.BasketEventData;
+import model.observer.EventData;
 import model.observer.Observer;
 import model.shop.ShopEvent;
-
-import java.util.Collection;
+import model.shop.ShopEventData;
 
 //TODO Create controller
 public class ClientOverview extends GridPane implements Observer {
@@ -49,12 +50,12 @@ public class ClientOverview extends GridPane implements Observer {
         priceCol.setMinWidth(table.getMaxWidth() / 3);
         quantityCol.setMinWidth(table.getMaxWidth() / 3);
 
-        nameCol.setCellValueFactory(data -> new SimpleStringProperty((data.getValue().getKey().getArticleName())));
+        nameCol.setCellValueFactory(data -> new SimpleStringProperty((data.getValue().getKey().getName())));
         priceCol.setCellValueFactory(data -> new SimpleDoubleProperty((data.getValue().getKey().getPrice())));
         quantityCol.setCellValueFactory(data -> new SimpleIntegerProperty(((data.getValue().getValue() + 1))));
 
         productInfo.getColumns().addAll(nameCol, priceCol, quantityCol);
-        domainFacade.getAllBasketArticles().forEach(this::addArticle);
+        domainFacade.getAllUniqueBasketArticles().forEach(this::addArticle);
         table.setItems(articles);
         populateArticles();
         table.getColumns().addAll(productInfo);
@@ -74,7 +75,7 @@ public class ClientOverview extends GridPane implements Observer {
 
     public void populateArticles() {
         articles.clear();
-        domainFacade.getAllBasketArticles().forEach(this::addArticle);
+        domainFacade.getAllUniqueBasketArticles().forEach(this::addArticle);
     }
 
     private void setTotalPriceLbl(Double price) {
@@ -92,7 +93,7 @@ public class ClientOverview extends GridPane implements Observer {
                 .orElse(null);
     }
 
-    private void updateCount(Pair<Article, Integer> oldPair, Pair<Article, Integer> newPair) {
+    private void updatePair(Pair<Article, Integer> oldPair, Pair<Article, Integer> newPair) {
         articles.remove(oldPair);
         articles.add(newPair);
     }
@@ -103,66 +104,63 @@ public class ClientOverview extends GridPane implements Observer {
         if (existing != null) {
             count = existing.getValue() + 1;
         }
-        updateCount(existing, new Pair<>(article, count));
+        updatePair(existing, new Pair<>(article, count));
     }
 
     private void removeArticle(Article article) {
-        Pair<Article, Integer> existing = getPair(article);
-        if (existing != null) {
-            int count = existing.getValue();
-            if (count == 0) {
-                articles.remove(existing);
-            } else {
-                updateCount(existing, new Pair<>(article, count - 1));
-            }
-        }
+        removeArticles(article, 1);
+    }
+
+    private void removeArticles(Article article, int amountToRemove) {
+        Pair<Article, Integer> pair = getPair(article);
+        int amount = pair.getValue();
+        articles.remove(pair);
+        if (amountToRemove > amount)
+            return;
+
+        articles.add(new Pair<>(article, amount - amountToRemove));
+    }
+
+    private void handleBasketSwitchEvent(Basket oldBasket) {
+        oldBasket.removeObserver(this);
+        populateArticles();
+        setTotalPriceLbl(domainFacade.getBasketTotalPrice());
+    }
+
+    private void updatePriceLabels() {
+        setTotalPriceLbl(domainFacade.getBasketTotalPrice());
+        setDiscountPriceLbl(domainFacade.getBasketDiscountedPrice());
     }
 
     @Override
-    public void update(Enum event, Object data) {
+    public void update(Enum<?> event, EventData data) {
         if (event instanceof BasketEvent) {
             BasketEvent basketEvent = (BasketEvent) event;
+            BasketEventData basketEventData = (BasketEventData) data;
             switch (basketEvent) {
                 case ADDED_ARTICLE:
-                    addArticle((Article) data); break;
-                case CLEARED_ARTICLES:
-                    articles.clear(); break;
-                case REMOVED_ARTICLES:
-                    Collection<Article> removed = (Collection<Article>) data;
-                    removed.forEach(this::removeArticle);
+                    addArticle(basketEventData.getAddedArticle());
                     break;
-                case REMOVED_ARTICLE_INDEX:
-                    Article removedArticle = ((Pair<Integer, Article>) data).getValue();
-                    articles.remove(removedArticle); break;
+                case CLEARED_ARTICLES:
+                    articles.clear();
+                    break;
+                case REMOVED_ARTICLES:
+                    basketEventData.getRemovedArticles().forEach(this::removeArticles);
+                    break;
                 case REMOVED_ARTICLE:
-                    removeArticle((Article) data); break;
-                case REMOVED_ARTICLE_INDICES:
-                    Collection<Article> removedArticles = ((Pair<Collection<Integer>, Collection<Article>>) data).getValue();
-                    removedArticles.forEach(this::removeArticle);
+                    removeArticle(basketEventData.getRemovedArticle());
                     break;
                 case TOTAL_PRICE_CHANGED:
-                    Pair<Double, Double> prices = (Pair<Double, Double>) data;
-                    setTotalPriceLbl(prices.getKey());
-                    setDiscountPriceLbl(prices.getValue());
+                    updatePriceLabels();
                     break;
             }
         } else if (event instanceof ShopEvent) {
             ShopEvent shopEvent = (ShopEvent) event;
+            ShopEventData shopEventData = (ShopEventData) data;
             switch (shopEvent) {
                 case PUT_SALE_ON_HOLD:
-                    Pair<Basket, Basket> baskets = (Pair) data;
-                    Basket oldBasket = baskets.getKey();
-                    Basket newBasket = baskets.getValue();
-                    oldBasket.removeObserver(this);
-                    newBasket.addObserver(this);
-                    populateArticles();
-                    setTotalPriceLbl(newBasket.getTotalPrice());
-                    break;
                 case RESUMED_SALE:
-                    Basket basket = (Basket) data;
-                    basket.addObserver(this);
-                    populateArticles();
-                    setTotalPriceLbl(basket.getTotalPrice());
+                    handleBasketSwitchEvent(shopEventData.getOldBasket());
                     break;
             }
         }

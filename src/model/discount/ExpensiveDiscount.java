@@ -1,61 +1,39 @@
 package model.discount;
 
-import model.properties.Properties;
 import model.article.Article;
 import model.basket.Basket;
-import model.properties.Property;
 
+import java.util.HashMap;
 import java.util.Map;
 
-public class ExpensiveDiscount implements DiscountStrategy {
-    private double getDiscountedPrice(double price) {
-        double discount = Properties.getDouble(Property.DISCOUNT_EXPENSIVE_AMOUNT);
-        return price * (100 - discount / 100);
+public class ExpensiveDiscount extends RatioDiscount {
+    public ExpensiveDiscount(double ratio) {
+        super(ratio);
     }
 
-    private Article getMostExpensive(Map<Article, Double> articlePrices) {
-        Article mostExpensive = null;
-        for (Map.Entry<Article, Double> price : articlePrices.entrySet()) {
-            if (mostExpensive == null) {
-                mostExpensive = price.getKey();
-                continue;
+    private Article getMostExpensive(Basket basket, Map<Article, Double> prevStackPrices) {
+        Article mostExpArt = null;
+        double highestPrice = 0.0;
+        for (Article article : basket.getAllUniqueArticles()) {
+            if (mostExpArt == null) {
+                mostExpArt = article;
             }
 
-            if (price.getValue() > mostExpensive.getPrice()) {
-                mostExpensive = price.getKey();
+            double price = getFullStackDiscountPrice(basket, prevStackPrices, article);
+            if (price > highestPrice) {
+                mostExpArt = article;
+                highestPrice = price;
             }
         }
-        return mostExpensive;
+        return mostExpArt;
     }
 
     @Override
-    public Map<Article, Double> getDiscountedPrices(Basket basket, Map<Article, Double> articlePrices) {
-        Article mostExpensive = getMostExpensive(articlePrices);
-        double oldPrice = articlePrices.get(mostExpensive);
-        double newPrice = getDiscountedPrice(oldPrice);
-        articlePrices.put(mostExpensive , newPrice);
-        return articlePrices;
+    public Map<Article, Double> getDiscountedStackPrices(Basket basket, Map<Article, Double> prevStackPrices) {
+        Article mostExpesive = getMostExpensive(basket, prevStackPrices);
+        double price = getNArticleStackDiscountPrice(basket, prevStackPrices, mostExpesive, 1);
+        Map<Article, Double> stackPrices = new HashMap<>(prevStackPrices);
+        stackPrices.put(mostExpesive, price);
+        return stackPrices;
     }
-
-    /*
-    Old version
-
-    @Override
-    public ArrayList<Article> berekenKorting(Shop shop) {
-        ArrayList<Article> expensive = new ArrayList<>();
-
-        try {
-            Properties.load();
-            expensive.add(shop.getMostExpensive());
-            for (Article article : expensive) {
-                article.setPrice(article.getPrice() * (100 - Double.parseDouble(Properties.getExpensiveDiscount())) / 100);
-            }
-            return expensive;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return expensive;
-    }
-    */
 }

@@ -1,7 +1,7 @@
 package newDatabase;
 
 import model.article.Article;
-import model.properties.Properties;
+import model.properties.PropertiesOld;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,12 +18,12 @@ public class ArticleDbInMemory implements DbStrategy {
 
     ArticleDbInMemory() {
         try {
-            Properties.load();
+            PropertiesOld.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        strategy = factory.create(Properties.getLoader());
-        System.out.println(Properties.getLoader());
+        strategy = factory.create(PropertiesOld.getLoader());
+        System.out.println(PropertiesOld.getLoader());
 
         db = new HashMap<>();
         add(strategy.load());

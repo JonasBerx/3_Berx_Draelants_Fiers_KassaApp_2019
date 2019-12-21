@@ -1,31 +1,22 @@
 package model.properties;
 
 
-import model.discount.DiscountType;
+import model.discount.combined.CombinedDiscountType;
 
 import java.io.*;
 import java.util.Collection;
 import java.util.LinkedList;
 
-public class Properties {
+public class PropertiesOld {
     static InputStream inputStream;
     static java.util.Properties properties;
     static OutputStream outputStream;
 
     public static void load() throws IOException {
         try {
-            properties = new java.util.Properties();
-
+            properties = new java.util.Properties(getDefaults());
             inputStream = new FileInputStream("src/bestanden/config.properties");
-
-            if (inputStream != null) {
-                properties.load(inputStream);
-
-            } else {
-                throw new FileNotFoundException("Not found yeet");
-            }
-
-
+            properties.load(inputStream);
         } catch (Exception e) {
             System.out.println("Exception: " + e);
         } finally {
@@ -36,6 +27,14 @@ public class Properties {
     public static void save() throws IOException {
         outputStream = new FileOutputStream("src/bestanden/config.properties");
         properties.store(outputStream, null);
+    }
+
+    public static java.util.Properties getDefaults() {
+        java.util.Properties defaults = new java.util.Properties();
+        for (Property property : Property.values()) {
+            defaults.setProperty(property.name(), property.getDefaultValue());
+        }
+        return defaults;
     }
 
     public static String getLoader() {
@@ -145,55 +144,5 @@ public class Properties {
 
     public static void setThreshDiscount(String value) {
         properties.setProperty("THRESHOLDDISCOUNT", value);
-    }
-
-    public static Collection<DiscountType> getDiscountTypes() {
-        Collection<DiscountType> discountTypes = new LinkedList<>();
-        if (Properties.getBoolean(Property.DISCOUNT_GROUP))
-            discountTypes.add(DiscountType.GROUP);
-
-        if (Properties.getBoolean(Property.DISCOUNT_THRESHOLD))
-            discountTypes.add(DiscountType.THRESHOLD);
-
-        if (Properties.getBoolean(Property.DISCOUNT_EXPENSIVE))
-            discountTypes.add(DiscountType.EXPENSIVE);
-
-        return discountTypes;
-    }
-
-    private static String getPropertyKey(Property property) {
-        return property.name();
-    }
-
-    public static String getString(Property property) {
-        return properties.getProperty(getPropertyKey(property));
-    }
-
-    public static double getDouble(Property property) {
-        return Double.parseDouble(getString(property));
-    }
-
-    public static int getInt(Property property) {
-        return Integer.parseInt(getString(property));
-    }
-
-    public static boolean getBoolean(Property property) {
-        return Boolean.parseBoolean(getString(property));
-    }
-
-    public static void setString(Property property, String value) {
-        properties.setProperty(getPropertyKey(property), value);
-    }
-
-    public static void setDouble(Property property, Double value) {
-        setString(property, value.toString());
-    }
-
-    public static void setInt(Property property, int value) {
-        setString(property, Integer.toString(value));
-    }
-
-    public static void setBoolean(Property property, boolean value) {
-        setString(property, Boolean.toString(value));
     }
 }

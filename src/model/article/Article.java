@@ -19,7 +19,7 @@ public class Article implements Comparable<Article> {
     public Article(int articleCode, String name, String group, double price, int quantity) {
         checkArticleCode(articleCode);
         this.articleCode = articleCode;
-        setArticleName(name);
+        setName(name);
         setGroup(group);
         setPrice(price);
         setQuantity(quantity);
@@ -46,11 +46,11 @@ public class Article implements Comparable<Article> {
         this.quantity = quantity;
     }
 
-    public String getArticleName() {
+    public String getName() {
         return articleName;
     }
 
-    public void setArticleName(String name) {
+    public void setName(String name) {
         if (name.trim().isEmpty()) {
             throw new IllegalArgumentException("You should give your product a name");
         }
@@ -86,14 +86,14 @@ public class Article implements Comparable<Article> {
     //Pretty To String
     public String toString() {
         String out = "";
-        out += "\nCode: " + getArticleCode() + "\nName: " + getArticleName() + "\nGroup: " + getGroup() + "\nPrice: " + getPrice() + "\nStock: " + getQuantity() + "\n-------------------";
+        out += "\nCode: " + getArticleCode() + "\nName: " + getName() + "\nGroup: " + getGroup() + "\nPrice: " + getPrice() + "\nStock: " + getQuantity() + "\n-------------------";
         return out;
     }
 
     //To string for csv file
     public String saveToString() {
         String out = "";
-        out += getArticleCode() + "," + getArticleName() + "," + getGroup() + "," + getPrice() + "," + getQuantity() + "\n";
+        out += getArticleCode() + "," + getName() + "," + getGroup() + "," + getPrice() + "," + getQuantity() + "\n";
         return out;
     }
 
@@ -103,6 +103,6 @@ public class Article implements Comparable<Article> {
         if (toCompare == null)
             throw new IllegalArgumentException("<toCompare> cannot be null");
 
-        return this.getArticleName().compareTo(toCompare.getArticleName());
+        return this.getName().compareTo(toCompare.getName());
     }
 }

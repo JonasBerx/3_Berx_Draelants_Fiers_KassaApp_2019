@@ -2,19 +2,20 @@ package model;
 
 import model.article.Article;
 import model.observer.Observer;
-import model.properties.Properties;
+import model.properties.PropertiesOld;
+import model.properties.Property;
 import model.shop.Shop;
 import newDatabase.ArticleDbContext;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class DomainFacade {
     private final Shop shop;
 
     public DomainFacade() throws IOException {
-        Properties.load();
+        PropertiesOld.load();
+        Property.load();
 
         this.shop = new Shop();
     }
@@ -56,26 +57,20 @@ public class DomainFacade {
         shop.getBasket().add(article);
     }
 
-    public Article getBasketArticle(int index) {
-        return shop.getBasket().get(index);
-    }
-
-    public Collection<Article> getAllBasketArticles() {
-        return shop.getBasket().getAll();
+    public Collection<Article> getAllUniqueBasketArticles() {
+        return shop.getBasket().getAllUniqueArticles();
     }
 
     public void removeBasketArticle(Article article) {
         shop.getBasket().remove(article);
     }
 
-    public void removeBasketArticleIndex(int index) { shop.getBasket().removeIndex(index);}
+    public void removeBasketArticles(Map<Article, Integer> articleAmountsToRemove) {
+        shop.getBasket().removeAll(articleAmountsToRemove);
+    }
 
     public void removeBasketArticles(Collection<Article> articles) {
         shop.getBasket().removeAll(articles);
-    }
-
-    public void removeBasketArticleIndices(List<Integer> indices) {
-        shop.getBasket().removeIndices(indices);
     }
 
     public void clearBasketArticles() {

@@ -5,13 +5,13 @@ public enum DiscountType {
     THRESHOLD(ThresholdDiscount.class),
     EXPENSIVE(ExpensiveDiscount.class);
 
-    private Class<? extends DiscountStrategy> discountTypeClass;
+    private Class<? extends DiscountStrategy> discountClass;
 
-    DiscountType(Class<? extends DiscountStrategy> discountTypeClass) {
-        this.discountTypeClass = discountTypeClass;
+    DiscountType(Class<? extends DiscountStrategy> discountClass) {
+        this.discountClass = discountClass;
     }
 
-    public Class<? extends DiscountStrategy> getDiscountTypeClass() {
-        return discountTypeClass;
+    public Class<? extends DiscountStrategy> getDiscountClass() {
+        return discountClass;
     }
 }

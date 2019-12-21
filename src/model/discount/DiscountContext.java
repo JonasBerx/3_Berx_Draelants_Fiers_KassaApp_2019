@@ -3,30 +3,44 @@ package model.discount;
 import model.article.Article;
 import model.basket.Basket;
 
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
 
 public class DiscountContext {
-    Collection<DiscountStrategy> discounts;
-    private DiscountsFactory factory = new DiscountsFactory();
+    private DiscountStrategy discount;
+    private Basket basket;
 
-    public DiscountContext(Collection<DiscountType> type) {
-        factory.fromTypes(type);
-        discounts = factory.getKortingen();
+
+    public DiscountContext(DiscountStrategy discount, Basket basket) {
+        this.discount = discount;
+        this.basket = basket;
     }
 
-    private Map<Article, Double> getBasePrices(Collection<Article> articles) {
-        Map<Article, Double> prices = new HashMap<>();
-        articles.forEach(a -> prices.put(a, a.getPrice()));
-        return prices;
+    public Map<Article, Double> getStackPrices() {
+        return Util.allStackPricesFromDiscountedStackPrices(basket, getDiscountedStackPrices());
     }
 
-    public Map<Article, Double> getDiscountedPrices(Basket basket) {
-        Map<Article, Double> prices = getBasePrices(basket.getAll());
-        for (DiscountStrategy discount : discounts) {
-            discount.getDiscountedPrices(basket, prices);
-        }
-        return prices;
+    public Map<Article, Double> getDiscountedStackPrices() {
+        return discount.getDiscountedStackPrices(getBasket(), Collections.emptyMap());
+    }
+
+    public Map<Article, Double> getStackDiscounts() {
+        return discount.getStackDiscounts(getBasket(), Collections.emptyMap());
+    }
+
+    public DiscountStrategy getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(DiscountStrategy discount) {
+        this.discount = discount;
+    }
+
+    public Basket getBasket() {
+        return basket;
+    }
+
+    public void setBasket(Basket basket) {
+        this.basket = basket;
     }
 }

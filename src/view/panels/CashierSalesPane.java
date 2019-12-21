@@ -10,16 +10,20 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.util.Pair;
 import model.DomainFacade;
+import model.Util;
 import model.article.Article;
 import model.basket.Basket;
 import model.basket.BasketEvent;
+import model.basket.BasketEventData;
+import model.observer.EventData;
 import model.observer.Observer;
 import model.receipt.ReceiptFactory;
 import model.shop.ShopEvent;
+import model.shop.ShopEventData;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 //TODO Create controller
 public class CashierSalesPane extends GridPane implements Observer {
@@ -133,18 +137,22 @@ public class CashierSalesPane extends GridPane implements Observer {
         });
         //Delete button event
         delete.setOnAction(e -> {
-            List<Integer> selectedIndices = table.getSelectionModel().getSelectedIndices();
-            if (selectedIndices.size() == 0) return;
+            Map<Article, Integer> selectedItems = Util.flatListToAmountMap(table.getSelectionModel().getSelectedItems());
+            if (selectedItems.size() == 0) return;
             Alert a = new Alert(Alert.AlertType.CONFIRMATION);
             a.setTitle("Delete");
             a.setHeaderText("Are you sure?");
-            StringBuilder itemTitlesBuilder = new StringBuilder();
-            selectedIndices.forEach(i -> itemTitlesBuilder.append(articles.get(i).getArticleName()).append('\n'));
-            a.setContentText("You will remove: \n" + itemTitlesBuilder.toString());
+            StringBuilder itemsStr = new StringBuilder();
+            selectedItems.forEach((article, amount) -> {
+                itemsStr.append(String.format(
+                        "%s (x %d)\n"
+                , article.getName(), amount));
+            });
+            a.setContentText("You will remove: \n" + itemsStr.toString());
             Optional<ButtonType> result = a.showAndWait();
             if (result.get() == ButtonType.OK) {
-                domainFacade.removeBasketArticleIndices(selectedIndices);
-                if (domainFacade.getAllBasketArticles().isEmpty()) {
+                domainFacade.removeBasketArticles(selectedItems);
+                if (domainFacade.getAllUniqueBasketArticles().isEmpty()) {
                     pay.setDisable(true);
                 }
             }
@@ -160,7 +168,7 @@ public class CashierSalesPane extends GridPane implements Observer {
         });
 
         pay.setOnAction(event -> {
-            if (domainFacade.getAllBasketArticles().size() > 0) {
+            if (domainFacade.getAllUniqueBasketArticles().size() > 0) {
                 ReceiptFactory generateReceipt = new ReceiptFactory();
                 try {
                     System.out.println(generateReceipt.MakeReceiptFactory().getReceipt(domainFacade));
@@ -176,7 +184,7 @@ public class CashierSalesPane extends GridPane implements Observer {
 
     public void populateArticles() {
         articles.clear();
-        articles.addAll(domainFacade.getAllBasketArticles());
+        articles.addAll(domainFacade.getAllUniqueBasketArticles());
     }
 
     private void updateHoldSaleButton() {
@@ -188,47 +196,45 @@ public class CashierSalesPane extends GridPane implements Observer {
         totalPrice.setText(String.format("Total: €%.2f", price));
     }
 
+    private void handleBasketSwitchEvent(Basket oldBasket) {
+        oldBasket.removeObserver(this);
+        populateArticles();
+        setTotalPrice(domainFacade.getBasketTotalPrice());
+    }
+
     @Override
-    public void update(Enum event, Object data) {
+    public void update(Enum<?> event, EventData data) {
         if (event instanceof BasketEvent) {
             BasketEvent basketEvent = (BasketEvent) event;
+            BasketEventData basketEventData = (BasketEventData) data;
             switch (basketEvent) {
                 case ADDED_ARTICLE:
-                    articles.add((Article) data); break;
+                    articles.add(basketEventData.getAddedArticle());
+                    break;
                 case CLEARED_ARTICLES:
-                    articles.clear(); break;
+                    articles.clear();
+                    break;
                 case REMOVED_ARTICLE:
-                    articles.remove((Article) data); break;
-                case REMOVED_ARTICLE_INDEX:
-                    articles.remove((int) data); break;
+                    articles.remove(basketEventData.getRemovedArticle());
+                    break;
                 case REMOVED_ARTICLES:
-                    articles.removeAll((Collection<Article>) data); break;
-                case REMOVED_ARTICLE_INDICES:
-                    Collection<Integer> removedIndices = ((Pair<Collection<Integer>, Collection<Article>>)data).getKey();
-                    for (int i : removedIndices)
-                        articles.remove(i);
+                    basketEventData.getRemovedArticles().forEach((article, amount) -> {
+                        for (int i = 0; i < amount; i++) {
+                            articles.remove(article);
+                        }
+                    });
                     break;
                 case TOTAL_PRICE_CHANGED:
-                    Pair<Double, Double> prices = (Pair<Double, Double>) data;
-                    setTotalPrice(prices.getKey()); break;
+                    setTotalPrice(domainFacade.getBasketTotalPrice());
+                    break;
             }
         } else if (event instanceof ShopEvent) {
             ShopEvent shopEvent = (ShopEvent) event;
+            ShopEventData shopEventData = (ShopEventData) data;
             switch (shopEvent) {
                 case PUT_SALE_ON_HOLD:
-                    Pair<Basket, Basket> baskets = (Pair) data;
-                    Basket oldBasket = baskets.getKey();
-                    Basket newBasket = baskets.getValue();
-                    oldBasket.removeObserver(this);
-                    newBasket.addObserver(this);
-                    populateArticles();
-                    setTotalPrice(newBasket.getTotalPrice());
-                    break;
                 case RESUMED_SALE:
-                    Basket basket = (Basket) data;
-                    basket.addObserver(this);
-                    populateArticles();
-                    setTotalPrice(basket.getTotalPrice());
+                    handleBasketSwitchEvent(shopEventData.getOldBasket());
                     break;
             }
         }

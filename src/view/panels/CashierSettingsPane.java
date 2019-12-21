@@ -4,7 +4,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import model.DomainFacade;
-import model.properties.Properties;
+import model.properties.PropertiesOld;
 import model.properties.Property;
 
 import java.io.IOException;
@@ -42,7 +42,7 @@ public class CashierSettingsPane extends GridPane {
     public CashierSettingsPane(DomainFacade domainFacade) {
         this.domainFacade = domainFacade;
         try {
-            Properties.load();
+            PropertiesOld.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -84,29 +84,29 @@ public class CashierSettingsPane extends GridPane {
 
 
         options.setValue("Select option");
-        options.setValue(Properties.getLoader());
+        options.setValue(PropertiesOld.getLoader());
 
         //check in config if box should be selected on startup
-        expensiveCheckbox.setSelected(Properties.getBoolean(Property.DISCOUNT_EXPENSIVE));
-        groupCheckBox.setSelected(Properties.getBoolean(Property.DISCOUNT_GROUP));
-        thresholdCheckbox.setSelected(Properties.getBoolean(Property.DISCOUNT_THRESHOLD));
+        expensiveCheckbox.setSelected(Property.DISCOUNT_EXPENSIVE.asBool());
+        groupCheckBox.setSelected(Property.DISCOUNT_GROUP.asBool());
+        thresholdCheckbox.setSelected(Property.DISCOUNT_THRESHOLD.asBool());
 
-        headerDateTime.setSelected(Properties.getHeaderDateTime());
-        headerMessage.setSelected(Properties.getHeaderMesssageState());
-        footerPriceDiscountSeparate.setSelected(Properties.getFooterPriceDiscountSeparate());
-        footerBtwSeparate.setSelected(Properties.getFooterBtwSeparate());
-        footerClosure.setSelected(Properties.getFooterClosure());
+        headerDateTime.setSelected(PropertiesOld.getHeaderDateTime());
+        headerMessage.setSelected(PropertiesOld.getHeaderMesssageState());
+        footerPriceDiscountSeparate.setSelected(PropertiesOld.getFooterPriceDiscountSeparate());
+        footerBtwSeparate.setSelected(PropertiesOld.getFooterBtwSeparate());
+        footerClosure.setSelected(PropertiesOld.getFooterClosure());
 
-        headerCustomMessage.setText(Properties.getHeaderMessage());
+        headerCustomMessage.setText(PropertiesOld.getHeaderMessage());
 
 
         groups.setValue("Select Group");
-        groups.setValue(Properties.getGroup());
+        groups.setValue(PropertiesOld.getGroup());
 
-        groupDiscountAmount.getValueFactory().setValue(Properties.getInt(Property.DISCOUNT_GROUP_AMOUNT));
-        expensiveDiscountAmount.getValueFactory().setValue(Properties.getInt(Property.DISCOUNT_EXPENSIVE_AMOUNT));
-        thresholdDiscountAmount.getValueFactory().setValue(Properties.getInt(Property.DISCOUNT_THRESHOLD_AMOUNT));
-        thresholdDiscountThreshold.getValueFactory().setValue(Properties.getInt(Property.DISCOUNT_THRESHOLD_THRESHOLD));
+        groupDiscountAmount.getValueFactory().setValue(Property.DISCOUNT_GROUP_AMOUNT.asInt());
+        expensiveDiscountAmount.getValueFactory().setValue(Property.DISCOUNT_EXPENSIVE_AMOUNT.asInt());
+        thresholdDiscountAmount.getValueFactory().setValue(Property.DISCOUNT_THRESHOLD_AMOUNT.asInt());
+        thresholdDiscountThreshold.getValueFactory().setValue(Property.DISCOUNT_THRESHOLD_THRESHOLD.asInt());
 
 
         this.setHgap(2);
@@ -237,26 +237,26 @@ public class CashierSettingsPane extends GridPane {
                 System.out.println(thresholdDiscount);
 
                 //Property setters for receipt
-                Properties.setHeaderDateTime(headerDateTime.isSelected());
-                Properties.setHeaderMesssageState(headerMessage.isSelected());
-                Properties.setHeaderMessage(headerCustomMessage.getText());
-                Properties.setFooterPriceDiscountSeparate(footerPriceDiscountSeparate.isSelected());
-                Properties.setFooterBtwSeparate(footerBtwSeparate.isSelected());
-                Properties.setFooterClosure(footerClosure.isSelected());
+                PropertiesOld.setHeaderDateTime(headerDateTime.isSelected());
+                PropertiesOld.setHeaderMesssageState(headerMessage.isSelected());
+                PropertiesOld.setHeaderMessage(headerCustomMessage.getText());
+                PropertiesOld.setFooterPriceDiscountSeparate(footerPriceDiscountSeparate.isSelected());
+                PropertiesOld.setFooterBtwSeparate(footerBtwSeparate.isSelected());
+                PropertiesOld.setFooterClosure(footerClosure.isSelected());
 
 
-                Properties.setLoader((options.getValue().toString().toUpperCase()));
-                Properties.setGroup((groups.getValue().toString().toUpperCase()));
-                Properties.setInt(Property.DISCOUNT_GROUP_AMOUNT, groupDiscountAmount.getValue());
-                Properties.setThreshDiscount(thresholdDiscount);
-                Properties.setInt(Property.DISCOUNT_THRESHOLD_THRESHOLD, thresholdDiscountThreshold.getValue());
-                Properties.setInt(Property.DISCOUNT_EXPENSIVE_AMOUNT, expensiveDiscountAmount.getValue());
+                PropertiesOld.setLoader((options.getValue().toString().toUpperCase()));
+                PropertiesOld.setGroup((groups.getValue().toString().toUpperCase()));
+                Property.DISCOUNT_GROUP_AMOUNT.set(groupDiscountAmount.getValue());
+                PropertiesOld.setThreshDiscount(thresholdDiscount);
+                Property.DISCOUNT_THRESHOLD_THRESHOLD.set(thresholdDiscountThreshold.getValue());
+                Property.DISCOUNT_EXPENSIVE_AMOUNT.set(expensiveDiscountAmount.getValue());
 
-                Properties.setBoolean(Property.DISCOUNT_GROUP, groupCheckBox.isSelected());
-                Properties.setBoolean(Property.DISCOUNT_THRESHOLD, thresholdCheckbox.isSelected());
-                Properties.setBoolean(Property.DISCOUNT_EXPENSIVE, expensiveCheckbox.isSelected());
+                Property.DISCOUNT_GROUP.set(groupCheckBox.isSelected());
+                Property.DISCOUNT_THRESHOLD.set(thresholdCheckbox.isSelected());
+                Property.DISCOUNT_EXPENSIVE.set(expensiveCheckbox.isSelected());
 
-                Properties.save();
+                PropertiesOld.save();
                 System.out.println("saved props");
             } catch (IOException e) {
                 e.printStackTrace();

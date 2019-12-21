@@ -1,91 +1,99 @@
 package model.basket;
 
 import javafx.util.Pair;
+import model.Util;
 import model.article.Article;
-import model.observer.Observer;
 import model.discount.DiscountContext;
-import model.properties.Properties;
+import model.discount.DiscountFactory;
+import model.observer.Observer;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Basket implements model.observer.Observable {
-    ArrayList<Article> articles = new ArrayList<>();
-    LinkedList<Observer> observers = new LinkedList();
+    Map<Article, Integer> articleStacks = new HashMap<>(); // Maps article to # of articles in stack
+    LinkedList<Observer> observers = new LinkedList<>();
     Map<Article, Double> discountedPrices;
     private DiscountContext discountContext;
 
     public Basket() {
-        discountContext = new DiscountContext(Properties.getDiscountTypes());
+        discountContext = DiscountFactory.fromProperties(this);
     }
 
-    public Collection<Article> getAll() {
-        return Collections.unmodifiableList(articles);
+    public Map<Article, Integer> getArticleStacks() {
+        return Collections.unmodifiableMap(articleStacks);
+    }
+
+    public Collection<Article> getAllUniqueArticles() {
+        return Collections.unmodifiableSet(articleStacks.keySet());
+    }
+
+    public int getStackAmount(Article article) {
+        return getArticleStacks().get(article);
+    }
+
+    public boolean contains(Article article) {
+        return articleStacks.containsKey(article);
     }
 
     public void add(Article article) {
-        articles.add(article);
-        priceMutatingUpdate(BasketEvent.ADDED_ARTICLE, article);
+        add(article, 1);
     }
 
-    public Article get(int index) {
-        return articles.get(index);
+    public void add(Article article, int amountToAdd) {
+        int amount = articleStacks.getOrDefault(article, 0);
+        articleStacks.put(article, amount + amountToAdd);
+        priceMutatingUpdate(BasketEvent.ADDED_ARTICLE, new BasketEventData(null, null, article));
     }
 
-    public ArrayList<Article> getByGroup(String group) {
-        ArrayList<Article> groupList = new ArrayList<>();
-        for (int i = 0; i < articles.size(); i++) {
-            if (articles.get(i).getGroup().equals(group)) {
-                groupList.add(articles.get(i));
-            }
-        }
-        return groupList;
+    public Collection<Article> getByGroup(String group) {
+        return articleStacks.keySet().stream().filter(a -> a.getGroup().equals(group)).collect(Collectors.toList());
     }
-
-    public ArrayList<Article> getByNumber(int artNumber) {
-        ArrayList<Article> numberList = new ArrayList<>();
-        for (int i = 0; i < articles.size(); i++) {
-            if (articles.get(i).getArticleCode() == artNumber) {
-                numberList.add(articles.get(i));
-            }
-        }
-        return numberList;
-    }
+//
+//    public ArrayList<Article> getByCode(int code) {
+//        Article article = articleAmounts.keySet().stream().filter(a -> a.getArticleCode() == code)
+//        return article;
+//    }
 
     public void remove(Article article) {
-        articles.remove(article);
-        priceMutatingUpdate(BasketEvent.REMOVED_ARTICLE, article);
+        removeAmount(article, 1);
     }
 
-    public void removeIndex(int index) {
-        Article removed = articles.get(index);
-        articles.remove(index);
-        priceMutatingUpdate(BasketEvent.REMOVED_ARTICLE_INDEX, new Pair<Article, Integer>(removed, index));
+    public void removeAmount(Article article, int amountToRemove) {
+        Integer amount = articleStacks.get(article);
+        if (amount != null) {
+            int newAmount = amount - amountToRemove;
+            if (newAmount < 1) {
+                articleStacks.remove(article);
+            } else {
+                articleStacks.put(article, newAmount);
+            }
+        }
+        priceMutatingUpdate(BasketEvent.REMOVED_ARTICLE, new BasketEventData(null, article, null));
+    }
+
+    public void removeAll(Map<Article, Integer> amountsToRemove) {
+        amountsToRemove = new HashMap<>(amountsToRemove);
+        amountsToRemove.forEach(this::removeAmount);
+        BasketEventData data = new BasketEventData(Collections.unmodifiableMap(amountsToRemove), null, null);
+        priceMutatingUpdate(BasketEvent.REMOVED_ARTICLES, data);
     }
 
     public void removeAll(Collection<Article> articles) {
-        this.articles.removeAll(articles);
-        priceMutatingUpdate(BasketEvent.REMOVED_ARTICLES, Collections.unmodifiableCollection(new LinkedList<Article>(articles)));
-    }
-
-    public void removeIndices(List<Integer> indices) {
-        indices = new ArrayList<>(indices);
-        indices.sort(Comparator.reverseOrder());
-        List<Article> removed = new LinkedList<>();
-        for (int i : indices) {
-            removed.add(articles.get(i));
-            articles.remove(i);
-        }
-        Pair<List<Integer>, List<Article>> eventData = new Pair<>(Collections.unmodifiableList(indices), Collections.unmodifiableList(removed));
-        priceMutatingUpdate(BasketEvent.REMOVED_ARTICLE_INDICES, eventData);
+        removeAll(Util.flatListToAmountMap(articles));
     }
 
     public void clear() {
-        articles.clear();
+        articleStacks.clear();
         priceMutatingUpdate(BasketEvent.CLEARED_ARTICLES, null);
     }
 
     public double getTotalPrice() {
-        return articles.stream().mapToDouble(Article::getPrice).sum();
+        double sum = 0;
+        for (Map.Entry<Article, Integer> entry : articleStacks.entrySet()) {
+            sum += entry.getKey().getPrice() * entry.getValue();
+        }
+        return sum;
     }
 
     public double getTotalDiscountedPrice() {
@@ -93,7 +101,7 @@ public class Basket implements model.observer.Observable {
     }
 
     public void updateDiscountedPrices() {
-        this.discountedPrices = discountContext.getDiscountedPrices(this);
+        this.discountedPrices = discountContext.getStackPrices();
     }
 
     @Override
@@ -106,14 +114,14 @@ public class Basket implements model.observer.Observable {
         observers.remove(observer);
     }
 
-    private void priceMutatingUpdate(BasketEvent event, Object data) {
+    private void priceMutatingUpdate(BasketEvent event, BasketEventData data) {
         updateDiscountedPrices();
 
         updateObservers(event, data);
-        updateObservers(BasketEvent.TOTAL_PRICE_CHANGED, new Pair<Double, Double>(getTotalPrice(), getTotalDiscountedPrice()));
+        updateObservers(BasketEvent.TOTAL_PRICE_CHANGED, null);
     }
 
-    private void updateObservers(BasketEvent event, Object data) {
+    private void updateObservers(BasketEvent event, BasketEventData data) {
         observers.forEach(observer -> observer.update(event, data));
     }
 }
