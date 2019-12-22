@@ -1,13 +1,15 @@
 package controller.client;
 
-import controller.IBasketArticlesController;
+import controller.BasketArticlesObserver;
+import controller.ShopObserver;
 import model.DomainFacade;
 import model.article.Article;
 import model.basket.Basket;
+import model.observer.EventData;
 
 import java.util.Map;
 
-public class Overview implements IBasketArticlesController {
+public class Overview implements BasketArticlesObserver, ShopObserver {
     private DomainFacade model;
     private view.jfx.client.Overview view;
 
@@ -49,6 +51,12 @@ public class Overview implements IBasketArticlesController {
     public void updatePriceLabels() {
         view.setTotalPriceLbl(model.getBasketTotalPrice());
         view.setDiscountPriceLbl(model.getBasketDiscountedPrice());
+    }
+
+    @Override
+    public void update(Enum<?> event, EventData data) {
+        BasketArticlesObserver.super.update(event, data);
+        ShopObserver.super.update(event, data);
     }
 
     @Override

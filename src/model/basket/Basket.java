@@ -2,6 +2,7 @@ package model.basket;
 
 import model.Util;
 import model.article.Article;
+import model.basket.state.*;
 import model.discount.DiscountContext;
 import model.discount.DiscountFactory;
 import model.discount.combined.CombinedDiscountContext;
@@ -16,7 +17,19 @@ public class Basket implements model.observer.Observable {
     Map<Article, Double> discountedPrices;
     private DiscountContext discountContext;
 
+    OpenState openState;
+    ClosedState closedState;
+    PayedState payedState;
+    CancelledState cancelledState;
+
+    BasketState state = openState;
+
     public Basket() {
+        openState = new OpenState(this);
+        closedState = new ClosedState(this);
+        payedState = new PayedState(this);
+        cancelledState = new CancelledState(this);
+
         discountContext = DiscountFactory.fromProperties(this);
 
         if (discountContext.getDiscount() instanceof CombinedDiscountContext) {
@@ -47,7 +60,7 @@ public class Basket implements model.observer.Observable {
     public void add(Article article, int amountToAdd) {
         int amount = articleStacks.getOrDefault(article, 0);
         articleStacks.put(article, amount + amountToAdd);
-        priceMutatingUpdate(BasketEvent.ADDED_ARTICLE, new BasketEventData(null, null, article));
+        priceMutatingUpdate(BasketEvent.ADDED_ARTICLE, new BasketEventData(article));
     }
 
     public Collection<Article> getByGroup(String group) {
@@ -81,7 +94,7 @@ public class Basket implements model.observer.Observable {
     public void removeAll(Map<Article, Integer> amountsToRemove) {
         amountsToRemove = new HashMap<>(amountsToRemove);
         amountsToRemove.forEach(this::removeAmount);
-        BasketEventData data = new BasketEventData(Collections.unmodifiableMap(amountsToRemove), null, null);
+        BasketEventData data = new BasketEventData(Collections.unmodifiableMap(amountsToRemove));
         priceMutatingUpdate(BasketEvent.REMOVED_ARTICLES, data);
     }
 
@@ -112,6 +125,58 @@ public class Basket implements model.observer.Observable {
         System.out.println(this.discountedPrices);
     }
 
+    /*********
+     * State *
+     *********/
+    //region State
+    public BasketState getState() {
+        return state;
+    }
+
+    public void setState(BasketState state) {
+        BasketState oldState = getState();
+        this.state = state;
+        updateObservers(BasketEvent.STATE_CHANGED, new BasketEventData(oldState, state));
+    }
+
+    public OpenState getOpenState() {
+        return openState;
+    }
+
+    public void setOpenState(OpenState openState) {
+        this.openState = openState;
+    }
+
+    public ClosedState getClosedState() {
+        return closedState;
+    }
+
+    public void setClosedState(ClosedState closedState) {
+        this.closedState = closedState;
+    }
+
+    public PayedState getPayedState() {
+        return payedState;
+    }
+
+    public void setPayedState(PayedState payedState) {
+        this.payedState = payedState;
+    }
+
+    public CancelledState getCancelledState() {
+        return cancelledState;
+    }
+
+    public void setCancelledState(CancelledState cancelledState) {
+        this.cancelledState = cancelledState;
+    }
+    //endregion
+
+
+    /************
+     * Observer *
+     ************/
+    //region Observer
     @Override
     public void addObserver(Observer observer) {
         observers.add(observer);
@@ -132,4 +197,5 @@ public class Basket implements model.observer.Observable {
     private void updateObservers(BasketEvent event, BasketEventData data) {
         observers.forEach(observer -> observer.update(event, data));
     }
+    //endregion
 }

@@ -1,21 +1,17 @@
 package controller;
 
 import model.article.Article;
-import model.basket.Basket;
 import model.basket.BasketEvent;
 import model.basket.BasketEventData;
 import model.observer.EventData;
 import model.observer.Observer;
-import model.shop.ShopEvent;
-import model.shop.ShopEventData;
 
-public interface IBasketArticlesController extends Observer {
+public interface BasketArticlesObserver extends Observer {
     void addArticle(Article article);
     void removeArticles(Article article, int amountToRemove);
     default void handleRemovedLastArticle() {};
     void clearArticles();
     void updatePriceLabels();
-    void handleBasketSwitchEvent(Basket oldBasket);
 
     @Override
     default void update(Enum<?> event, EventData data) {
@@ -38,15 +34,6 @@ public interface IBasketArticlesController extends Observer {
                     break;
                 case TOTAL_PRICE_CHANGED:
                     updatePriceLabels();
-                    break;
-            }
-        } else if (event instanceof ShopEvent) {
-            ShopEvent shopEvent = (ShopEvent) event;
-            ShopEventData shopEventData = (ShopEventData) data;
-            switch (shopEvent) {
-                case PUT_SALE_ON_HOLD:
-                case RESUMED_SALE:
-                    handleBasketSwitchEvent(shopEventData.getOldBasket());
                     break;
             }
         }

@@ -1,18 +1,22 @@
 package controller.cashier;
 
+import controller.BasketStateObserver;
 import controller.ControllerWarningException;
-import controller.IBasketArticlesController;
+import controller.BasketArticlesObserver;
+import controller.ShopObserver;
 import model.DomainFacade;
 import model.Util;
 import model.article.Article;
 import model.basket.Basket;
+import model.basket.state.BasketState;
+import model.observer.EventData;
 import model.receipt.ReceiptFactory;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class Sale implements IBasketArticlesController {
+public class Sale implements BasketArticlesObserver, BasketStateObserver, ShopObserver {
     private DomainFacade model;
     private view.jfx.cashier.Sale view;
 
@@ -75,6 +79,13 @@ public class Sale implements IBasketArticlesController {
     public void updatePriceLabels() {
         view.setTotalPriceLbl(model.getBasketTotalPrice());
         view.setDiscountPriceLbl(model.getBasketDiscountedPrice());
+    }
+
+    @Override
+    public void update(Enum<?> event, EventData data) {
+        BasketArticlesObserver.super.update(event, data);
+        BasketStateObserver.super.update(event, data);
+        ShopObserver.super.update(event, data);
     }
 
     public void handleBasketSwitchEvent(Basket oldBasket) {
@@ -159,5 +170,11 @@ public class Sale implements IBasketArticlesController {
         if (view.confirm(warningStr)) {
             model.removeBasketArticles(selectedItems);
         }
+    }
+
+    @Override
+    public void handleStateChangeEvent(BasketState oldState, BasketState newState) {
+        System.out.println(oldState.getStateName());
+        System.out.println(newState.getStateName());
     }
 }

@@ -14,6 +14,7 @@ import model.Util;
 import model.article.Article;
 import view.jfx.IAlerts;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -28,6 +29,7 @@ public class Sale extends GridPane implements IAlerts {
     private Button clearBtn;
     private Button payBtn;
     private Button deleteBtn;
+    private Button closeBtn;
     private TextField articleCodeFld;
     private TableView<Article> articlesTbl;
 
@@ -37,30 +39,36 @@ public class Sale extends GridPane implements IAlerts {
         this.setHgap(5);
 
         articleCodeFld = new TextField();
-        articleCodeFld.setPromptText("Enter Article Code");
+        articleCodeFld.setPromptText("Artikelcode");
         articleCodeFld.setPrefColumnCount(10);
         articleCodeFld.getText();
         GridPane.setConstraints(articleCodeFld, 0, 0);
         this.getChildren().add(articleCodeFld);
 
-        //Defining the Clear button
-        clearBtn = new Button("Reset");
-        GridPane.setConstraints(clearBtn, 1, 0);
-        this.getChildren().add(clearBtn);
-
         //Defining Pause button
-        holdSaleBtn = new Button("Pause Sale");
+        holdSaleBtn = new Button("Pauzeer verkoop");
         GridPane.setConstraints(holdSaleBtn, 2, 0);
         this.getChildren().add(holdSaleBtn);
 
         //Defining Pause button
-        deleteBtn = new Button("Delete Article");
+        deleteBtn = new Button("Verwijder");
         GridPane.setConstraints(deleteBtn, 3, 0);
         this.getChildren().add(deleteBtn);
+
+        //Defining the Clear button
+        clearBtn = new Button("Verwijder alle");
+        GridPane.setConstraints(clearBtn, 4, 0);
+        this.getChildren().add(clearBtn);
+
+        closeBtn = new Button("Sluit af");
+        GridPane.setConstraints(closeBtn, 5, 0);
+        this.getChildren().add(closeBtn);
+
         //Defining Pause button
         payBtn = new Button("Pay");
-        GridPane.setConstraints(payBtn, 4, 0);
-        this.getChildren().add(payBtn);
+        payBtn.setDisable(true);
+//        GridPane.setConstraints(payBtn, 5, 0);
+//        this.getChildren().add(payBtn);
 
 
         TableColumn sales = new TableColumn<>("Products");
@@ -77,16 +85,16 @@ public class Sale extends GridPane implements IAlerts {
         alert.setHeaderText("You made an oopsies");
 
         sales.getColumns().addAll(code, name, group, price);
-        payBtn.setDisable(true);
         articlesTbl = new TableView<>();
-        articlesTbl.setMaxSize(800, 800);
+        articlesTbl.prefWidthProperty().bind(this.prefWidthProperty());
+        articlesTbl.setMaxSize(1000, 800);
         articlesTbl.setItems(articles);
         articlesTbl.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        code.setMinWidth(articlesTbl.getMaxWidth() / 5);
-        name.setMinWidth(articlesTbl.getMaxWidth() / 5);
-        group.setMinWidth(articlesTbl.getMaxWidth() / 5);
-        price.setMinWidth(articlesTbl.getMaxWidth() / 5);
+        code.prefWidthProperty().bind(articlesTbl.widthProperty().divide(4));
+        name.prefWidthProperty().bind(articlesTbl.widthProperty().divide(4));
+        group.prefWidthProperty().bind(articlesTbl.widthProperty().divide(4));
+        price.prefWidthProperty().bind(articlesTbl.widthProperty().divide(4));
 
         setCellValueFactory(code, Article::getCode);
         setCellValueFactory(name, Article::getName);
@@ -95,7 +103,7 @@ public class Sale extends GridPane implements IAlerts {
 
         articlesTbl.getColumns().addAll(sales);
 
-        this.add(articlesTbl, 0, 4, 5, 1);
+        this.add(articlesTbl, 0, 4, 6, 1);
         this.add(totalPriceLbl, 1, 5);
 
         deleteBtn.setDisable(true);
