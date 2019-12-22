@@ -35,7 +35,6 @@ public class ArticleExcelLoadSave implements LoadSaveStrategy {
         } catch (BiffException | IOException e) {
             e.printStackTrace();
         }
-        System.out.println(articles.size());
         return articles;
     }
 
