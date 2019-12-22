@@ -11,6 +11,8 @@ import model.article.Article;
 
 import java.util.List;
 
+import static view.jfx.Helpers.setCellValueFactory;
+
 /**
  * @Author Dieter Draelants
  * Tableview panel reads data from strategy item and puts it in table
@@ -46,11 +48,12 @@ public class ArticlesOverview extends GridPane {
 		priceCol.setMinWidth(table.getMaxWidth() / 5);
 		stockCol.setMinWidth(table.getMaxWidth() / 5);
 		//Setting the data value for the table
-		codeCol.setCellValueFactory(new PropertyValueFactory<>("articleCode"));
-		nameCol.setCellValueFactory(new PropertyValueFactory<>("articleName"));
-		groupCol.setCellValueFactory(new PropertyValueFactory<>("group"));
-		priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
-		stockCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+
+		setCellValueFactory(codeCol, Article::getCode);
+		setCellValueFactory(nameCol, Article::getName);
+		setCellValueFactory(groupCol, Article::getGroup);
+		setCellValueFactory(priceCol, Article::getPrice);
+		setCellValueFactory(stockCol, Article::getQuantity);
 		//adding Everything together
 		productInfo.getColumns().addAll(codeCol, nameCol, groupCol, priceCol, stockCol);
 		articles = FXCollections.observableArrayList();
@@ -61,7 +64,7 @@ public class ArticlesOverview extends GridPane {
 
 	public void populateArticles(List<Article> articles) {
 		this.articles.clear();
-		this.articles.addAll();
+		this.articles.addAll(articles);
 		this.articles.sort(Article::compareTo);
 	}
 }

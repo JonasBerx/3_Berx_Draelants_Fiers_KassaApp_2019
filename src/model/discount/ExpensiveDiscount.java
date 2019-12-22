@@ -3,6 +3,7 @@ package model.discount;
 import model.article.Article;
 import model.basket.Basket;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,8 +32,10 @@ public class ExpensiveDiscount extends RatioDiscount {
     @Override
     public Map<Article, Double> getDiscountedStackPrices(Basket basket, Map<Article, Double> prevStackPrices) {
         Article mostExpesive = getMostExpensive(basket, prevStackPrices);
-        double price = getNArticleStackDiscountPrice(basket, prevStackPrices, mostExpesive, 1);
-        Map<Article, Double> stackPrices = new HashMap<>(prevStackPrices);
+        if (mostExpesive == null)
+            return Collections.emptyMap();
+        double price = getSingleArticleDisountStackPrice(basket, prevStackPrices, mostExpesive);
+        Map<Article, Double> stackPrices = new HashMap<>();
         stackPrices.put(mostExpesive, price);
         return stackPrices;
     }

@@ -36,11 +36,6 @@ public class Overview implements IBasketArticlesController {
     }
 
     @Override
-    public void removeArticle(Article article) {
-        removeArticles(article, 1);
-    }
-
-    @Override
     public void removeArticles(Article article, int amountToRemove) {
         view.removeArticle(article, amountToRemove);
     }

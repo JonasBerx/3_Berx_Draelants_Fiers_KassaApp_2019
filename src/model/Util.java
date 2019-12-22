@@ -45,4 +45,8 @@ public class Util {
     public static double sum(Collection<Double> vals) {
         return vals.stream().mapToDouble(Double::new).sum();
     }
+
+    public static String hexHash(Object obj) {
+        return Integer.toHexString(obj.hashCode());
+    }
 }

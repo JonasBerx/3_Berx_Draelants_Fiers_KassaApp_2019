@@ -11,6 +11,9 @@ import java.io.StringWriter;
 import java.util.Arrays;
 
 public class Jfx extends javafx.application.Application implements ViewStrategy {
+	view.jfx.cashier.Stage cashierStage;
+	view.jfx.client.Stage clientStage;
+
 	@Override
 	public void start(javafx.stage.Stage primaryStage)  {
 		try {
@@ -32,10 +35,18 @@ public class Jfx extends javafx.application.Application implements ViewStrategy 
 
 	public void startUnchecked() throws IOException {
 		DomainFacade domainFacade = new DomainFacade();
-		Stage cashierStage = new Stage(domainFacade);
+		cashierStage = new Stage(domainFacade);
 		new controller.cashier.Stage(domainFacade, cashierStage);
-		view.jfx.client.Stage clientStage = new view.jfx.client.Stage();
+		clientStage = new view.jfx.client.Stage();
 		new controller.client.Stage(domainFacade, clientStage);
+
+		cashierStage.setOnClose(this::stop);
+		clientStage.setOnClose(this::stop);
+	}
+
+	public void stop() {
+		cashierStage.close();
+		clientStage.close();
 	}
 
 	public void main(String[] args) {

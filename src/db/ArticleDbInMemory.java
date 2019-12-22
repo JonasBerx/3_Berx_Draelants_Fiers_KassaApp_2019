@@ -31,7 +31,7 @@ public class ArticleDbInMemory implements DbStrategy {
     @Override
     public void add(Article article) {
         if (article != null) {
-            db.put(article.getArticleCode(), article);
+            db.put(article.getCode(), article);
         } else {
             throw new IllegalArgumentException("This is an empty Article!");
         }
@@ -52,7 +52,7 @@ public class ArticleDbInMemory implements DbStrategy {
     public void remove(Article article) {
 
         if (article != null) {
-            db.remove(article.getArticleCode());
+            db.remove(article.getCode());
         } else {
             throw new IllegalArgumentException("This article can't be removed because it is empty!");
         }

@@ -2,8 +2,6 @@ package controller.cashier;
 
 import controller.ControllerWarningException;
 import controller.IBasketArticlesController;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import model.DomainFacade;
 import model.Util;
 import model.article.Article;
@@ -13,14 +11,13 @@ import model.receipt.ReceiptFactory;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-public class Sales implements IBasketArticlesController {
+public class Sale implements IBasketArticlesController {
     private DomainFacade model;
-    private view.jfx.cashier.Sales view;
+    private view.jfx.cashier.Sale view;
 
 
-    public Sales(DomainFacade model, view.jfx.cashier.Sales view) {
+    public Sale(DomainFacade model, view.jfx.cashier.Sale view) {
         this.model = model;
         this.view = view;
 
@@ -31,6 +28,7 @@ public class Sales implements IBasketArticlesController {
         view.setOnSubmitArticleCode(this::submitArticleCodeHandler);
         view.setOnToggleHoldSale(this::toggleHoldSaleHandler);
         view.setOnPay(this::payHandler);
+        view.setOnRemove(this::removeHandler);
 
         model.addShopObserver(this);
         model.addBasketObserver(this);
@@ -58,14 +56,9 @@ public class Sales implements IBasketArticlesController {
     }
 
     @Override
-    public void removeArticle(Article article) {
-        view.removeArticle(article);
-    }
-
-    @Override
     public void removeArticles(Article article, int amountToRemove) {
         for (int i = 0; i < amountToRemove; i++) {
-            removeArticle(article);
+            view.removeArticle(article);
         }
     }
 
@@ -152,7 +145,7 @@ public class Sales implements IBasketArticlesController {
         }
     }
 
-    private void deleteHandler() {
+    private void removeHandler() {
         List<Article> selectedArticlesList = view.getSelectedArticles();
         Map<Article, Integer> selectedItems = Util.flatListToAmountMap(selectedArticlesList);
         if (selectedItems.size() == 0) return;

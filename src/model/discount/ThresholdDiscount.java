@@ -24,7 +24,7 @@ public class ThresholdDiscount extends FullBasketRatioDiscount {
         Map<Article, Double> stackPrices = Util.allStackPricesFromDiscountedStackPrices(basket, prevDiscountedStackPrices);
         double totalPrice = Util.sum(stackPrices.values());
         if (totalPrice < getThreshold())
-            return Collections.emptyMap();
+            return prevDiscountedStackPrices;
 
         return super.getDiscountedStackPrices(basket, prevDiscountedStackPrices);
     }

@@ -55,7 +55,7 @@ public class ArticleCSVLoadSave extends TekstLoadSaveTemplate {
             //For testing purposes
 
             for (Article article : articles) {
-                data.append(article.toString()).append("\n");
+                data.append(article.toPrettyString()).append("\n");
             }
             writer.write(data.toString());
             writer.close();

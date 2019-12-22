@@ -6,6 +6,8 @@ package model.article;
  * changed Dieters author sign to correct javadoc
  */
 
+import static model.Util.hexHash;
+
 /**@Author Dieter Draelants
  * Article class
  */
@@ -25,7 +27,7 @@ public class Article implements Comparable<Article> {
         setQuantity(quantity);
     }
 
-    public int getArticleCode() {
+    public int getCode() {
         return articleCode;
     }
 
@@ -83,17 +85,22 @@ public class Article implements Comparable<Article> {
         this.price = price;
     }
 
-    //Pretty To String
     public String toString() {
+        return String.format("Article@%s[code=%d,name=%s,group=%s,price=%f,stock:%d]",
+                hexHash(this), getCode(), getName(), getGroup(), getPrice(), getQuantity());
+    }
+
+    //Pretty To String
+    public String toPrettyString() {
         String out = "";
-        out += "\nCode: " + getArticleCode() + "\nName: " + getName() + "\nGroup: " + getGroup() + "\nPrice: " + getPrice() + "\nStock: " + getQuantity() + "\n-------------------";
+        out += "\nCode: " + getCode() + "\nName: " + getName() + "\nGroup: " + getGroup() + "\nPrice: " + getPrice() + "\nStock: " + getQuantity() + "\n-------------------";
         return out;
     }
 
     //To string for csv file
     public String saveToString() {
         String out = "";
-        out += getArticleCode() + "," + getName() + "," + getGroup() + "," + getPrice() + "," + getQuantity() + "\n";
+        out += getCode() + "," + getName() + "," + getGroup() + "," + getPrice() + "," + getQuantity() + "\n";
         return out;
     }
 

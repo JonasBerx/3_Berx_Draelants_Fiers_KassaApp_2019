@@ -9,16 +9,16 @@ import model.DomainFacade;
 public class Main extends BorderPane {
     private ArticlesOverview articlesOverview;
     private Settings settingsPane;
-    private Sales salesPane;
+    private Sale salePane;
 
 
     public Main(DomainFacade domainFacade) {
         articlesOverview = new ArticlesOverview();
-        salesPane = new Sales();
+        salePane = new Sale();
         settingsPane = new Settings();
 
 	    TabPane tabPane = new TabPane();
-        Tab kassaTab = new Tab("Kassa", salesPane);
+        Tab kassaTab = new Tab("Kassa", salePane);
         Tab artikelTab = new Tab("Artikelen", articlesOverview);
         Tab instellingTab = new Tab("Instellingen", settingsPane);
         Tab logTab = new Tab("Log");
@@ -37,7 +37,7 @@ public class Main extends BorderPane {
         return settingsPane;
     }
 
-    public Sales getSalesPane() {
-        return salesPane;
+    public Sale getSalePane() {
+        return salePane;
     }
 }

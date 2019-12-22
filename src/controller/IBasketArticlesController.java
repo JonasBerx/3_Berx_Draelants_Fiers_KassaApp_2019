@@ -11,7 +11,6 @@ import model.shop.ShopEventData;
 
 public interface IBasketArticlesController extends Observer {
     void addArticle(Article article);
-    void removeArticle(Article article);
     void removeArticles(Article article, int amountToRemove);
     default void handleRemovedLastArticle() {};
     void clearArticles();
@@ -33,9 +32,6 @@ public interface IBasketArticlesController extends Observer {
                     break;
                 case REMOVED_ARTICLES:
                     basketEventData.getRemovedArticles().forEach(this::removeArticles);
-                    break;
-                case REMOVED_ARTICLE:
-                    removeArticle(basketEventData.getRemovedArticle());
                     break;
                 case REMOVED_LAST_ARTICLE:
                     handleRemovedLastArticle();

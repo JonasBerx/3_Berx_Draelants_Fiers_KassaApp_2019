@@ -1,5 +1,7 @@
 package view.jfx.cashier;
 
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -15,17 +17,21 @@ import view.jfx.IAlerts;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import static view.jfx.Helpers.setCellValueFactory;
+
 //TODO Create controller
-public class Sales extends GridPane implements IAlerts {
+public class Sale extends GridPane implements IAlerts {
     private ObservableList<Article> articles = FXCollections.observableArrayList();
     private Label totalPriceLbl;
     private Button holdSaleBtn;
     private Button clearBtn;
     private Button payBtn;
+    private Button deleteBtn;
     private TextField articleCodeFld;
     private TableView<Article> articlesTbl;
 
-    public Sales() {
+    public Sale() {
         this.setPadding(new Insets(5, 5, 5, 5));
         this.setVgap(5);
         this.setHgap(5);
@@ -48,20 +54,20 @@ public class Sales extends GridPane implements IAlerts {
         this.getChildren().add(holdSaleBtn);
 
         //Defining Pause button
-        Button delete = new Button("Delete Article");
-        GridPane.setConstraints(delete, 3, 0);
-        this.getChildren().add(delete);
+        deleteBtn = new Button("Delete Article");
+        GridPane.setConstraints(deleteBtn, 3, 0);
+        this.getChildren().add(deleteBtn);
         //Defining Pause button
         payBtn = new Button("Pay");
         GridPane.setConstraints(payBtn, 4, 0);
         this.getChildren().add(payBtn);
 
 
-        TableColumn sales = new TableColumn("Products");
+        TableColumn sales = new TableColumn<>("Products");
         TableColumn<Article, Integer> code = new TableColumn<>("Article Code");
-        TableColumn<Article, Integer> name = new TableColumn<>("Article Name");
-        TableColumn<Article, Integer> group = new TableColumn<>("Article Group");
-        TableColumn<Article, Integer> price = new TableColumn<>("Article Price");
+        TableColumn<Article, String> name = new TableColumn<>("Article Name");
+        TableColumn<Article, String> group = new TableColumn<>("Article Group");
+        TableColumn<Article, Double> price = new TableColumn<>("Article Price");
         totalPriceLbl = new Label();
         totalPriceLbl.setFont(new Font("Arial", 25));
         setTotalPriceLbl(0.0);
@@ -82,24 +88,19 @@ public class Sales extends GridPane implements IAlerts {
         group.setMinWidth(articlesTbl.getMaxWidth() / 5);
         price.setMinWidth(articlesTbl.getMaxWidth() / 5);
 
-        code.setCellValueFactory(new PropertyValueFactory("articleCode"));
-        name.setCellValueFactory(new PropertyValueFactory("articleName"));
-        group.setCellValueFactory(new PropertyValueFactory("group"));
-        price.setCellValueFactory(new PropertyValueFactory("price"));
+        setCellValueFactory(code, Article::getCode);
+        setCellValueFactory(name, Article::getName);
+        setCellValueFactory(group, Article::getGroup);
+        setCellValueFactory(price, Article::getPrice);
 
         articlesTbl.getColumns().addAll(sales);
 
         this.add(articlesTbl, 0, 4, 5, 1);
         this.add(totalPriceLbl, 1, 5);
 
-        delete.setDisable(true);
+        deleteBtn.setDisable(true);
         articlesTbl.getSelectionModel().selectedItemProperty().addListener((lst, old, newSelection) -> {
-            delete.setDisable(newSelection == null);
-        });
-
-        //Delete button event
-        delete.setOnAction(e -> {
-
+            deleteBtn.setDisable(newSelection == null);
         });
     }
 
@@ -157,5 +158,9 @@ public class Sales extends GridPane implements IAlerts {
 
     public void setOnPay(Runnable action) {
         payBtn.setOnAction(e -> action.run());
+    }
+
+    public void setOnRemove(Runnable action) {
+        deleteBtn.setOnAction(e -> action.run());
     }
 }

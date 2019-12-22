@@ -4,6 +4,7 @@ import model.Util;
 import model.article.Article;
 import model.discount.DiscountContext;
 import model.discount.DiscountFactory;
+import model.discount.combined.CombinedDiscountContext;
 import model.observer.Observer;
 
 import java.util.*;
@@ -17,6 +18,10 @@ public class Basket implements model.observer.Observable {
 
     public Basket() {
         discountContext = DiscountFactory.fromProperties(this);
+
+        if (discountContext.getDiscount() instanceof CombinedDiscountContext) {
+            CombinedDiscountContext comb = ((CombinedDiscountContext) discountContext.getDiscount());
+        }
     }
 
     public Map<Article, Integer> getArticleStacks() {
@@ -68,7 +73,7 @@ public class Basket implements model.observer.Observable {
                 articleStacks.put(article, newAmount);
             }
         }
-        priceMutatingUpdate(BasketEvent.REMOVED_ARTICLE, new BasketEventData(null, article, null));
+
         if (articleStacks.isEmpty())
             updateObservers(BasketEvent.REMOVED_LAST_ARTICLE, null);
     }
@@ -104,6 +109,7 @@ public class Basket implements model.observer.Observable {
 
     public void updateDiscountedPrices() {
         this.discountedPrices = discountContext.getStackPrices();
+        System.out.println(this.discountedPrices);
     }
 
     @Override

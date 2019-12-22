@@ -22,7 +22,7 @@ public class NewDBTest {
         ArticleDbContext context = new ArticleDbContext("INMEMORY");
         System.out.println(context.getAll());
         System.out.println(a.saveToString());
-        System.out.println(a.toString());
+        System.out.println(a.toPrettyString());
 
         // EXCEL
         ArticleExcelLoadSave loadSave = new ArticleExcelLoadSave();
