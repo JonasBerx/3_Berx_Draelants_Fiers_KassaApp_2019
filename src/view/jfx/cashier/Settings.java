@@ -16,7 +16,6 @@ import java.io.IOException;
  * */
 //TODO Create controller
 public class Settings extends GridPane {
-
     private final ComboBox options = new ComboBox<>();
     private final CheckBox expensiveCheckbox = new CheckBox();
     private Button saveButton = new Button("Save");
@@ -58,7 +57,6 @@ public class Settings extends GridPane {
                 "Csv"
 
         );
-
 
 
 
@@ -221,20 +219,8 @@ public class Settings extends GridPane {
 
         saveButton.setOnAction(event -> {
             try {
-
-                System.out.println(options.getValue().toString().toUpperCase());
-
-                System.out.println(groups.getValue().toString().toUpperCase());
-                System.out.println(groupDiscountAmount.getValue());
-
-                System.out.println(thresholdDiscountAmount.getValue().toString().toUpperCase());
-                System.out.println(thresholdDiscountThreshold.getValue());
-
-                System.out.println(expensiveDiscountAmount.getValue());
-
                 String thresholdDiscount = thresholdDiscountAmount.getValue().toString().toUpperCase();
                 thresholdDiscount = String.valueOf(thresholdDiscount.charAt(0));
-                System.out.println(thresholdDiscount);
 
                 //Property setters for receipt
                 PropertiesOld.setHeaderDateTime(headerDateTime.isSelected());
@@ -257,13 +243,9 @@ public class Settings extends GridPane {
                 Property.DISCOUNT_EXPENSIVE.set(expensiveCheckbox.isSelected());
 
                 PropertiesOld.save();
-                System.out.println("saved props");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
     }
-
-
-
 }

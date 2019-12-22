@@ -39,14 +39,10 @@ public enum Property {
 
     //region Load / Save
     public static void load() throws IOException {
-        System.out.println("sett");
         try {
             properties = new Properties(getDefaults());
-            System.out.println(properties.getProperty("DISCOUNT_EXPENSIVE"));
             inputStream = new FileInputStream("src/bestanden/config.properties");
             properties.load(inputStream);
-        } catch (Exception e) {
-            System.out.println("Exception: " + e);
         } finally {
             inputStream.close();
         }

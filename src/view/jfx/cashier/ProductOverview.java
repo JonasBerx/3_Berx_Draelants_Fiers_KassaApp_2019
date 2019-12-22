@@ -73,7 +73,6 @@ public class ProductOverview extends GridPane {
 	private ObservableList<Article> getArticleList() {
 		ObservableList<Article> articles = FXCollections.observableArrayList();
 		articles.addAll(domainFacade.getContext().getAll());
-		System.out.println(articles);
 		return articles;
 	}
 }

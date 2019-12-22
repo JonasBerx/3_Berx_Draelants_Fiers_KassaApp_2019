@@ -17,8 +17,6 @@ public class PropertiesOld {
             properties = new java.util.Properties(getDefaults());
             inputStream = new FileInputStream("src/bestanden/config.properties");
             properties.load(inputStream);
-        } catch (Exception e) {
-            System.out.println("Exception: " + e);
         } finally {
             inputStream.close();
         }
