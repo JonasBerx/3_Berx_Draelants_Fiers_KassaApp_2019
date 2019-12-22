@@ -23,7 +23,6 @@ public class ArticleDbInMemory implements DbStrategy {
             e.printStackTrace();
         }
         strategy = factory.create(PropertiesOld.getLoader());
-        System.out.println(PropertiesOld.getLoader());
 
         db = new HashMap<>();
         add(strategy.load());

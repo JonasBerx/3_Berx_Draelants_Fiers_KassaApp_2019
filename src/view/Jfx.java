@@ -6,7 +6,7 @@ import view.jfx.cashier.Stage;
 
 import java.io.IOException;
 
-public class Jfx extends javafx.application.Application {
+public class Jfx extends javafx.application.Application implements ViewStrategy {
 	@Override
 	public void start(javafx.stage.Stage primaryStage)  {
 		DomainFacade domainFacade = null;
@@ -27,7 +27,7 @@ public class Jfx extends javafx.application.Application {
 		new controller.client.Stage(domainFacade, clientStage);
 	}
 
-	public static void main(String[] args) {
+	public void main(String[] args) {
 		launch(args);
 	}
 }

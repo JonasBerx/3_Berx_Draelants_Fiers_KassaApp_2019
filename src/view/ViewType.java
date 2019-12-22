@@ -3,15 +3,16 @@ package view;
 import java.util.function.Consumer;
 
 public enum ViewType {
-    JFX(Jfx::main);
+    JFX(Jfx.class),
+    CONSOLE(Console.class);
 
-    private Consumer<String[]> main;
+    private Class<? extends ViewStrategy> viewStrategyClass;
 
-    ViewType(Consumer<String[]> main) {
-        this.main = main;
+    ViewType(Class<? extends ViewStrategy> viewStrategyClass) {
+        this.viewStrategyClass = viewStrategyClass;
     }
 
-    public void main(String[] args) {
-        this.main.accept(args);
+    public Class<? extends ViewStrategy> getViewStrategyClass() {
+        return viewStrategyClass;
     }
 }

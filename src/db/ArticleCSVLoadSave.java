@@ -43,10 +43,7 @@ public class ArticleCSVLoadSave extends TekstLoadSaveTemplate {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        System.out.println(articles.size());
-
         return articles;
-
     }
 
     @Override
@@ -59,7 +56,6 @@ public class ArticleCSVLoadSave extends TekstLoadSaveTemplate {
 
             for (Article article : articles) {
                 data.append(article.toString()).append("\n");
-                System.out.println(article.toString());
             }
             writer.write(data.toString());
             writer.close();

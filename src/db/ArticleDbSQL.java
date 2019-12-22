@@ -12,44 +12,39 @@ import java.util.HashMap;
  *
  * Class made to show the ability to implement different Database structures
  *
- * */
-
+ **/
 public class ArticleDbSQL implements DbStrategy {
-
     public ArticleDbSQL(String type) {
-        // What if we add a new MYSQL database??
-
+        throw new UnsupportedOperationException("Will not be implemented");
     }
+
     @Override
     public void add(Article article) {
-        System.out.println("This will not be implemented");
+        throw new UnsupportedOperationException("Will not be implemented");
     }
 
     @Override
     public void add(Collection<Article> articles) {
-        System.out.println("This will not be implemented");
+        throw new UnsupportedOperationException("Will not be implemented");
     }
 
     @Override
     public void remove(Article article) {
-        System.out.println("This will not be implemented");
+        throw new UnsupportedOperationException("Will not be implemented");
     }
 
     @Override
     public Article getArticel(int id) {
-        System.out.println("REEE ik werk niet");
-        return null;
+        throw new UnsupportedOperationException("Will not be implemented");
     }
 
     @Override
     public ArrayList<Article> getAll() {
-        System.out.println("This will not be implemented");
-        return new ArrayList<>();
+        throw new UnsupportedOperationException("Will not be implemented");
     }
 
     @Override
     public HashMap<Integer, Article> returnDB() {
-        System.out.println("This will not be implemented");
-        return new HashMap<>();
+        throw new UnsupportedOperationException("Will not be implemented");
     }
 }
