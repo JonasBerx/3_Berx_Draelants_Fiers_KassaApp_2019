@@ -25,7 +25,7 @@ public class GroupDiscount extends RatioDiscount {
         Map<Article, Double> stackPrices = new HashMap<>();
         Collection<Article> applicable = basket.getByGroup(group);
         for (Article article : applicable) {
-            prevStackPrices.put(article, getFullStackDiscountPrice(basket, prevStackPrices, article));
+            stackPrices.put(article, getFullStackDiscountPrice(basket, prevStackPrices, article));
         }
         return stackPrices;
     }
