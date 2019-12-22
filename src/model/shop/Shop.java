@@ -5,7 +5,7 @@ import model.observer.Observable;
 import model.observer.Observer;
 import model.basket.Basket;
 import model.properties.PropertiesOld;
-import newDatabase.ArticleDbContext;
+import db.ArticleDbContext;
 
 import java.util.LinkedList;
 

@@ -1,4 +1,4 @@
-package newDatabase;
+package db;
 
 import excel.ExcelPlugin;
 import jxl.read.biff.BiffException;

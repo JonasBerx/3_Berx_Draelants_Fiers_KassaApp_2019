@@ -1,4 +1,4 @@
-package view.panels;
+package view.jfx.cashier;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -15,7 +15,7 @@ import java.io.IOException;
  * Settings tab for Cashier
  * */
 //TODO Create controller
-public class CashierSettingsPane extends GridPane {
+public class Settings extends GridPane {
 
     private final ComboBox options = new ComboBox<>();
     private final CheckBox expensiveCheckbox = new CheckBox();
@@ -39,7 +39,7 @@ public class CashierSettingsPane extends GridPane {
     private final CheckBox footerPriceDiscountSeparate = new CheckBox();
 
 
-    public CashierSettingsPane(DomainFacade domainFacade) {
+    public Settings(DomainFacade domainFacade) {
         this.domainFacade = domainFacade;
         try {
             PropertiesOld.load();

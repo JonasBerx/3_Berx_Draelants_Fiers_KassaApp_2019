@@ -1,26 +1,32 @@
-package view;
+package view.jfx.client;
 
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
 import model.DomainFacade;
 
-public class ClientView {
-	public ClientView(DomainFacade domainFacade) {
-		Stage stage = new Stage();
+public class Stage {
+	private Main main;
+
+	public Stage() {
+		javafx.stage.Stage stage = new javafx.stage.Stage();
 		stage.setTitle("KLANT VIEW");
-		stage.setResizable(false);		
+		stage.setResizable(false);
 		stage.setX(775);
 		stage.setY(20);
 		Group root = new Group();
 		Scene scene = new Scene(root, 500, 500);
-		BorderPane borderPane = new ClientMainPain(domainFacade);
+		this.main = new Main();
+		BorderPane borderPane = main;
 		borderPane.prefHeightProperty().bind(scene.heightProperty());
 		borderPane.prefWidthProperty().bind(scene.widthProperty());
 		root.getChildren().add(borderPane);
 		stage.setScene(scene);
-		stage.sizeToScene();			
-		stage.show();		
+		stage.sizeToScene();
+		stage.show();
+	}
+
+	public Main getMain() {
+		return main;
 	}
 }

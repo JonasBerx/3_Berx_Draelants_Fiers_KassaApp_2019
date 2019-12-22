@@ -1,4 +1,4 @@
-package view.panels;
+package view.jfx.cashier;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,7 +8,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
-import javafx.util.Pair;
 import model.DomainFacade;
 import model.Util;
 import model.article.Article;
@@ -22,17 +21,16 @@ import model.shop.ShopEvent;
 import model.shop.ShopEventData;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 //TODO Create controller
-public class CashierSalesPane extends GridPane implements Observer {
+public class Sales extends GridPane implements Observer {
     private ObservableList<Article> articles = FXCollections.observableArrayList();
     private Label totalPrice;
     private Button holdSaleBtn;
     private DomainFacade domainFacade;
 
-    public CashierSalesPane(DomainFacade domainFacade) {
+    public Sales(DomainFacade domainFacade) {
         this.setPadding(new Insets(5, 5, 5, 5));
         this.setVgap(5);
         this.setHgap(5);

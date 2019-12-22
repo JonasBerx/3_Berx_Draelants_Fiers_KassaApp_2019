@@ -5,7 +5,7 @@ import model.observer.Observer;
 import model.properties.PropertiesOld;
 import model.properties.Property;
 import model.shop.Shop;
-import newDatabase.ArticleDbContext;
+import db.ArticleDbContext;
 
 import java.io.IOException;
 import java.util.*;
@@ -59,6 +59,10 @@ public class DomainFacade {
 
     public Collection<Article> getAllUniqueBasketArticles() {
         return shop.getBasket().getAllUniqueArticles();
+    }
+
+    public Map<Article, Integer> getBasketArticleStacks() {
+        return shop.getBasket().getArticleStacks();
     }
 
     public void removeBasketArticle(Article article) {

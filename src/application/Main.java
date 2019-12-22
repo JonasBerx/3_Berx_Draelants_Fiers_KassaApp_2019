@@ -1,9 +1,10 @@
 package application;
 
-import view.ShopApp;
+import view.Jfx;
 
 public class Main {
     public static void main(String[] args) {
-        ShopApp.main(args);
+        // Launch Jfx app by default
+        Jfx.main(args);
     }
 }

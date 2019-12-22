@@ -1,4 +1,4 @@
-package newDatabase;
+package db;
 
 public enum ArticleDbEnum {
     INMEMORY(ArticleDbInMemory.class),

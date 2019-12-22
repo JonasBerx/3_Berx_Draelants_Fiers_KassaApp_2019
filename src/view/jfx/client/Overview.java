@@ -1,4 +1,4 @@
-package view.panels;
+package view.jfx.client;
 
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -15,25 +15,17 @@ import javafx.util.Pair;
 import model.*;
 import model.article.Article;
 import model.basket.Basket;
-import model.basket.BasketEvent;
-import model.basket.BasketEventData;
-import model.observer.EventData;
 import model.observer.Observer;
-import model.shop.ShopEvent;
-import model.shop.ShopEventData;
+
+import java.util.Map;
 
 //TODO Create controller
-public class ClientOverview extends GridPane implements Observer {
+public class Overview extends GridPane {
     private ObservableList<Pair<Article, Integer>> articles = FXCollections.observableArrayList();
     private Label totalPriceLbl;
-    private DomainFacade domainFacade;
     private Label discountPriceLbl;
 
-    public ClientOverview(DomainFacade domainFacade) {
-        this.domainFacade = domainFacade;
-        domainFacade.addShopObserver(this);
-        domainFacade.addBasketObserver(this);
-
+    public Overview() {
         this.setPadding(new Insets(5, 5, 5, 5));
         this.setVgap(5);
         this.setHgap(5);
@@ -55,9 +47,7 @@ public class ClientOverview extends GridPane implements Observer {
         quantityCol.setCellValueFactory(data -> new SimpleIntegerProperty(((data.getValue().getValue() + 1))));
 
         productInfo.getColumns().addAll(nameCol, priceCol, quantityCol);
-        domainFacade.getAllUniqueBasketArticles().forEach(this::addArticle);
         table.setItems(articles);
-        populateArticles();
         table.getColumns().addAll(productInfo);
 
         totalPriceLbl = new Label();
@@ -73,17 +63,11 @@ public class ClientOverview extends GridPane implements Observer {
         this.add(discountPriceLbl, 0, 2);
     }
 
-    public void populateArticles() {
-        articles.clear();
-        domainFacade.getAllUniqueBasketArticles().forEach(this::addArticle);
-    }
-
-    private void setTotalPriceLbl(Double price) {
+    public void setTotalPriceLbl(Double price) {
         totalPriceLbl.setText(String.format("Total: €%.2f", price));
     }
 
-    private void setDiscountPriceLbl(Double price) {
-        System.out.println(domainFacade.getBasketTotalPrice());
+    public void setDiscountPriceLbl(Double price) {
         discountPriceLbl.setText(String.format("DiscountPrice: €%.2f", price));
     }
 
@@ -98,20 +82,25 @@ public class ClientOverview extends GridPane implements Observer {
         articles.add(newPair);
     }
 
-    private void addArticle(Article article) {
-        Pair<Article, Integer> existing = getPair(article);
-        int count = 0;
-        if (existing != null) {
-            count = existing.getValue() + 1;
-        }
-        updatePair(existing, new Pair<>(article, count));
+    public void addArticle(Article article) {
+        addArticle(article, 1);
     }
 
-    private void removeArticle(Article article) {
+    public void addArticle(Article article, Integer amountToAdd) {
+        Pair<Article, Integer> existing = getPair(article);
+        int amount = existing == null ? amountToAdd : existing.getValue() + amountToAdd;
+        updatePair(existing, new Pair<>(article, amount));
+    }
+
+    public void addArticles(Map<Article, Integer> articleAmounts) {
+        articleAmounts.forEach(this::addArticle);
+    }
+
+    public void removeArticle(Article article) {
         removeArticles(article, 1);
     }
 
-    private void removeArticles(Article article, int amountToRemove) {
+    public void removeArticles(Article article, int amountToRemove) {
         Pair<Article, Integer> pair = getPair(article);
         int amount = pair.getValue();
         articles.remove(pair);
@@ -121,48 +110,7 @@ public class ClientOverview extends GridPane implements Observer {
         articles.add(new Pair<>(article, amount - amountToRemove));
     }
 
-    private void handleBasketSwitchEvent(Basket oldBasket) {
-        oldBasket.removeObserver(this);
-        populateArticles();
-        setTotalPriceLbl(domainFacade.getBasketTotalPrice());
-    }
-
-    private void updatePriceLabels() {
-        setTotalPriceLbl(domainFacade.getBasketTotalPrice());
-        setDiscountPriceLbl(domainFacade.getBasketDiscountedPrice());
-    }
-
-    @Override
-    public void update(Enum<?> event, EventData data) {
-        if (event instanceof BasketEvent) {
-            BasketEvent basketEvent = (BasketEvent) event;
-            BasketEventData basketEventData = (BasketEventData) data;
-            switch (basketEvent) {
-                case ADDED_ARTICLE:
-                    addArticle(basketEventData.getAddedArticle());
-                    break;
-                case CLEARED_ARTICLES:
-                    articles.clear();
-                    break;
-                case REMOVED_ARTICLES:
-                    basketEventData.getRemovedArticles().forEach(this::removeArticles);
-                    break;
-                case REMOVED_ARTICLE:
-                    removeArticle(basketEventData.getRemovedArticle());
-                    break;
-                case TOTAL_PRICE_CHANGED:
-                    updatePriceLabels();
-                    break;
-            }
-        } else if (event instanceof ShopEvent) {
-            ShopEvent shopEvent = (ShopEvent) event;
-            ShopEventData shopEventData = (ShopEventData) data;
-            switch (shopEvent) {
-                case PUT_SALE_ON_HOLD:
-                case RESUMED_SALE:
-                    handleBasketSwitchEvent(shopEventData.getOldBasket());
-                    break;
-            }
-        }
+    public void clearArticles() {
+        articles.clear();
     }
 }

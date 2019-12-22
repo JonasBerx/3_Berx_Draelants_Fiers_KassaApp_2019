@@ -1,15 +1,14 @@
 package view;
 	
-import javafx.application.Application;
 import javafx.scene.control.Alert;
-import javafx.stage.Stage;
 import model.DomainFacade;
+import view.jfx.cashier.Stage;
 
 import java.io.IOException;
 
-public class ShopApp extends Application {
+public class Jfx extends javafx.application.Application {
 	@Override
-	public void start(Stage primaryStage)  {
+	public void start(javafx.stage.Stage primaryStage)  {
 		DomainFacade domainFacade = null;
 		try {
 			domainFacade = new DomainFacade();
@@ -23,8 +22,9 @@ public class ShopApp extends Application {
 
 			alert.showAndWait();
 		}
-		CashRegisterView cashRegisterView = new CashRegisterView(domainFacade);
-		ClientView clientView = new ClientView(domainFacade);
+		Stage stage = new Stage(domainFacade);
+		view.jfx.client.Stage clientStage = new view.jfx.client.Stage();
+		new controller.client.Stage(domainFacade, clientStage);
 	}
 
 	public static void main(String[] args) {

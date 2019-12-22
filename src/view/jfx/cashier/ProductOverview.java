@@ -1,4 +1,4 @@
-package view.panels;
+package view.jfx.cashier;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,11 +19,11 @@ import java.io.IOException;
  * And sorts it
  */
 //TODO Create controller
-public class CashierProductOverviewPane extends GridPane {
+public class ProductOverview extends GridPane {
 	private TableView<Article> table = new TableView<>();
 	DomainFacade domainFacade;
 
-	public CashierProductOverviewPane(DomainFacade domainFacade) {
+	public ProductOverview(DomainFacade domainFacade) {
 		//Load articles from chosen filetype
 		try {
 			PropertiesOld.load();

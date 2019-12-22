@@ -1,4 +1,4 @@
-package newDatabase;
+package db;
 
 import model.article.Article;
 import model.properties.PropertiesOld;
