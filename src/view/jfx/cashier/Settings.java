@@ -19,7 +19,6 @@ public class Settings extends GridPane {
     private final ComboBox options = new ComboBox<>();
     private final CheckBox expensiveCheckbox = new CheckBox();
     private Button saveButton = new Button("Save");
-    private DomainFacade domainFacade;
     private final CheckBox groupCheckBox = new CheckBox();
     private final CheckBox thresholdCheckbox = new CheckBox();
 
@@ -38,14 +37,7 @@ public class Settings extends GridPane {
     private final CheckBox footerPriceDiscountSeparate = new CheckBox();
 
 
-    public Settings(DomainFacade domainFacade) {
-        this.domainFacade = domainFacade;
-        try {
-            PropertiesOld.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    public Settings() {
         groups.getItems().addAll(
                 "Group 1",
                 "Group 2"

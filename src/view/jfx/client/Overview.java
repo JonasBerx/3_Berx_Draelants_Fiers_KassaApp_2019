@@ -16,6 +16,7 @@ import model.*;
 import model.article.Article;
 import model.basket.Basket;
 import model.observer.Observer;
+import view.jfx.IAlerts;
 
 import java.util.Map;
 
@@ -44,7 +45,7 @@ public class Overview extends GridPane {
 
         nameCol.setCellValueFactory(data -> new SimpleStringProperty((data.getValue().getKey().getName())));
         priceCol.setCellValueFactory(data -> new SimpleDoubleProperty((data.getValue().getKey().getPrice())));
-        quantityCol.setCellValueFactory(data -> new SimpleIntegerProperty(((data.getValue().getValue() + 1))));
+        quantityCol.setCellValueFactory(data -> new SimpleIntegerProperty(((data.getValue().getValue()))));
 
         productInfo.getColumns().addAll(nameCol, priceCol, quantityCol);
         table.setItems(articles);
@@ -82,25 +83,13 @@ public class Overview extends GridPane {
         articles.add(newPair);
     }
 
-    public void addArticle(Article article) {
-        addArticle(article, 1);
-    }
-
     public void addArticle(Article article, Integer amountToAdd) {
         Pair<Article, Integer> existing = getPair(article);
         int amount = existing == null ? amountToAdd : existing.getValue() + amountToAdd;
         updatePair(existing, new Pair<>(article, amount));
     }
 
-    public void addArticles(Map<Article, Integer> articleAmounts) {
-        articleAmounts.forEach(this::addArticle);
-    }
-
-    public void removeArticle(Article article) {
-        removeArticles(article, 1);
-    }
-
-    public void removeArticles(Article article, int amountToRemove) {
+    public void removeArticle(Article article, int amountToRemove) {
         Pair<Article, Integer> pair = getPair(article);
         int amount = pair.getValue();
         articles.remove(pair);

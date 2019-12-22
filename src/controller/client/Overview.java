@@ -1,15 +1,13 @@
 package controller.client;
 
+import controller.IBasketArticlesController;
 import model.DomainFacade;
+import model.article.Article;
 import model.basket.Basket;
-import model.basket.BasketEvent;
-import model.basket.BasketEventData;
-import model.observer.EventData;
-import model.observer.Observer;
-import model.shop.ShopEvent;
-import model.shop.ShopEventData;
 
-public class Overview implements Observer {
+import java.util.Map;
+
+public class Overview implements IBasketArticlesController {
     private DomainFacade model;
     private view.jfx.client.Overview view;
 
@@ -25,50 +23,42 @@ public class Overview implements Observer {
 
     private void populateArticles() {
         view.clearArticles();
-        view.addArticles(model.getBasketArticleStacks());
+        addArticles(model.getBasketArticleStacks());
     }
 
-    private void updatePriceLabels() {
+    public void addArticles(Map<Article, Integer> articleAmounts) {
+        articleAmounts.forEach(view::addArticle);
+    }
+
+    @Override
+    public void addArticle(Article article) {
+        view.addArticle(article, 1);
+    }
+
+    @Override
+    public void removeArticle(Article article) {
+        removeArticles(article, 1);
+    }
+
+    @Override
+    public void removeArticles(Article article, int amountToRemove) {
+        view.removeArticle(article, amountToRemove);
+    }
+
+    @Override
+    public void clearArticles() {
+        view.clearArticles();
+    }
+
+    @Override
+    public void updatePriceLabels() {
         view.setTotalPriceLbl(model.getBasketTotalPrice());
         view.setDiscountPriceLbl(model.getBasketDiscountedPrice());
     }
 
-    private void handleBasketSwitchEvent(Basket oldBasket) {
+    @Override
+    public void handleBasketSwitchEvent(Basket oldBasket) {
         oldBasket.removeObserver(this);
         updatePriceLabels();
-    }
-
-    @Override
-    public void update(Enum<?> event, EventData data) {
-        if (event instanceof BasketEvent) {
-            BasketEvent basketEvent = (BasketEvent) event;
-            BasketEventData basketEventData = (BasketEventData) data;
-            switch (basketEvent) {
-                case ADDED_ARTICLE:
-                    view.addArticle(basketEventData.getAddedArticle());
-                    break;
-                case CLEARED_ARTICLES:
-                    view.clearArticles();
-                    break;
-                case REMOVED_ARTICLES:
-                    basketEventData.getRemovedArticles().forEach(view::removeArticles);
-                    break;
-                case REMOVED_ARTICLE:
-                    view.removeArticle(basketEventData.getRemovedArticle());
-                    break;
-                case TOTAL_PRICE_CHANGED:
-                    updatePriceLabels();
-                    break;
-            }
-        } else if (event instanceof ShopEvent) {
-            ShopEvent shopEvent = (ShopEvent) event;
-            ShopEventData shopEventData = (ShopEventData) data;
-            switch (shopEvent) {
-                case PUT_SALE_ON_HOLD:
-                case RESUMED_SALE:
-                    handleBasketSwitchEvent(shopEventData.getOldBasket());
-                    break;
-            }
-        }
     }
 }

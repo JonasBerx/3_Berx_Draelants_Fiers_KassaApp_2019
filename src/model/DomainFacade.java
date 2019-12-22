@@ -24,8 +24,8 @@ public class DomainFacade {
         return shop;
     }
 
-    public ArticleDbContext getContext() {
-        return shop.getContext();
+    public ArticleDbContext getArticleDb() {
+        return shop.getArticleDb();
     }
 
     public void putSaleOnHold() {

@@ -11,13 +11,13 @@ import java.util.LinkedList;
 
 public class Shop implements Observable {
     LinkedList<Observer> observers = new LinkedList<>();
-    private ArticleDbContext context;
+    private ArticleDbContext articleDb;
     private Basket basket;
     private Basket heldBasket; // "pause sale" functionality
 
 
     public Shop() {
-        context = new ArticleDbContext(PropertiesOld.getMemory());
+        articleDb = new ArticleDbContext(PropertiesOld.getMemory());
         basket = new Basket();
     }
 
@@ -34,8 +34,8 @@ public class Shop implements Observable {
         updateObservers(ShopEvent.PUT_SALE_ON_HOLD, new ShopEventData(heldBasket));
     }
 
-    public ArticleDbContext getContext() {
-        return context;
+    public ArticleDbContext getArticleDb() {
+        return articleDb;
     }
 
     public void resumeSale() {

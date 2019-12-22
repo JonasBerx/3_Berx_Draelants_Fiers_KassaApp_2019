@@ -1,6 +1,5 @@
 package model.basket;
 
-import javafx.util.Pair;
 import model.Util;
 import model.article.Article;
 import model.discount.DiscountContext;
@@ -70,6 +69,8 @@ public class Basket implements model.observer.Observable {
             }
         }
         priceMutatingUpdate(BasketEvent.REMOVED_ARTICLE, new BasketEventData(null, article, null));
+        if (articleStacks.isEmpty())
+            updateObservers(BasketEvent.REMOVED_LAST_ARTICLE, null);
     }
 
     public void removeAll(Map<Article, Integer> amountsToRemove) {
@@ -86,6 +87,7 @@ public class Basket implements model.observer.Observable {
     public void clear() {
         articleStacks.clear();
         priceMutatingUpdate(BasketEvent.CLEARED_ARTICLES, null);
+        updateObservers(BasketEvent.REMOVED_LAST_ARTICLE, null);
     }
 
     public double getTotalPrice() {

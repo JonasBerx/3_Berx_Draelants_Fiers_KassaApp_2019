@@ -8,10 +8,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import model.article.Article;
-import model.DomainFacade;
-import model.properties.PropertiesOld;
 
-import java.io.IOException;
+import java.util.List;
 
 /**
  * @Author Dieter Draelants
@@ -19,20 +17,10 @@ import java.io.IOException;
  * And sorts it
  */
 //TODO Create controller
-public class ProductOverview extends GridPane {
-	private TableView<Article> table = new TableView<>();
-	DomainFacade domainFacade;
+public class ArticlesOverview extends GridPane {
+	private ObservableList<Article> articles;
 
-	public ProductOverview(DomainFacade domainFacade) {
-		//Load articles from chosen filetype
-		try {
-			PropertiesOld.load();
-			this.domainFacade = domainFacade;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-
+	public ArticlesOverview() {
 		this.setPadding(new Insets(5, 5, 5, 5));
         this.setVgap(5);
         this.setHgap(5);
@@ -49,6 +37,7 @@ public class ProductOverview extends GridPane {
 		TableColumn<Article, Integer> stockCol = new TableColumn<>("Stock");
 
 		//Setting width for table en columns
+		TableView<Article> table = new TableView<>();
 		table.setMaxSize(600, 450);
 
 		codeCol.setMinWidth(table.getMaxWidth() / 5);
@@ -57,22 +46,22 @@ public class ProductOverview extends GridPane {
 		priceCol.setMinWidth(table.getMaxWidth() / 5);
 		stockCol.setMinWidth(table.getMaxWidth() / 5);
 		//Setting the data value for the table
-		codeCol.setCellValueFactory(new PropertyValueFactory("articleCode"));
-		nameCol.setCellValueFactory(new PropertyValueFactory("articleName"));
-		groupCol.setCellValueFactory(new PropertyValueFactory("group"));
-		priceCol.setCellValueFactory(new PropertyValueFactory("price"));
-		stockCol.setCellValueFactory(new PropertyValueFactory("quantity"));
+		codeCol.setCellValueFactory(new PropertyValueFactory<>("articleCode"));
+		nameCol.setCellValueFactory(new PropertyValueFactory<>("articleName"));
+		groupCol.setCellValueFactory(new PropertyValueFactory<>("group"));
+		priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+		stockCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 		//adding Everything together
 		productInfo.getColumns().addAll(codeCol, nameCol, groupCol, priceCol, stockCol);
-		table.setItems(getArticleList().sorted(Article::compareTo));
+		articles = FXCollections.observableArrayList();
+		table.setItems(articles);
 		table.getColumns().addAll(productInfo);
 		this.add(table, 0, 0);
 	}
 
-	//Function that handles the data for the table
-	private ObservableList<Article> getArticleList() {
-		ObservableList<Article> articles = FXCollections.observableArrayList();
-		articles.addAll(domainFacade.getContext().getAll());
-		return articles;
+	public void populateArticles(List<Article> articles) {
+		this.articles.clear();
+		this.articles.addAll();
+		this.articles.sort(Article::compareTo);
 	}
 }

@@ -7,17 +7,19 @@ import javafx.scene.layout.BorderPane;
 import model.DomainFacade;
 
 public class Main extends BorderPane {
-    private ProductOverview productOverview;
+    private ArticlesOverview articlesOverview;
     private Settings settingsPane;
     private Sales salesPane;
+
+
     public Main(DomainFacade domainFacade) {
-        productOverview = new ProductOverview(domainFacade);
-        salesPane = new Sales(domainFacade);
-        settingsPane = new Settings(domainFacade);
+        articlesOverview = new ArticlesOverview();
+        salesPane = new Sales();
+        settingsPane = new Settings();
 
 	    TabPane tabPane = new TabPane();
         Tab kassaTab = new Tab("Kassa", salesPane);
-        Tab artikelTab = new Tab("Artikelen", productOverview);
+        Tab artikelTab = new Tab("Artikelen", articlesOverview);
         Tab instellingTab = new Tab("Instellingen", settingsPane);
         Tab logTab = new Tab("Log");
         tabPane.getTabs().add(kassaTab);
@@ -26,4 +28,16 @@ public class Main extends BorderPane {
         tabPane.getTabs().add(logTab);
 	    this.setCenter(tabPane);
 	}
+
+    public ArticlesOverview getArticlesOverview() {
+        return articlesOverview;
+    }
+
+    public Settings getSettingsPane() {
+        return settingsPane;
+    }
+
+    public Sales getSalesPane() {
+        return salesPane;
+    }
 }
