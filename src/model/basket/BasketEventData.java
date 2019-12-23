@@ -6,6 +6,11 @@ import model.observer.EventData;
 
 import java.util.Map;
 
+/**
+ * @author Pieter Fiers
+ * Basket
+ * */
+
 public class BasketEventData extends EventData {
     private Map<Article, Integer> removedArticles;
     private Article addedArticle;

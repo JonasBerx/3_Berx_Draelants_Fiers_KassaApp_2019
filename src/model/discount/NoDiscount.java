@@ -7,6 +7,10 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
+ * @author the team
+ */
+
+/**
  * Mock class
  */
 public class NoDiscount implements DiscountStrategy {

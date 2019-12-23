@@ -17,6 +17,11 @@ import model.receipt.ReceiptFactory;
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ * @author Pieter Fiers
+ * Sales tab
+ * */
 public class Sale implements BasketArticlesObserver, BasketStateObserver, ShopObserver {
     private DomainFacade model;
     private view.jfx.cashier.Sale view;

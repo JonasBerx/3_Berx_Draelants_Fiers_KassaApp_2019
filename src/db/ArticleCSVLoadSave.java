@@ -9,6 +9,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * @author Jonas Berx
+ * New Database
+ * */
+
 public class ArticleCSVLoadSave extends TekstLoadSaveTemplate {
     private File file;
 

@@ -5,6 +5,10 @@ import model.basket.Basket;
 
 import java.util.Map;
 
+/**
+ * @author the team
+ */
+
 public class FullBasketRatioDiscount extends RatioDiscount {
     public FullBasketRatioDiscount(double ratio) {
         super(ratio);

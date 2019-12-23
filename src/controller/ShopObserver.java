@@ -6,6 +6,11 @@ import model.observer.Observer;
 import model.shop.ShopEvent;
 import model.shop.ShopEventData;
 
+/**
+ * @author Pieter Fiers
+ * Observer for Shop
+ * */
+
 public interface ShopObserver extends Observer {
     void handleBasketSwitchEvent(Basket oldBasket);
 

@@ -1,5 +1,9 @@
 package db;
 
+/**
+ * @author Jonas Berx
+ * New Database
+ * */
 
 public enum LoadSaveStrategyEnum {
     EXCEL(ArticleExcelLoadSave.class),

@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+/**
+ * @author Jonas Berx
+ * New Database
+ * */
+
 public class ArticleDbContext {
     private ArticleDbStrategy strategy;
 

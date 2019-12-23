@@ -7,6 +7,11 @@ import model.discount.DiscountStrategy;
 
 import java.util.*;
 
+/**
+ * @author Pieter Fiers
+ * @author Jonas Berx
+ * */
+
 public class SingleHighestCombinedDiscount implements CombinedDiscountStrategy {
     @Override
     public List<DiscountStrategy> getDiscountCombination(Basket basket, Map<Article, Double> prevStackPrices, Collection<DiscountStrategy> discounts) {

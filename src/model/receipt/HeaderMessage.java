@@ -8,7 +8,11 @@ import java.util.Arrays;
 
 import static model.Util.rep;
 
+/**
+ * @author the team
+ */
 public class HeaderMessage extends ReceiptDecorator {
+
     public HeaderMessage(Receipt newReceipt) {
         super(newReceipt);
     }

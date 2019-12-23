@@ -12,6 +12,10 @@ import java.util.Map;
 
 import static model.Util.rep;
 
+/**
+ * @author the team
+ */
+
 public class BasicReceipt implements Receipt {
     //Basic receipt return
     public String getReceipt(Basket basket) {

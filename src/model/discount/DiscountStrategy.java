@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * @author the team
+ */
+/**
  * Implementations should override either getStackPrices() or getStackDiscounts()
  */
 public interface DiscountStrategy {

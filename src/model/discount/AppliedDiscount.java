@@ -6,7 +6,7 @@ import model.basket.Basket;
 import java.util.Map;
 
 /**
- * Lazily-cached discount
+ * @author the team
  */
 public class AppliedDiscount {
     private final DiscountStrategy discount;

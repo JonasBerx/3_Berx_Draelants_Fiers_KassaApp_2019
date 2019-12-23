@@ -5,6 +5,10 @@ import model.basket.Basket;
 
 import java.util.Map;
 
+/**
+ * @author the team
+ */
+
 public abstract class RatioDiscount implements DiscountStrategy {
     private double ratio;
 

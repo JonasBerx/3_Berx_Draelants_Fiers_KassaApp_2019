@@ -7,6 +7,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author the team
+ */
+
 public abstract class Util {
     public static double getSingleArticlePrice(Map<Article, Double> discountedStackPrices, Article article) {
         Double stackPrice = discountedStackPrices.get(article);

@@ -1,5 +1,9 @@
 package model.discount;
 
+/**
+ * @author the team
+ */
+
 public enum DiscountType {
     GROUP(GroupDiscount.class),
     THRESHOLD(ThresholdDiscount.class),

@@ -1,5 +1,9 @@
 package model.observer;
 
+/**
+ * @author the team
+ */
+
 public interface Observer {
     /**
      * Push update.

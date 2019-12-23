@@ -17,7 +17,14 @@ public class Article implements Comparable<Article> {
     private int quantity;
     private String articleName, group;
     private double price;
-
+    /**
+     * Default constructor for Article class
+     * @param articleCode the identifier of an article
+     * @param name the name of an article
+     * @param group the group of an article
+     * @param price the price of an article
+     * @param quantity the amount of articles of that type in stock
+     * */
     public Article(int articleCode, String name, String group, double price, int quantity) {
         checkArticleCode(articleCode);
         this.articleCode = articleCode;

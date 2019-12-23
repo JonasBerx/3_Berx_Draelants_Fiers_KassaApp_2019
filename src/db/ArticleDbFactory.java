@@ -1,5 +1,10 @@
 package db;
 
+/**
+ * @author Jonas Berx
+ * New Database
+ * */
+
 abstract class ArticleDbFactory {
     public static ArticleDbStrategy fromType(ArticleDbType type) {
         try {

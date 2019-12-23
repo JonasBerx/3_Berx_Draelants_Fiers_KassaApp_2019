@@ -1,5 +1,10 @@
 package model.basket;
 
+
+/**
+ * @author Pieter Fiers
+ * Basket
+ * */
 public enum BasketEvent {
     ADDED_ARTICLE,
     REMOVED_ARTICLES,

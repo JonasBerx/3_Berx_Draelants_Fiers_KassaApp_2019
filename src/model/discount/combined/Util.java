@@ -8,6 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Pieter Fiers
+ * */
+
 public abstract class Util {
     public static double getCombinationAbsoluteDiscount(Basket basket, Map<Article, Double> prevStackPrices, List<DiscountStrategy> discounts) {
         Map<Article, Double> stackPrices = new HashMap<>(prevStackPrices);

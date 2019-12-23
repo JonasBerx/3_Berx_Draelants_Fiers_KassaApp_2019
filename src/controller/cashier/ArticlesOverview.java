@@ -4,6 +4,10 @@ import model.DomainFacade;
 import model.observer.EventData;
 import model.observer.Observer;
 import model.shop.ShopEvent;
+/**
+ * @author Pieter Fiers
+ * Article overview
+ * */
 
 public class ArticlesOverview implements Observer {
     private view.jfx.cashier.ArticlesOverview view;

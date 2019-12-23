@@ -7,6 +7,11 @@ import model.basket.state.BasketState;
 import model.observer.EventData;
 import model.observer.Observer;
 
+/**
+ * @author Pieter Fiers
+ * Observer for basket state
+ * */
+
 public interface BasketStateObserver extends Observer {
     void handleStateChangeEvent(BasketState oldState, BasketState newState);
 

@@ -1,5 +1,10 @@
 package db;
 
+/**
+ * @author Jonas Berx
+ * New Database
+ * */
+
 public enum ArticleDbType {
     INMEMORY(ArticleDbInMemory.class),
     ANOTHERONE(ArticleDbSQL.class);

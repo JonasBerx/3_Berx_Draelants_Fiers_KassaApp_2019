@@ -10,6 +10,10 @@ import java.util.Date;
 
 import static model.Util.rep;
 
+/**
+ * @author the team
+ */
+
 public class HeaderDateTime extends ReceiptDecorator {
     public HeaderDateTime(Receipt newReceipt) {
         super(newReceipt);

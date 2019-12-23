@@ -2,6 +2,10 @@ package model.receipt;
 
 import model.Prop;
 
+/**
+ * @author the team
+ */
+
 public class ReceiptFactory {
     public Receipt fromProps()  {
         Receipt base = new BasicReceipt();

@@ -8,6 +8,10 @@ import java.util.Arrays;
 
 import static model.Util.rep;
 
+/**
+ * @author the team
+ */
+
 public class FooterClosure extends ReceiptDecorator {
     public FooterClosure(Receipt newReceipt) {
         super(newReceipt);

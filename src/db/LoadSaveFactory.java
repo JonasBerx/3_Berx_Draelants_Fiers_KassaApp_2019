@@ -1,5 +1,9 @@
 package db;
 
+/**
+ * @author Jonas Berx
+ * New Database
+ * */
 
 public abstract class LoadSaveFactory {
     public static LoadSaveStrategy fromType(LoadSaveStrategyEnum type) {

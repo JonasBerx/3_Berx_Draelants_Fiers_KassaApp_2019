@@ -5,6 +5,9 @@ import model.basket.Basket;
 
 import java.util.Collections;
 import java.util.Map;
+/**
+ * @author the team
+ */
 
 public class DiscountContext {
     private DiscountStrategy discount;

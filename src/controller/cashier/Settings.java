@@ -5,6 +5,11 @@ import model.Prop;
 
 import java.io.IOException;
 
+/**
+ * @author Pieter Fiers
+ * Setting tab
+ * */
+
 public class Settings {
     private DomainFacade model;
     private view.jfx.cashier.Settings view;

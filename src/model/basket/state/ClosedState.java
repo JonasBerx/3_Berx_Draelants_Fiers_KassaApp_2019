@@ -7,6 +7,11 @@ import model.receipt.ReceiptFactory;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * @author Pieter Fiers
+ * States
+ * */
+
 public class ClosedState extends BasketState {
     public ClosedState(Basket basket) {
         super(basket);

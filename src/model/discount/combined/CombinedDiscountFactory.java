@@ -4,6 +4,11 @@ import model.discount.DiscountStrategy;
 
 import java.util.Collection;
 
+/**
+ * @author Pieter Fiers
+ * @author Jonas Berx
+ * */
+
 public abstract class CombinedDiscountFactory {
     public static CombinedDiscountContext fromType(Collection<DiscountStrategy> discounts, CombinedDiscountType type) {
         try {

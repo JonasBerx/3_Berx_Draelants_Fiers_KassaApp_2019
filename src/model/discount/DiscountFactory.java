@@ -9,6 +9,9 @@ import model.Prop;
 import java.util.Collection;
 import java.util.LinkedList;
 
+/**
+ * @author the team
+ */
 public abstract class DiscountFactory {
     public static DiscountContext fromProperties(Basket basket) {
         Collection<DiscountStrategy> discounts = new LinkedList<>();

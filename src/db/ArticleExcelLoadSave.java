@@ -9,6 +9,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * @author Jonas Berx
+ * New Database
+ * */
+
 public class ArticleExcelLoadSave implements LoadSaveStrategy {
     private ExcelPlugin plugin;
     private File articleFile = new File("src/bestanden/articles.xls");

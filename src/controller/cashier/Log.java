@@ -6,6 +6,10 @@ import model.log.LogEventData;
 import model.observer.EventData;
 import model.observer.Observer;
 
+/**
+ * @author Pieter Fiers
+ * Log class
+ * */
 public class Log implements Observer {
     private view.jfx.cashier.Log view;
 

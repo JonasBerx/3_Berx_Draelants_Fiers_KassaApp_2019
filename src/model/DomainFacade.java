@@ -10,6 +10,10 @@ import db.ArticleDbContext;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * @author the team
+ */
+
 public class DomainFacade {
     private final Shop shop;
     private final Log log;

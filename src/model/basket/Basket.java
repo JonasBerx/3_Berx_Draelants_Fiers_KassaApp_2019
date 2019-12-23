@@ -13,6 +13,11 @@ import model.observer.Observer;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @author Pieter Fiers
+ * Basket
+ * */
+
 public class Basket implements model.observer.Observable {
     Map<Article, Integer> articleStacks = new HashMap<>(); // Maps article to # of articles in stack
     LinkedList<Observer> observers = new LinkedList<>();

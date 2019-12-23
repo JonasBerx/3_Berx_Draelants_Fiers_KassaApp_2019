@@ -5,6 +5,11 @@ import model.article.Article;
 import java.io.File;
 import java.util.ArrayList;
 
+/**
+ * @author Jonas Berx
+ * New Database
+ * */
+
 public abstract class TekstLoadSaveTemplate implements LoadSaveStrategy{
     private String path;
     public File file;

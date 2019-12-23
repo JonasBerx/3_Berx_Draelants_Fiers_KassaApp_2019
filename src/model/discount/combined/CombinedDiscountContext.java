@@ -9,6 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Pieter Fiers
+ * @author Jonas Berx
+ * */
+
 public class CombinedDiscountContext implements DiscountStrategy {
     private Collection<DiscountStrategy> discounts;
     private CombinedDiscountStrategy combinator;

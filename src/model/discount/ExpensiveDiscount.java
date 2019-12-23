@@ -7,6 +7,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author the team
+ */
+
 public class ExpensiveDiscount extends RatioDiscount {
     public ExpensiveDiscount(double ratio) {
         super(ratio);

@@ -2,6 +2,11 @@ package model.basket.state;
 
 import model.basket.Basket;
 
+/**
+ * @author Pieter Fiers
+ * States
+ * */
+
 public abstract class BasketState {
     private Basket basket;
 

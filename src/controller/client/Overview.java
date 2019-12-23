@@ -9,6 +9,11 @@ import model.observer.EventData;
 
 import java.util.Map;
 
+/**
+ * @author Pieter Fiers
+ * Client overview
+ * */
+
 public class Overview implements BasketArticlesObserver, ShopObserver {
     private DomainFacade model;
     private view.jfx.client.Overview view;

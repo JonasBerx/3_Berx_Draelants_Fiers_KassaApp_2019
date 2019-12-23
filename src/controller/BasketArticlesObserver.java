@@ -6,6 +6,11 @@ import model.basket.BasketEventData;
 import model.observer.EventData;
 import model.observer.Observer;
 
+/**
+ * @author Pieter Fiers
+ * Observer for basket
+ * */
+
 public interface BasketArticlesObserver extends Observer {
     void addArticle(Article article);
     void removeArticles(Article article, int amountToRemove);
