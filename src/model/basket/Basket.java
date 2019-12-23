@@ -170,32 +170,16 @@ public class Basket implements model.observer.Observable {
         return openState;
     }
 
-    public void setOpenState(OpenState openState) {
-        this.openState = openState;
-    }
-
     public ClosedState getClosedState() {
         return closedState;
-    }
-
-    public void setClosedState(ClosedState closedState) {
-        this.closedState = closedState;
     }
 
     public PayedState getPayedState() {
         return payedState;
     }
 
-    public void setPayedState(PayedState payedState) {
-        this.payedState = payedState;
-    }
-
     public CancelledState getCancelledState() {
         return cancelledState;
-    }
-
-    public void setCancelledState(CancelledState cancelledState) {
-        this.cancelledState = cancelledState;
     }
     //endregion
 
@@ -222,7 +206,9 @@ public class Basket implements model.observer.Observable {
     }
 
     private void updateObservers(BasketEvent event, BasketEventData data) {
-        observers.forEach(observer -> observer.update(event, data));
+        for (Observer observer : observers) {
+            observer.update(event, data);
+        }
     }
     //endregion
 }

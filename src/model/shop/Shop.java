@@ -26,6 +26,8 @@ public class Shop implements Observable, Observer {
 
 
     public Shop(Log log) {
+        this.log = log;
+
         articleDb = new ArticleDbContext(Prop.ARTICLE_DB.asEnum(ArticleDbType.class));
         basket = new Basket(log);
         basket.addObserver(this);
@@ -61,9 +63,9 @@ public class Shop implements Observable, Observer {
     }
 
     private void updateBasketObserver(Basket oldBasket, Basket newBasket) {
-        if (heldBasket != null)
-            heldBasket.removeObserver(this);
-        basket.addObserver(this);
+        if (oldBasket != null)
+            oldBasket.removeObserver(this);
+        newBasket.addObserver(this);
     }
 
     public boolean saleIsOnHold() {
@@ -96,6 +98,7 @@ public class Shop implements Observable, Observer {
                 if (payed || cancelled) {
                     Basket oldBasket = getBasket();
                     basket = new Basket(log);
+                    updateBasketObserver(null, basket);
                     updateObservers(ShopEvent.TRANSACTION_FINISHED, new ShopEventData(oldBasket));
                     if (payed)
                         updateObservers(ShopEvent.ARTICLE_STOCK_CHANGED, null);
