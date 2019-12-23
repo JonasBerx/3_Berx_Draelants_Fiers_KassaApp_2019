@@ -1,19 +1,12 @@
 package db;
 
-class ArticleDbFactory {
-
-    DbStrategy create(String type) {
-        DbStrategy strategy = null;
-        ArticleDbEnum strategyEnum = ArticleDbEnum.valueOf(type.toUpperCase());
-        Class dbClass = strategyEnum.getMemoryClass();
-
+abstract class ArticleDbFactory {
+    public static ArticleDbStrategy fromType(ArticleDbType type) {
         try {
-            Object dbObject = dbClass.newInstance();
-            strategy = (DbStrategy) dbObject;
+            return type.getArticleDbClass().newInstance();
         } catch (IllegalAccessException | InstantiationException e) {
-            e.printStackTrace();
+            String err = String.format("Cannot instantiate ArticleDb type <%s>", type.name());
+            throw new RuntimeException(err, e);
         }
-        return strategy;
     }
-
 }

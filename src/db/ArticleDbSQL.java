@@ -13,7 +13,7 @@ import java.util.HashMap;
  * Class made to show the ability to implement different Database structures
  *
  **/
-public class ArticleDbSQL implements DbStrategy {
+public class ArticleDbSQL implements ArticleDbStrategy {
     public ArticleDbSQL(String type) {
         throw new UnsupportedOperationException("Will not be implemented");
     }

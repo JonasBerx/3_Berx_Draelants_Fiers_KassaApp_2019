@@ -1,6 +1,9 @@
 package model;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class Util {
     public static <T> Map<T, Integer> flatListToAmountMap(Collection<T> list) {
@@ -48,5 +51,13 @@ public class Util {
 
     public static String hexHash(Object obj) {
         return Integer.toHexString(obj.hashCode());
+    }
+
+    public static String rep(String str, int times) {
+        return new String(new char[times]).replace("\0", str);
+    }
+
+    public static String capitalizeFirst(String str) {
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 }

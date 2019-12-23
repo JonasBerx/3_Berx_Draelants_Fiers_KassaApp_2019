@@ -62,6 +62,9 @@ public class Overview implements BasketArticlesObserver, ShopObserver {
     @Override
     public void handleBasketSwitchEvent(Basket oldBasket) {
         oldBasket.removeObserver(this);
+        model.addBasketObserver(this);
         updatePriceLabels();
+        clearArticles();
+        populateArticles();
     }
 }

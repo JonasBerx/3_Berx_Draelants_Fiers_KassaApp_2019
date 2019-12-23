@@ -1,5 +1,6 @@
 package view.jfx.cashier;
 
+import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
@@ -14,12 +15,10 @@ import model.Util;
 import model.article.Article;
 import view.jfx.IAlerts;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static view.jfx.Helpers.setCellValueFactory;
+import static view.jfx.Helpers.tableColumn;
 
 //TODO Create controller
 public class Sale extends GridPane implements IAlerts {
@@ -28,6 +27,7 @@ public class Sale extends GridPane implements IAlerts {
     private Button holdSaleBtn;
     private Button clearBtn;
     private Button payBtn;
+    private Button cancelBtn;
     private Button deleteBtn;
     private Button closeBtn;
     private TextField articleCodeFld;
@@ -46,7 +46,7 @@ public class Sale extends GridPane implements IAlerts {
         this.getChildren().add(articleCodeFld);
 
         //Defining Pause button
-        holdSaleBtn = new Button("Pauzeer verkoop");
+        holdSaleBtn = new Button();
         GridPane.setConstraints(holdSaleBtn, 2, 0);
         this.getChildren().add(holdSaleBtn);
 
@@ -54,6 +54,7 @@ public class Sale extends GridPane implements IAlerts {
         deleteBtn = new Button("Verwijder");
         GridPane.setConstraints(deleteBtn, 3, 0);
         this.getChildren().add(deleteBtn);
+        deleteBtn.setDisable(true);
 
         //Defining the Clear button
         clearBtn = new Button("Verwijder alle");
@@ -64,52 +65,40 @@ public class Sale extends GridPane implements IAlerts {
         GridPane.setConstraints(closeBtn, 5, 0);
         this.getChildren().add(closeBtn);
 
-        //Defining Pause button
-        payBtn = new Button("Pay");
-        payBtn.setDisable(true);
-//        GridPane.setConstraints(payBtn, 5, 0);
-//        this.getChildren().add(payBtn);
 
-
-        TableColumn sales = new TableColumn<>("Products");
-        TableColumn<Article, Integer> code = new TableColumn<>("Article Code");
-        TableColumn<Article, String> name = new TableColumn<>("Article Name");
-        TableColumn<Article, String> group = new TableColumn<>("Article Group");
-        TableColumn<Article, Double> price = new TableColumn<>("Article Price");
-        totalPriceLbl = new Label();
-        totalPriceLbl.setFont(new Font("Arial", 25));
-        setTotalPriceLbl(0.0);
-
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Oofsies woofsies");
-        alert.setHeaderText("You made an oopsies");
-
-        sales.getColumns().addAll(code, name, group, price);
         articlesTbl = new TableView<>();
+        TableColumn<Article, ?> sales = new TableColumn<>("Products");
+        DoubleBinding width = articlesTbl.widthProperty().divide(4);
+        List<TableColumn<Article, ?>> columns = Arrays.asList(
+                tableColumn("Code", Article::getCode, width),
+                tableColumn("Name", Article::getName, width),
+                tableColumn("Group", Article::getGroup, width),
+                tableColumn("Price", Article::getPrice, width)
+        );
+        sales.getColumns().addAll(columns);
         articlesTbl.prefWidthProperty().bind(this.prefWidthProperty());
-        articlesTbl.setMaxSize(1000, 800);
         articlesTbl.setItems(articles);
         articlesTbl.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
-        code.prefWidthProperty().bind(articlesTbl.widthProperty().divide(4));
-        name.prefWidthProperty().bind(articlesTbl.widthProperty().divide(4));
-        group.prefWidthProperty().bind(articlesTbl.widthProperty().divide(4));
-        price.prefWidthProperty().bind(articlesTbl.widthProperty().divide(4));
-
-        setCellValueFactory(code, Article::getCode);
-        setCellValueFactory(name, Article::getName);
-        setCellValueFactory(group, Article::getGroup);
-        setCellValueFactory(price, Article::getPrice);
-
-        articlesTbl.getColumns().addAll(sales);
-
-        this.add(articlesTbl, 0, 4, 6, 1);
-        this.add(totalPriceLbl, 1, 5);
-
-        deleteBtn.setDisable(true);
+        articlesTbl.getColumns().add(sales);
         articlesTbl.getSelectionModel().selectedItemProperty().addListener((lst, old, newSelection) -> {
             deleteBtn.setDisable(newSelection == null);
         });
+        this.add(articlesTbl, 0, 4, 6, 1);
+
+        totalPriceLbl = new Label();
+        totalPriceLbl.setFont(new Font("Arial", 25));
+        setTotalPriceLbl(0.0);
+        this.add(totalPriceLbl, 1, 5);
+
+        payBtn = new Button("Pay");
+        payBtn.setDisable(true);
+        GridPane.setConstraints(payBtn, 0, 6, 3, 1);
+        this.getChildren().add(payBtn);
+
+        cancelBtn = new Button("Cancel");
+        cancelBtn.setDisable(true);
+        GridPane.setConstraints(cancelBtn, 3, 6,3,1);
+        this.getChildren().add(cancelBtn);
     }
 
     public void addArticle(Article article) {
@@ -120,8 +109,12 @@ public class Sale extends GridPane implements IAlerts {
         articles.remove(article);
     }
 
-    public void setHoldSaleBtn(boolean isOnHold) {
-        String btnText = isOnHold ? "Continue sale on hold" : "Put sale on hold";
+    public void setHoldSaleBtnEnabled(boolean enabled) {
+        holdSaleBtn.setDisable(!enabled);
+    }
+
+    public void setHoldSaleBtnHeld(boolean isOnHold) {
+        String btnText = isOnHold ? "Hervat verkoop" : "Pauzeer verkoop";
         holdSaleBtn.setText(btnText);
     }
 
@@ -148,8 +141,16 @@ public class Sale extends GridPane implements IAlerts {
         articleCodeFld.clear();
     }
 
-    public void setEnablePayBtn(boolean enabled) {
+    public void setCloseBtnEnabled(boolean enabled) {
+        closeBtn.setDisable(!enabled);
+    }
+
+    public void setPayBtnEnabled(boolean enabled) {
         payBtn.setDisable(!enabled);
+    }
+
+    public void setCancelBtnEnabled(boolean enabled) {
+        cancelBtn.setDisable(!enabled);
     }
 
     public void setOnClearArticles(Runnable action) {
@@ -164,11 +165,19 @@ public class Sale extends GridPane implements IAlerts {
         holdSaleBtn.setOnAction(e -> action.run());
     }
 
+    public void setOnRemove(Runnable action) {
+        deleteBtn.setOnAction(e -> action.run());
+    }
+
+    public void setOnClose(Runnable action) {
+        closeBtn.setOnAction(e -> action.run());
+    }
+
     public void setOnPay(Runnable action) {
         payBtn.setOnAction(e -> action.run());
     }
 
-    public void setOnRemove(Runnable action) {
-        deleteBtn.setOnAction(e -> action.run());
+    public void setOnCancel(Runnable action) {
+        cancelBtn.setOnAction(e -> action.run());
     }
 }

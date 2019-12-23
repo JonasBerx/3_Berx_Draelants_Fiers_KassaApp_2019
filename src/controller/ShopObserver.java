@@ -17,6 +17,7 @@ public interface ShopObserver extends Observer {
             switch (shopEvent) {
                 case PUT_SALE_ON_HOLD:
                 case RESUMED_SALE:
+                case TRANSACTION_FINISHED:
                     handleBasketSwitchEvent(shopEventData.getOldBasket());
                     break;
             }

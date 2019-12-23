@@ -1,9 +1,12 @@
 package model.receipt;
 
 import model.DomainFacade;
-import model.properties.PropertiesOld;
+import model.Prop;
+import model.basket.Basket;
 
-import java.io.IOException;
+import java.util.Arrays;
+
+import static model.Util.rep;
 
 public class HeaderMessage extends ReceiptDecorator {
     public HeaderMessage(Receipt newReceipt) {
@@ -11,16 +14,11 @@ public class HeaderMessage extends ReceiptDecorator {
     }
 
     @Override
-    public String getReceipt(DomainFacade d) {
-        try {
-            PropertiesOld.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        StringBuilder receipt = new StringBuilder();
-        receipt.append(String.format(PropertiesOld.getHeaderMessage() + "%n"));
-        receipt.append(String.format("____________________________________%n"));
-        receipt.append(this.getDescription(d));
-        return receipt.toString();
+    public String getReceipt(Basket basket) {
+        return String.join("\n", Arrays.asList(
+                Prop.RECEIPT_HEADER_MESSAGE_TXT.asString(),
+                rep("─", 36),
+                super.getReceipt(basket)
+        ));
     }
 }

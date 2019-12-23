@@ -8,8 +8,8 @@ import java.util.Arrays;
 
 import static model.Util.rep;
 
-public class FooterPriceDiscountSeparate extends ReceiptDecorator {
-    public FooterPriceDiscountSeparate(Receipt newReceipt) {
+public class FooterVatSeparate extends ReceiptDecorator {
+    public FooterVatSeparate(Receipt newReceipt) {
         super(newReceipt);
     }
 
@@ -17,8 +17,8 @@ public class FooterPriceDiscountSeparate extends ReceiptDecorator {
     public String getReceipt(Basket basket) {
         return String.join("\n", Arrays.asList(
                 super.getReceipt(basket),
-                String.format("Prijs (exclusief korting)   €%6.2f", basket.getTotalPrice()),
-                String.format("Totale korting               €%6.2f", basket.getTotalPrice() - basket.getTotalDiscountedPrice())
+                String.format("Prijs excl. BTW              %6.2f€", basket.getTotalDiscountedPrice() * 0.95),
+                String.format("BTW (5%%)                     %6.2f€", basket.getTotalDiscountedPrice() * 0.05)
         ));
     }
 }

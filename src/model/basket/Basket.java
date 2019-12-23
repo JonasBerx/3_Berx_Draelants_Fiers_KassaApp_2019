@@ -6,6 +6,8 @@ import model.basket.state.*;
 import model.discount.DiscountContext;
 import model.discount.DiscountFactory;
 import model.discount.combined.CombinedDiscountContext;
+import model.log.DummyLog;
+import model.log.Log;
 import model.observer.Observer;
 
 import java.util.*;
@@ -16,25 +18,28 @@ public class Basket implements model.observer.Observable {
     LinkedList<Observer> observers = new LinkedList<>();
     Map<Article, Double> discountedPrices;
     private DiscountContext discountContext;
+    private Log log;
 
+    BasketState state;
     OpenState openState;
     ClosedState closedState;
     PayedState payedState;
     CancelledState cancelledState;
 
-    BasketState state = openState;
+    public Basket(Log log) {
+        this.log = log;
 
-    public Basket() {
         openState = new OpenState(this);
         closedState = new ClosedState(this);
         payedState = new PayedState(this);
         cancelledState = new CancelledState(this);
+        state = openState;
 
-        discountContext = DiscountFactory.fromProperties(this);
+        updateDiscountContext();
+    }
 
-        if (discountContext.getDiscount() instanceof CombinedDiscountContext) {
-            CombinedDiscountContext comb = ((CombinedDiscountContext) discountContext.getDiscount());
-        }
+    public Log getLog() {
+        return log;
     }
 
     public Map<Article, Integer> getArticleStacks() {
@@ -116,13 +121,23 @@ public class Basket implements model.observer.Observable {
         return sum;
     }
 
+    public Map<Article, Double> getDiscountedPrices() {
+        return discountedPrices;
+    }
+
     public double getTotalDiscountedPrice() {
+        if (discountedPrices == null)
+            updateDiscountedPrices();
         return discountedPrices.values().stream().mapToDouble(Double::new).sum();
+    }
+
+    public void updateDiscountContext() {
+        discountContext = DiscountFactory.fromProperties(this);
+        updateObservers(BasketEvent.TOTAL_PRICE_CHANGED, null);
     }
 
     public void updateDiscountedPrices() {
         this.discountedPrices = discountContext.getStackPrices();
-        System.out.println(this.discountedPrices);
     }
 
     /*********
@@ -137,6 +152,18 @@ public class Basket implements model.observer.Observable {
         BasketState oldState = getState();
         this.state = state;
         updateObservers(BasketEvent.STATE_CHANGED, new BasketEventData(oldState, state));
+    }
+
+    public void close() {
+        state.close();
+    }
+
+    public void pay() {
+        state.pay();
+    }
+
+    public void cancel() {
+        state.cancel();
     }
 
     public OpenState getOpenState() {

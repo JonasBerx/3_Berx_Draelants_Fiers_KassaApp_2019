@@ -1,12 +1,16 @@
-package model.properties;
+package model;
 
+import db.ArticleDbType;
+import db.LoadSaveStrategyEnum;
 import model.discount.combined.CombinedDiscountType;
 
 import java.io.*;
 import java.util.Properties;
 
-public enum Property {
-    // Discounts
+public enum Prop {
+    ARTICLE_DB(ArticleDbType.INMEMORY),
+    LOAD_SAVE_STRATEGY(LoadSaveStrategyEnum.TXT),
+
     DISCOUNT_EXPENSIVE(true),
     DISCOUNT_EXPENSIVE_AMOUNT(10),
     DISCOUNT_GROUP(true),
@@ -15,14 +19,25 @@ public enum Property {
     DISCOUNT_THRESHOLD(true),
     DISCOUNT_THRESHOLD_THRESHOLD(200),
     DISCOUNT_THRESHOLD_AMOUNT(5),
-    DISCOUNTS_COMBINATION_TYPE(CombinedDiscountType.HIGHEST);
+    DISCOUNTS_COMBINATION_TYPE(CombinedDiscountType.HIGHEST),
+
+    RECEIPT_STACK_DISCOUNTED_PRICE(true),
+    RECEIPT_STACK_COMBINED_PRICE(true),
+
+    RECEIPT_HEADER_MESSAGE(true),
+    RECEIPT_HEADER_MESSAGE_TXT("Welkom bij LTIAS shop!"),
+    RECEIPT_HEADER_DATETIME(true),
+    RECEIPT_FOOTER_DISCOUNT(true),
+    RECEIPT_FOOTER_VAT(true),
+    RECEIPT_FOOTER_MESSAGE(true),
+    RECEIPT_FOOTER_MESSAGE_TXT("Bedankt voor uw vertrouwen in LTIAS!");
 
     private String defaultValue;
     private static java.util.Properties properties;
     static InputStream inputStream;
     static OutputStream outputStream;
 
-    Property(Object defaultValue) {
+    Prop(Object defaultValue) {
         String val = defaultValue.toString();
 
         if (defaultValue instanceof Enum) {
@@ -55,8 +70,8 @@ public enum Property {
 
     public static Properties getDefaults() {
         Properties defaults = new Properties();
-        for (Property property : values()) {
-            defaults.setProperty(property.name(), property.getDefaultValue());
+        for (Prop prop : values()) {
+            defaults.setProperty(prop.name(), prop.getDefaultValue());
         }
         return defaults;
     }
@@ -106,6 +121,10 @@ public enum Property {
 
     public void set(boolean value) {
         set(Boolean.toString(value));
+    }
+
+    public void set(Enum<?> value) {
+        set(value.name());
     }
     //endregion
 }

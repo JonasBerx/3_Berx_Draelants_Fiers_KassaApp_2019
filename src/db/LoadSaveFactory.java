@@ -1,19 +1,13 @@
 package db;
 
 
-public class LoadSaveFactory {
-
-    public LoadSaveStrategy create(String type) {
-        LoadSaveStrategy strategy = null;
-        LoadSaveStrategyEnum strategyEnum = LoadSaveStrategyEnum.valueOf(type.toUpperCase());
-        Class theClass = strategyEnum.getTheClass();
-
+public abstract class LoadSaveFactory {
+    public static LoadSaveStrategy fromType(LoadSaveStrategyEnum type) {
         try{
-            Object loadSaveObject = theClass.newInstance();
-            strategy = (LoadSaveStrategy) loadSaveObject;
+            return type.getLoadSaveClass().newInstance();
         } catch (IllegalAccessException | InstantiationException e) {
-            e.printStackTrace();
+            String err = String.format("Cannot instantiate LoadSave type <%s>", type.name());
+            throw new RuntimeException(err, e);
         }
-        return strategy;
     }
 }

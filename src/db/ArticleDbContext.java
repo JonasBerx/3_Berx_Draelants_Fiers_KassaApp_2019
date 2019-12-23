@@ -7,11 +7,10 @@ import java.util.Collection;
 import java.util.HashMap;
 
 public class ArticleDbContext {
-    private ArticleDbFactory factory = new ArticleDbFactory();
-    private DbStrategy strategy;
+    private ArticleDbStrategy strategy;
 
-    public ArticleDbContext(String type) {
-       strategy = factory.create(type);
+    public ArticleDbContext(ArticleDbType type) {
+       strategy = ArticleDbFactory.fromType(type);
     }
 
 

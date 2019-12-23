@@ -1,9 +1,9 @@
 package model;
 
 import model.article.Article;
+import model.basket.Basket;
+import model.log.Log;
 import model.observer.Observer;
-import model.properties.PropertiesOld;
-import model.properties.Property;
 import model.shop.Shop;
 import db.ArticleDbContext;
 
@@ -12,12 +12,25 @@ import java.util.*;
 
 public class DomainFacade {
     private final Shop shop;
+    private final Log log;
 
     public DomainFacade() throws IOException {
-        PropertiesOld.load();
-        Property.load();
+        Prop.load();
 
-        this.shop = new Shop();
+        this.log = new Log();
+        this.shop = new Shop(log);
+    }
+
+    public Log getLog() {
+        return log;
+    }
+
+    public List<String> getLogItems() {
+        return log.getItems();
+    }
+
+    public void addLogObserver(Observer observer) {
+        log.addObserver(observer);
     }
 
     public Shop getShop() {
@@ -45,50 +58,70 @@ public class DomainFacade {
     public void removeShopObserver(Observer observer) { shop.removeObserver(observer); }
 
     //region Basket
+    public Basket getBasket() {
+        return shop.getBasket();
+    }
+
+    public void updateDiscountContext() {
+        getBasket().updateDiscountContext();
+    }
+
     public void addBasketObserver(Observer observer) {
-        shop.getBasket().addObserver(observer);
+        getBasket().addObserver(observer);
     }
 
     public void removeBasketObserver(Observer observer) {
-        shop.getBasket().removeObserver(observer);
+        getBasket().removeObserver(observer);
+    }
+
+    public void closeBasket() {
+        getBasket().close();
+    }
+
+    public void payBasket() {
+        getBasket().pay();
+    }
+
+    public void cancelBasket() {
+        getBasket().cancel();
     }
 
     public void addBasketArticle(Article article) {
-        shop.getBasket().add(article);
+        getBasket().add(article);
     }
 
     public Collection<Article> getAllUniqueBasketArticles() {
-        return shop.getBasket().getAllUniqueArticles();
+        return getBasket().getAllUniqueArticles();
     }
 
     public Map<Article, Integer> getBasketArticleStacks() {
-        return shop.getBasket().getArticleStacks();
+        return getBasket().getArticleStacks();
     }
 
     public void removeBasketArticle(Article article) {
-        shop.getBasket().remove(article);
+        getBasket().remove(article);
     }
 
     public void removeBasketArticles(Map<Article, Integer> articleAmountsToRemove) {
-        shop.getBasket().removeAll(articleAmountsToRemove);
+        getBasket().removeAll(articleAmountsToRemove);
     }
 
     public void removeBasketArticles(Collection<Article> articles) {
-        shop.getBasket().removeAll(articles);
+        getBasket().removeAll(articles);
     }
 
     public void clearBasketArticles() {
-        shop.getBasket().clear();
+        getBasket().clear();
     }
 
     //Geeft prijs ZONDER toegepaste korting
     public double getBasketTotalPrice() {
-        return shop.getBasket().getTotalPrice();
+        return getBasket().getTotalPrice();
     }
 
     //Geeft totale prijs MET korting toegepast
     public double getBasketDiscountedPrice() {
-        return shop.getBasket().getTotalDiscountedPrice();
+        return getBasket().getTotalDiscountedPrice();
     }
     //endregion
 }

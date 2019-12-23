@@ -1,28 +1,17 @@
 package db;
 
+import model.Prop;
 import model.article.Article;
-import model.properties.PropertiesOld;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
-public class ArticleDbInMemory implements DbStrategy {
-
-    private LoadSaveFactory factory = new LoadSaveFactory();
-    private LoadSaveStrategy strategy;
-
-
+public class ArticleDbInMemory implements ArticleDbStrategy {
     private HashMap<Integer, Article> db;
 
     ArticleDbInMemory() {
-        try {
-            PropertiesOld.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        strategy = factory.create(PropertiesOld.getLoader());
+        LoadSaveStrategy strategy = LoadSaveFactory.fromType(Prop.LOAD_SAVE_STRATEGY.asEnum(LoadSaveStrategyEnum.class));
 
         db = new HashMap<>();
         add(strategy.load());

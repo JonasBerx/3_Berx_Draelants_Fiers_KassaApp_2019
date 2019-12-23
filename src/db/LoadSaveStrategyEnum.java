@@ -7,22 +7,13 @@ public enum LoadSaveStrategyEnum {
     CSV( ArticleCSVLoadSave.class);
 
 
-    private final Class aClass;
-    LoadSaveStrategyEnum(Class aClass) {
+    private final Class<? extends LoadSaveStrategy> loadSaveClass;
 
-        this.aClass = aClass;
+    LoadSaveStrategyEnum(Class<? extends LoadSaveStrategy> loadSaveClass) {
+        this.loadSaveClass = loadSaveClass;
     }
 
-    // Kunnen enum als extension schrijven
-    // path is dan = articles.ENUM
-    // Props to Andreas
-
-//    public String getThePath() {
-//        return path;
-//    }
-
-    public Class getTheClass() {
-        return this.aClass;
+    public Class<? extends LoadSaveStrategy> getLoadSaveClass() {
+        return this.loadSaveClass;
     }
-
 }

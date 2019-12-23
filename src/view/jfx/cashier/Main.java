@@ -6,26 +6,30 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import model.DomainFacade;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Main extends BorderPane {
     private ArticlesOverview articlesOverview;
     private Settings settingsPane;
     private Sale salePane;
+    private Log logPane;
 
 
     public Main(DomainFacade domainFacade) {
         articlesOverview = new ArticlesOverview();
         salePane = new Sale();
         settingsPane = new Settings();
+        logPane = new Log();
 
 	    TabPane tabPane = new TabPane();
-        Tab kassaTab = new Tab("Kassa", salePane);
-        Tab artikelTab = new Tab("Artikelen", articlesOverview);
-        Tab instellingTab = new Tab("Instellingen", settingsPane);
-        Tab logTab = new Tab("Log");
-        tabPane.getTabs().add(kassaTab);
-        tabPane.getTabs().add(artikelTab);
-        tabPane.getTabs().add(instellingTab);
-        tabPane.getTabs().add(logTab);
+        Tab saleTab = new Tab("Kassa", salePane);
+        Tab articlesOverviewTab = new Tab("Artikelen", articlesOverview);
+        Tab settingsTab = new Tab("Instellingen", settingsPane);
+        Tab logTab = new Tab("Log", logPane);
+        List<Tab> tabs = Arrays.asList(saleTab, articlesOverviewTab, settingsTab, logTab);
+        tabs.forEach(t -> t.setClosable(false));
+        tabPane.getTabs().addAll(tabs);
 	    this.setCenter(tabPane);
 	}
 
@@ -39,5 +43,9 @@ public class Main extends BorderPane {
 
     public Sale getSalePane() {
         return salePane;
+    }
+
+    public Log getLogPane() {
+        return logPane;
     }
 }

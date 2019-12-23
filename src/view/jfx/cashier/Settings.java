@@ -1,243 +1,259 @@
 package view.jfx.cashier;
 
+import db.LoadSaveStrategyEnum;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
-import model.DomainFacade;
-import model.properties.PropertiesOld;
-import model.properties.Property;
+import model.Prop;
+import view.jfx.IAlerts;
+import view.jfx.controls.Header;
+import view.jfx.controls.IntegerSpinner;
+import view.jfx.controls.VControlLabel;
 
 import java.io.IOException;
 
 /**
- * @Author Jonas Berx
- * @Version 1.0
+ * @author Jonas Berx
+ * @version 1.0
  * Settings tab for Cashier
- * */
-//TODO Create controller
-public class Settings extends GridPane {
-    private final ComboBox options = new ComboBox<>();
-    private final CheckBox expensiveCheckbox = new CheckBox();
-    private Button saveButton = new Button("Save");
-    private final CheckBox groupCheckBox = new CheckBox();
-    private final CheckBox thresholdCheckbox = new CheckBox();
+ **/
+public class Settings extends GridPane implements IAlerts {
+    private final ComboBox<LoadSaveStrategyEnum> loadSaveCmb;
 
-    private Spinner<Integer> groupDiscountAmount;
-    private final ComboBox groups = new ComboBox<String>();
-    private Spinner<Integer> thresholdDiscountAmount;
-    private Spinner<Integer> expensiveDiscountAmount;
-    private Spinner<Integer> thresholdDiscountThreshold;
+    private final CheckBox groupDiscountChk;
+    private final ComboBox<String> groupDiscountGroupCmb;
+    private final Spinner<Integer> groupDiscountAmountSpn;
+
+    private final CheckBox thresholdDisountChk;
+    private final Spinner<Integer> thresholdDiscountThresholdSpn;
+    private final Spinner<Integer> thresholdDiscountAmountSpn;
+
+    private final CheckBox expensiveDiscountChk;
+    private final Spinner<Integer> expensiveDiscountAmountSpn;
 
     //Declarations for header/footer buttons/labels
-    private TextField headerCustomMessage = new TextField();
-    private final CheckBox headerDateTime = new CheckBox();
-    private final CheckBox headerMessage = new CheckBox();
-    private final CheckBox footerClosure = new CheckBox();
-    private final CheckBox footerBtwSeparate = new CheckBox();
-    private final CheckBox footerPriceDiscountSeparate = new CheckBox();
+    private final CheckBox headerDateTimeChk;
+    private final TextField headerMessageTxt;
+    private final CheckBox headerMessageChk;
+    private final CheckBox footerMessageChk;
+    private final CheckBox footerVatChk;
+    private final CheckBox footerDiscountChk;
+
+    private final Button saveButton;
 
 
     public Settings() {
-        groups.getItems().addAll(
-                "Group 1",
-                "Group 2"
-        );
-
-        options.getItems().addAll(
-                "Excel",
-                "Txt",
-                "Csv"
-
-        );
+        setPadding(new Insets(10));
+        setHgap(2);
+        setVgap(4);
 
 
-
-        Label groupLabel = new Label("Group Discount %");
-        Label expensiveLabel = new Label("Most expensive discount %");
-        Label thresholdLabel = new Label("Threshold discount price €");
-
-
-        groupDiscountAmount = new Spinner<Integer>();
-        SpinnerValueFactory factory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 0);
-        groupDiscountAmount.setValueFactory(factory);
-        groupDiscountAmount.setEditable(true);
-        TextFormatter formatter = new TextFormatter(factory.getConverter(), factory.getValue());
-        groupDiscountAmount.getEditor().setTextFormatter(formatter);
-        factory.valueProperty().bindBidirectional(formatter.valueProperty());
-
-        expensiveDiscountAmount = new Spinner<Integer>();
-        expensiveDiscountAmount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100));
-        thresholdDiscountThreshold = new Spinner<Integer>();
-        thresholdDiscountThreshold.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE));
-        thresholdDiscountAmount = new Spinner<Integer>();
-        thresholdDiscountAmount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100));
-
-
-        options.setValue("Select option");
-        options.setValue(PropertiesOld.getLoader());
-
-        //check in config if box should be selected on startup
-        expensiveCheckbox.setSelected(Property.DISCOUNT_EXPENSIVE.asBool());
-        groupCheckBox.setSelected(Property.DISCOUNT_GROUP.asBool());
-        thresholdCheckbox.setSelected(Property.DISCOUNT_THRESHOLD.asBool());
-
-        headerDateTime.setSelected(PropertiesOld.getHeaderDateTime());
-        headerMessage.setSelected(PropertiesOld.getHeaderMesssageState());
-        footerPriceDiscountSeparate.setSelected(PropertiesOld.getFooterPriceDiscountSeparate());
-        footerBtwSeparate.setSelected(PropertiesOld.getFooterBtwSeparate());
-        footerClosure.setSelected(PropertiesOld.getFooterClosure());
-
-        headerCustomMessage.setText(PropertiesOld.getHeaderMessage());
-
-
-        groups.setValue("Select Group");
-        groups.setValue(PropertiesOld.getGroup());
-
-        groupDiscountAmount.getValueFactory().setValue(Property.DISCOUNT_GROUP_AMOUNT.asInt());
-        expensiveDiscountAmount.getValueFactory().setValue(Property.DISCOUNT_EXPENSIVE_AMOUNT.asInt());
-        thresholdDiscountAmount.getValueFactory().setValue(Property.DISCOUNT_THRESHOLD_AMOUNT.asInt());
-        thresholdDiscountThreshold.getValueFactory().setValue(Property.DISCOUNT_THRESHOLD_THRESHOLD.asInt());
-
-
-        this.setHgap(2);
-        this.setVgap(4);
-
+        //region Load save
         this.add(new Label("Read from:"), 1, 1);
-        this.add(options, 2, 1);
+        loadSaveCmb = new ComboBox<>();
+        loadSaveCmb.getItems().addAll(LoadSaveStrategyEnum.values());
+        loadSaveCmb.setValue(Prop.LOAD_SAVE_STRATEGY.asEnum(LoadSaveStrategyEnum.class));
+        this.add(loadSaveCmb, 2, 1);
+        //endregion
 
-        //All discount tralala
-        Label discountHeader = new Label("Discount Options");
-        discountHeader.setFont(new Font("Arial", 20));
-        this.add(discountHeader, 1, 2, 2, 1);
-        this.add(groupCheckBox, 1, 4);
-        this.add(groupLabel, 2, 4);
-        this.add(groups, 3, 4);
-        this.add(groupDiscountAmount, 4, 4);
 
-        this.add(expensiveCheckbox, 1, 5);
-        this.add(expensiveLabel, 2, 5);
-        this.add(expensiveDiscountAmount, 4, 5);
+        //region Discounts
+        this.add(new Header("Kortingen"), 1, 2, 2, 1);
 
-        this.add(thresholdCheckbox, 1, 6);
-        this.add(thresholdLabel, 2, 6);
-        this.add(thresholdDiscountThreshold, 4, 6);
-        this.add(thresholdDiscountAmount, 3, 6);
 
-        //All customize header stuff
-        Label receiptcustomHeader = new Label("Receipt print Options - Header");
-        receiptcustomHeader.setFont(new Font("Arial", 20));
-        this.add(receiptcustomHeader, 1, 8, 2, 1);
-        //checkboxes + labels
-        this.add(headerDateTime, 1, 9);
-        this.add(new Label("Show/hide show date and time on receipt"), 2, 9);
-        this.add(headerMessage, 1, 10);
-        this.add(new Label("Show/hide create custom message"), 2, 10);
-        this.add(headerCustomMessage, 4, 10);
+        groupDiscountChk = new CheckBox("Groepkorting");
+        groupDiscountChk.setSelected(Prop.DISCOUNT_GROUP.asBool());
+        this.add(groupDiscountChk, 1, 4);
 
-        //All customize footer stuff
-        Label receiptcustomFooter = new Label("Receipt print Options - Footer");
-        receiptcustomFooter.setFont(new Font("Arial", 20));
-        this.add(receiptcustomFooter, 1, 11, 2, 1);
-        //checkboxes + labels
-        this.add(footerPriceDiscountSeparate, 1, 12);
-        this.add(new Label("Show/hide price and discount separately"), 2, 12);
-        this.add(footerBtwSeparate, 1, 13);
-        this.add(new Label("Show/hide btw separate"), 2, 13);
-        this.add(footerClosure, 1, 14);
-        this.add(new Label("Show/hide closure message"), 2, 14);
-        //save button placement
+        groupDiscountGroupCmb = new ComboBox<>();
+        groupDiscountGroupCmb.setValue(Prop.DISCOUNT_GROUP_NAME.get());
+        this.add(new VControlLabel("Groep", groupDiscountGroupCmb), 3, 4);
+
+        groupDiscountAmountSpn = new IntegerSpinner(0, 100, Prop.DISCOUNT_GROUP_AMOUNT.asInt(), 0);
+        this.add(new VControlLabel("Percentage", groupDiscountAmountSpn), 4, 4);
+
+        if (!groupDiscountChk.isSelected()) {
+            groupDiscountAmountSpn.setDisable(true);
+            groupDiscountGroupCmb.setDisable(true);
+        }
+
+
+        expensiveDiscountChk = new CheckBox("Duurstekorting");
+        expensiveDiscountChk.setSelected(Prop.DISCOUNT_EXPENSIVE.asBool());
+        this.add(expensiveDiscountChk, 1, 5);
+
+        expensiveDiscountAmountSpn = new IntegerSpinner(0, 100, Prop.DISCOUNT_EXPENSIVE_AMOUNT.asInt(), 0);
+        this.add(new VControlLabel("Percentage", expensiveDiscountAmountSpn), 4, 5);
+
+        if (!expensiveDiscountChk.isSelected()) {
+            expensiveDiscountAmountSpn.setDisable(true);
+        }
+
+
+        thresholdDisountChk = new CheckBox("Drempelkorting");
+        thresholdDisountChk.setSelected(Prop.DISCOUNT_THRESHOLD.asBool());
+        this.add(thresholdDisountChk, 1, 6);
+
+        thresholdDiscountThresholdSpn = new IntegerSpinner(0, Integer.MAX_VALUE, Prop.DISCOUNT_THRESHOLD_THRESHOLD.asInt(), 0);
+        this.add(new VControlLabel("Drempel", thresholdDiscountThresholdSpn), 3, 6);
+
+        thresholdDiscountAmountSpn = new IntegerSpinner(0, 100, Prop.DISCOUNT_THRESHOLD_AMOUNT.asInt(), 0);
+        this.add(new VControlLabel("Percentage", thresholdDiscountAmountSpn), 4, 6);
+
+        if (!thresholdDisountChk.isSelected()) {
+            thresholdDiscountThresholdSpn.setDisable(true);
+            thresholdDiscountAmountSpn.setDisable(true);
+        }
+        //endregion
+
+
+        //region Receipt header
+        this.add(new Header("Kassabon - Header"), 1, 8, 2, 1);
+
+        headerDateTimeChk = new CheckBox("Datum en tijd");
+        headerDateTimeChk.setSelected(Prop.RECEIPT_HEADER_DATETIME.asBool());
+        this.add(headerDateTimeChk, 1, 9);
+
+        headerMessageChk = new CheckBox("Algemene boodschap");
+        headerMessageChk.setSelected(Prop.RECEIPT_HEADER_MESSAGE.asBool());
+        this.add(headerMessageChk, 1, 10);
+        headerMessageTxt = new TextField();
+        headerMessageTxt.setText(Prop.RECEIPT_HEADER_MESSAGE_TXT.asString());
+        this.add(headerMessageTxt, 4, 10);
+        if(!headerMessageChk.isSelected()) {
+            headerMessageTxt.setDisable(true);
+        }
+        //endregion
+
+
+        //region Receipt footer
+        this.add(new Header("Kassabon - Footer"), 1, 11, 2, 1);
+
+        footerDiscountChk = new CheckBox("Korting en prijs exclusief korting");
+        footerDiscountChk.setSelected(Prop.RECEIPT_FOOTER_DISCOUNT.asBool());
+        this.add(footerDiscountChk, 1, 12);
+
+        footerVatChk = new CheckBox("BTW en prijs exclusief BTW");
+        footerVatChk.setSelected(Prop.RECEIPT_FOOTER_VAT.asBool());
+        this.add(footerVatChk, 1, 13);
+
+        footerMessageChk = new CheckBox("Algemene boodschap");
+        footerMessageChk.setSelected(Prop.RECEIPT_FOOTER_MESSAGE.asBool());
+        this.add(footerMessageChk, 1, 14);
+        //endregion
+
+
+        //region Save
+        saveButton = new Button("Save");
         this.add(saveButton, 2, 15);
-
-        /*
-        THIS SECTiON MAKES SURE THE TEXTFIELDS/... stay disabled on startup
-         */
-        //ThresholdCheckbox check
-        if (!thresholdCheckbox.isSelected()) {
-            thresholdDiscountThreshold.setDisable(true);
-            thresholdDiscountAmount.setDisable(true);
-        }
-        //GroupCheckbox check
-        if (!groupCheckBox.isSelected()) {
-            groupDiscountAmount.setDisable(true);
-            groups.setDisable(true);
-        }
-        //expensiveCheckbox check
-        if (!expensiveCheckbox.isSelected()) {
-            expensiveDiscountAmount.setDisable(true);
-        }
-        //Only need to check for headermessage cause this is the only textfield
-        if(!headerMessage.isSelected()) {
-            headerCustomMessage.setDisable(true);
-        }
-
+        //endregion
 
 
         /*
         THIS SECTION HANDLES THE EVENTS BEHIND THE BUTTONS
          */
-        groupCheckBox.setOnAction(event -> {
-            if (groupCheckBox.isSelected()) {
-                groups.setDisable(false);
-                groupDiscountAmount.setDisable(false);
+        groupDiscountChk.setOnAction(event -> {
+            if (groupDiscountChk.isSelected()) {
+                groupDiscountGroupCmb.setDisable(false);
+                groupDiscountAmountSpn.setDisable(false);
             } else  {
-                groupDiscountAmount.setDisable(true);
-                groups.setDisable(true);
+                groupDiscountAmountSpn.setDisable(true);
+                groupDiscountGroupCmb.setDisable(true);
             }
         });
-        thresholdCheckbox.setOnAction(event -> {
-            if (thresholdCheckbox.isSelected()) {
-                thresholdDiscountThreshold.setDisable(false);
-                thresholdDiscountAmount.setDisable(false);
+        thresholdDisountChk.setOnAction(event -> {
+            if (thresholdDisountChk.isSelected()) {
+                thresholdDiscountThresholdSpn.setDisable(false);
+                thresholdDiscountAmountSpn.setDisable(false);
             } else {
-                thresholdDiscountThreshold.setDisable(true);
-                thresholdDiscountAmount.setDisable(true);
+                thresholdDiscountThresholdSpn.setDisable(true);
+                thresholdDiscountAmountSpn.setDisable(true);
             }
         });
-        expensiveCheckbox.setOnAction(event -> {
-            if (expensiveCheckbox.isSelected()) {
-                expensiveDiscountAmount.setDisable(false);
+        expensiveDiscountChk.setOnAction(event -> {
+            if (expensiveDiscountChk.isSelected()) {
+                expensiveDiscountAmountSpn.setDisable(false);
             } else {
-                expensiveDiscountAmount.setDisable(true);
+                expensiveDiscountAmountSpn.setDisable(true);
             }
         });
 
-        headerMessage.setOnAction(event -> {
-            if(headerMessage.isSelected()) {
-                headerCustomMessage.setDisable(false);
+        headerMessageChk.setOnAction(event -> {
+            if(headerMessageChk.isSelected()) {
+                headerMessageTxt.setDisable(false);
             } else {
-                headerCustomMessage.setDisable(true);
+                headerMessageTxt.setDisable(true);
             }
         });
+    }
 
+
+    public LoadSaveStrategyEnum getLoadSaveType() {
+        return loadSaveCmb.getValue();
+    }
+
+    public boolean getGroupDiscountEnabled() {
+        return groupDiscountChk.isSelected();
+    }
+
+    public String getGroupDiscountGroup() {
+        return groupDiscountGroupCmb.getValue();
+    }
+
+    public int getGroupDiscountAmount() {
+        return groupDiscountAmountSpn.getValue();
+    }
+
+    public boolean getThresholdDisountEnabled() {
+        return thresholdDisountChk.isSelected();
+    }
+
+    public int getThresholdDiscountThreshold() {
+        return thresholdDiscountThresholdSpn.getValue();
+    }
+
+    public int getThresholdDiscountAmount() {
+        return thresholdDiscountAmountSpn.getValue();
+    }
+
+    public boolean getExpensiveDiscountEnabled() {
+        return expensiveDiscountChk.isSelected();
+    }
+
+    public int getExpensiveDiscountAmount() {
+        return expensiveDiscountAmountSpn.getValue();
+    }
+
+    public boolean getHeaderDateTimeEnabled() {
+        return headerDateTimeChk.isSelected();
+    }
+
+    public String getHeaderMessageTxt() {
+        return headerMessageTxt.toString();
+    }
+
+    public boolean getHeaderMessageEnabled() {
+        return headerMessageChk.isSelected();
+    }
+
+    public boolean getFooterMessageEnabled() {
+        return footerMessageChk.isSelected();
+    }
+
+    public boolean getFooterVatEnabled() {
+        return footerVatChk.isSelected();
+    }
+
+    public boolean getFooterDiscountEnabled() {
+        return footerDiscountChk.isSelected();
+    }
+
+
+    // Handlers
+    public void setOnSave(Runnable action) {
         saveButton.setOnAction(event -> {
-            try {
-                String thresholdDiscount = thresholdDiscountAmount.getValue().toString().toUpperCase();
-                thresholdDiscount = String.valueOf(thresholdDiscount.charAt(0));
-
-                //Property setters for receipt
-                PropertiesOld.setHeaderDateTime(headerDateTime.isSelected());
-                PropertiesOld.setHeaderMesssageState(headerMessage.isSelected());
-                PropertiesOld.setHeaderMessage(headerCustomMessage.getText());
-                PropertiesOld.setFooterPriceDiscountSeparate(footerPriceDiscountSeparate.isSelected());
-                PropertiesOld.setFooterBtwSeparate(footerBtwSeparate.isSelected());
-                PropertiesOld.setFooterClosure(footerClosure.isSelected());
-
-
-                PropertiesOld.setLoader((options.getValue().toString().toUpperCase()));
-                PropertiesOld.setGroup((groups.getValue().toString().toUpperCase()));
-                Property.DISCOUNT_GROUP_AMOUNT.set(groupDiscountAmount.getValue());
-                PropertiesOld.setThreshDiscount(thresholdDiscount);
-                Property.DISCOUNT_THRESHOLD_THRESHOLD.set(thresholdDiscountThreshold.getValue());
-                Property.DISCOUNT_EXPENSIVE_AMOUNT.set(expensiveDiscountAmount.getValue());
-
-                Property.DISCOUNT_GROUP.set(groupCheckBox.isSelected());
-                Property.DISCOUNT_THRESHOLD.set(thresholdCheckbox.isSelected());
-                Property.DISCOUNT_EXPENSIVE.set(expensiveCheckbox.isSelected());
-
-                PropertiesOld.save();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            action.run();
         });
     }
 }

@@ -2,6 +2,7 @@ package model.receipt;
 
 
 import model.DomainFacade;
+import model.basket.Basket;
 
 //Via this class every other extra can acces the basic receipt and add on to it
 public abstract class ReceiptDecorator implements Receipt {
@@ -11,7 +12,7 @@ public abstract class ReceiptDecorator implements Receipt {
         receipt = newReceipt;
     }
 
-    public String getDescription(DomainFacade d) {
-        return receipt.getReceipt(d);
+    public String getReceipt(Basket basket) {
+        return receipt.getReceipt(basket);
     }
 }

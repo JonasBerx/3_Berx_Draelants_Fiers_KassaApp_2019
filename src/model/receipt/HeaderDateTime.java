@@ -1,9 +1,14 @@
 package model.receipt;
 
 import model.DomainFacade;
+import model.Prop;
+import model.basket.Basket;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+
+import static model.Util.rep;
 
 public class HeaderDateTime extends ReceiptDecorator {
     public HeaderDateTime(Receipt newReceipt) {
@@ -11,15 +16,12 @@ public class HeaderDateTime extends ReceiptDecorator {
     }
 
     @Override
-    public String getReceipt(DomainFacade d) {
-        StringBuilder receipt = new StringBuilder();
-        //Date Formater
+    public String getReceipt(Basket basket) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '            ' HH:mm:ss z");
-        Date date = new Date(System.currentTimeMillis());
-
-        receipt.append(String.format(formatter.format(date) + "%n"));
-        receipt.append(String.format("____________________________________%n"));
-        receipt.append(this.getDescription(d));
-        return receipt.toString();
+        return String.join("\n", Arrays.asList(
+                formatter.format(new Date()),
+                rep("─", 36),
+                super.getReceipt(basket)
+        ));
     }
 }

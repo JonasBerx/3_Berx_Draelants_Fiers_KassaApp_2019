@@ -14,7 +14,7 @@ public class FullBasketRatioDiscount extends RatioDiscount {
     public Map<Article, Double> getDiscountedStackPrices(Basket basket, Map<Article, Double> prevDiscountedStackPrices) {
         Map<Article, Double> stackPrices = Util.allStackPricesFromDiscountedStackPrices(basket, prevDiscountedStackPrices);
         for (Map.Entry<Article, Double> entry : stackPrices.entrySet()) {
-            stackPrices.put(entry.getKey(), entry.getValue() * getRatio());
+            stackPrices.put(entry.getKey(), entry.getValue() * getPriceRatio());
         }
         return stackPrices;
     }

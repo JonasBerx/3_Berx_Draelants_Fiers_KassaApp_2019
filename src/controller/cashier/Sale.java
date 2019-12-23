@@ -9,10 +9,11 @@ import model.Util;
 import model.article.Article;
 import model.basket.Basket;
 import model.basket.state.BasketState;
+import model.basket.state.ClosedState;
+import model.basket.state.OpenState;
 import model.observer.EventData;
 import model.receipt.ReceiptFactory;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -26,13 +27,15 @@ public class Sale implements BasketArticlesObserver, BasketStateObserver, ShopOb
         this.view = view;
 
         populateArticles();
-        view.setHoldSaleBtn(model.saleIsOnHold());
+        view.setHoldSaleBtnHeld(model.saleIsOnHold());
 
         view.setOnClearArticles(this::clearArticlesHandler);
         view.setOnSubmitArticleCode(this::submitArticleCodeHandler);
         view.setOnToggleHoldSale(this::toggleHoldSaleHandler);
         view.setOnPay(this::payHandler);
+        view.setOnCancel(this::cancelHandler);
         view.setOnRemove(this::removeHandler);
+        view.setOnClose(this::closeHandler);
 
         model.addShopObserver(this);
         model.addBasketObserver(this);
@@ -56,7 +59,7 @@ public class Sale implements BasketArticlesObserver, BasketStateObserver, ShopOb
     @Override
     public void addArticle(Article article) {
         view.addArticle(article);
-        view.setEnablePayBtn(false);
+        view.setPayBtnEnabled(false);
     }
 
     @Override
@@ -68,7 +71,7 @@ public class Sale implements BasketArticlesObserver, BasketStateObserver, ShopOb
 
     @Override
     public void handleRemovedLastArticle() {
-        view.setEnablePayBtn(false);
+        view.setPayBtnEnabled(false);
     }
 
     @Override
@@ -90,7 +93,11 @@ public class Sale implements BasketArticlesObserver, BasketStateObserver, ShopOb
 
     public void handleBasketSwitchEvent(Basket oldBasket) {
         oldBasket.removeObserver(this);
+        model.addBasketObserver(this);
         updatePriceLabels();
+        clearArticles();
+        populateArticles();
+        handleStateChangeEvent(null, model.getBasket().getState());
     }
 
 
@@ -128,12 +135,13 @@ public class Sale implements BasketArticlesObserver, BasketStateObserver, ShopOb
         try {
             article = articleFromCodeStr(articleCodeStr);
         } catch (ControllerWarningException e) {
-            view.warn(e.getWarning());
+            view.warn("Couldn't add the specified article.", e.getWarning());
             return;
+        } finally {
+            view.clearArticleCodeFld();
         }
 
         model.addBasketArticle(article);
-        view.clearArticleCodeFld();
     }
 
     private void toggleHoldSaleHandler() {
@@ -142,18 +150,7 @@ public class Sale implements BasketArticlesObserver, BasketStateObserver, ShopOb
         } else {
             model.putSaleOnHold();
         }
-        view.setHoldSaleBtn(model.saleIsOnHold());
-    }
-
-    private void payHandler() {
-        if (model.getAllUniqueBasketArticles().size() > 0) {
-            ReceiptFactory generateReceipt = new ReceiptFactory();
-            try {
-                System.out.println(generateReceipt.MakeReceiptFactory().getReceipt(model));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        view.setHoldSaleBtnHeld(model.saleIsOnHold());
     }
 
     private void removeHandler() {
@@ -163,8 +160,8 @@ public class Sale implements BasketArticlesObserver, BasketStateObserver, ShopOb
         StringBuilder itemsStr = new StringBuilder();
         selectedItems.forEach((article, amount) -> {
             itemsStr.append(String.format(
-                    "%s (x %d)\n"
-                    , article.getName(), amount));
+                    "%s (x %d)\n",
+                    article.getName(), amount));
         });
         String warningStr = String.format("You will remove: \n%s", itemsStr);
         if (view.confirm(warningStr)) {
@@ -172,9 +169,30 @@ public class Sale implements BasketArticlesObserver, BasketStateObserver, ShopOb
         }
     }
 
+    private void closeHandler() {
+        try {
+            model.closeBasket();
+        } catch (IllegalStateException ex) {
+            view.warn("Couldn't close the basket.", ex.getMessage());
+        }
+    }
+
+    private void payHandler() {
+        model.payBasket();
+    }
+
+    private void cancelHandler() {
+        model.cancelBasket();
+    }
+
     @Override
     public void handleStateChangeEvent(BasketState oldState, BasketState newState) {
-        System.out.println(oldState.getStateName());
-        System.out.println(newState.getStateName());
+        boolean isOpen = newState instanceof OpenState;
+        view.setCloseBtnEnabled(isOpen);
+        view.setHoldSaleBtnEnabled(isOpen);
+
+        boolean isClosed = newState instanceof ClosedState;
+        view.setPayBtnEnabled(isClosed);
+        view.setCancelBtnEnabled(isClosed);
     }
 }

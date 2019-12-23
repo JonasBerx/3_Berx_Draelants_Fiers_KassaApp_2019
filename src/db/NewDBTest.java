@@ -19,7 +19,7 @@ public class NewDBTest {
 
         //Test voor context class ( grote implement class)
         System.out.println("\n");
-        ArticleDbContext context = new ArticleDbContext("INMEMORY");
+        ArticleDbContext context = new ArticleDbContext(ArticleDbType.INMEMORY);
         System.out.println(context.getAll());
         System.out.println(a.saveToString());
         System.out.println(a.toPrettyString());

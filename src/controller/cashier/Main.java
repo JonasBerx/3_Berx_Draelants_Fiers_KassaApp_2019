@@ -7,5 +7,6 @@ public class Main {
         new Sale(model, view.getSalePane());
         new ArticlesOverview(model, view.getArticlesOverview());
         new Settings(model, view.getSettingsPane());
+        new Log(model, view.getLogPane());
     }
 }
